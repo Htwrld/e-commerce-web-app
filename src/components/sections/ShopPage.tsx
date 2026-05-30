@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { T } from "@/lib/tokens";
-import { CATS, GENDERS, PRODUCTS, Product } from "@/lib/data";
-import { useNav } from "@/lib/nav-context";
-import { useCart } from "@/lib/cart-context";
-import { ProductCard } from "@/components/ui/ProductCard";
-import { ProductDetailModal } from "@/components/ui/ProductDetailModal";
+import { T } from "@/src/lib/tokens";
+import { CATS, GENDERS, PRODUCTS, Product } from "@/src/lib/data";
+import { useNav } from "@/src/lib/nav-context";
+import { useCart } from "@/src/lib/cart-context";
+import { ProductCard } from "@/src/components/ui/ProductCard";
+import { ProductDetailModal } from "@/src/components/ui/ProductDetailModal";
 
 export function ShopPage() {
   const { activeCat, setActiveCat, activeGen, setActiveGen } = useNav();

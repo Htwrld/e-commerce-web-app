@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { CartProvider } from "@/lib/cart-context";
-import { NavProvider } from "@/lib/nav-context";
-import { T } from "@/lib/tokens";
+import { CartProvider } from "@/src/lib/cart-context";
+import { NavProvider } from "@/src/lib/nav-context";
+import { T } from "@/src/lib/tokens";
 
 export const metadata: Metadata = {
   title: "HTW — Hope's Trendy World",

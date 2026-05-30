@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { T } from "@/lib/tokens";
-import { useCart } from "@/lib/cart-context";
-import { useNav } from "@/lib/nav-context";
-import { WABtn } from "@/components/ui/WABtn";
+import { T } from "@/src/lib/tokens";
+import { useCart } from "@/src/lib/cart-context";
+import { useNav } from "@/src/lib/nav-context";
+import { WABtn } from "@/src/components/ui/WABtn";
 
 export function CheckoutPage() {
   const { cart, cartTotal } = useCart();

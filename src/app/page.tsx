@@ -5,10 +5,10 @@ import { T } from "@/src/lib/tokens";
 import { useNav } from "@/src/lib/nav-context";
 import { useCart } from "@/src/lib/cart-context";
 
-import { Navbar }       from "@/src/components/layout/Navbar";
-import { Ticker }       from "@/src/components/layout/Ticker";
-import { CartDrawer }   from "@/src/components/layout/CartDrawer";
-import { Footer }       from "@/src/components/layout/Footer";
+import { Navbar }       from "@/src/components/layouts/Navbar";
+import { Ticker }       from "@/src/components/layouts/Ticker";
+import { CartDrawer }   from "@/src/components/layouts/CartDrawer";
+import { Footer }       from "@/src/components/layouts/Footer";
 
 import { HomePage }       from "@/src/components/sections/HomePage";
 import { ShopPage }       from "@/src/components/sections/ShopPage";

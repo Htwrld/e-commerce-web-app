@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { T } from "@/lib/tokens";
-import { useNav } from "@/lib/nav-context";
+import { T } from "@/src/lib/tokens";
+import { useNav } from "@/src/lib/nav-context";
 
 const HERO_BGS = [
   "linear-gradient(135deg,#FDF0DC 0%,#F5D898 50%,#EFE4D0 100%)",

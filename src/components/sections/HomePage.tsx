@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { T } from "@/lib/tokens";
-import { PRODUCTS, AMBASSADORS, TESTIMONIALS, WHY_HTW, Product } from "@/lib/data";
-import { useNav } from "@/lib/nav-context";
-import { useCart } from "@/lib/cart-context";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { ProductCard } from "@/components/ui/ProductCard";
-import { ProductDetailModal } from "@/components/ui/ProductDetailModal";
-import { Stars } from "@/components/ui/Stars";
+import { T } from "@/src/lib/tokens";
+import { PRODUCTS, AMBASSADORS, TESTIMONIALS, WHY_HTW, Product } from "@/src/lib/data";
+import { useNav } from "@/src/lib/nav-context";
+import { useCart } from "@/src/lib/cart-context";
+import { HeroSection } from "@/src/components/sections/HeroSection";
+import { ProductCard } from "@/src/components/ui/ProductCard";
+import { ProductDetailModal } from "@/src/components/ui/ProductDetailModal";
+import { Stars } from "@/src/components/ui/Stars";
 import Image from "next/image";
 
 const LIFESTYLE_SHOTS = [

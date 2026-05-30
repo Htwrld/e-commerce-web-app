@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { T } from "@/lib/tokens";
+import { T } from "@/src/lib/tokens";
 
 type TabKey = "shipping" | "returns" | "privacy" | "terms";
 

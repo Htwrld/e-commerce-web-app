@@ -1,7 +1,7 @@
 "use client";
 
-import { T } from "@/lib/tokens";
-import { useNav } from "@/lib/nav-context";
+import { T } from "@/src/lib/tokens";
+import { useNav } from "@/src/lib/nav-context";
 
 export function AboutPage() {
   const { navTo } = useNav();

@@ -1,8 +1,8 @@
 "use client";
 
-import { T } from "@/lib/tokens";
-import { useNav, PageId } from "@/lib/nav-context";
-import { WABtn } from "@/components/ui/WABtn";
+import { T } from "@/src/lib/tokens";
+import { useNav, PageId } from "@/src/lib/nav-context";
+import { WABtn } from "@/src/components/ui/WABtn";
 
 export function Footer() {
   const { navTo } = useNav();

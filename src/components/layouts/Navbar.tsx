@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { T } from "@/lib/tokens";
-import { NAV_ITEMS } from "@/lib/data";
-import { useCart } from "@/lib/cart-context";
-import { useNav, PageId } from "@/lib/nav-context";
-import { WABtn } from "@/components/ui/WABtn";
+import { T } from "@/src/lib/tokens";
+import { NAV_ITEMS } from "@/src/lib/data";
+import { useCart } from "@/src/lib/cart-context";
+import { useNav, PageId } from "@/src/lib/nav-context";
+import { WABtn } from "@/src/components/ui/WABtn";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

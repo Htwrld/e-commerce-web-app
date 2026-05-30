@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { T } from "@/lib/tokens";
-import { AMBASSADORS } from "@/lib/data";
+import { T } from "@/src/lib/tokens";
+import { AMBASSADORS } from "@/src/lib/data";
 
 export function AmbassadorsPage() {
   const [form,     setForm]     = useState({ name:"", email:"", city:"", ig:"" });

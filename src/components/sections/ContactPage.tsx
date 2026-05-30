@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { T } from "@/lib/tokens";
-import { WABtn } from "@/components/ui/WABtn";
+import { T } from "@/src/lib/tokens";
+import { WABtn } from "@/src/components/ui/WABtn";
 
 export function ContactPage() {
   const [sent, setSent] = useState(false);
