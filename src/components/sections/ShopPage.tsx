@@ -5,8 +5,8 @@ import { T } from "@/src/lib/tokens";
 import { CATS, GENDERS, PRODUCTS, Product } from "@/src/lib/data";
 import { useNav } from "@/src/lib/nav-context";
 import { useCart } from "@/src/lib/cart-context";
-import { ProductCard } from "@/src/components/ui/ProductCard";
-import { ProductDetailModal } from "@/src/components/ui/ProductDetailModal";
+import { ProductCard } from "@/src/components/cards/ProductCard";
+import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal";
 
 export function ShopPage() {
   const { activeCat, setActiveCat, activeGen, setActiveGen } = useNav();

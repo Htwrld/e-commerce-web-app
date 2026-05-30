@@ -3,7 +3,7 @@
 import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
 import { useNav } from "@/src/lib/nav-context"
-import { WABtn } from "@/src/components/ui/WABtn"
+import { WABtn } from "@/src/components/cards/WABtn"
 import Image from "next/image"
 
 export function CartDrawer() {

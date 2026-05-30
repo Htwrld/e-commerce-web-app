@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { Product } from "@/lib/data";
-import { T } from "@/lib/tokens";
-import { Badge } from "@/components/ui/Badge";
-import { VerseChip } from "@/components/ui/VerseChip";
-import { WABtn } from "@/components/ui/WABtn";
+import { Product } from "@/src/lib/data";
+import { T } from "@/src/lib/tokens";
+import { Badge } from "@/src/components/cards/Badge";
+import { VerseChip } from "@/src/components/cards/VerseChip";
+import { WABtn } from "@/src/components/cards/WABtn";
 
 interface ProductCardProps {
   product: Product;

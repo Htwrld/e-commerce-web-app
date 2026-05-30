@@ -2,7 +2,7 @@
 
 import { T } from "@/src/lib/tokens";
 import { useNav } from "@/src/lib/nav-context";
-import { Badge } from "@/src/components/ui/Badge";
+import { Badge } from "@/src/components/cards/Badge";
 
 const COLLECTIONS = [
   { id:"easter",  name:"He Wore It First", subtitle:"Easter 2026 Collection", verse:'"He humbled himself… therefore God exalted him." — Philippians 2:8–9', tag:"NEW DROP",    bg:"linear-gradient(135deg,#F5E0DC,#F5B8A8)", accent:T.rust,   emoji:"🧥", cat:"Hoodies" },

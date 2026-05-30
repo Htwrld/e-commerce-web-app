@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { T } from "@/src/lib/tokens";
-import { WABtn } from "@/src/components/ui/WABtn";
+import { WABtn } from "@/src/components/cards/WABtn";
 
 export function ContactPage() {
   const [sent, setSent] = useState(false);

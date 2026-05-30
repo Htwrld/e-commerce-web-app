@@ -1,4 +1,4 @@
-import { BADGE_COLORS } from "@/lib/tokens";
+import { BADGE_COLORS } from "@/src/lib/tokens";
 
 interface BadgeProps {
   text: string;

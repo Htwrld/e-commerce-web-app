@@ -6,9 +6,9 @@ import { PRODUCTS, AMBASSADORS, TESTIMONIALS, WHY_HTW, Product } from "@/src/lib
 import { useNav } from "@/src/lib/nav-context";
 import { useCart } from "@/src/lib/cart-context";
 import { HeroSection } from "@/src/components/sections/HeroSection";
-import { ProductCard } from "@/src/components/ui/ProductCard";
-import { ProductDetailModal } from "@/src/components/ui/ProductDetailModal";
-import { Stars } from "@/src/components/ui/Stars";
+import { ProductCard } from "@/src/components/cards/ProductCard";
+import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal";
+import { Stars } from "@/src/components/cards/Stars";
 import Image from "next/image";
 
 const LIFESTYLE_SHOTS = [

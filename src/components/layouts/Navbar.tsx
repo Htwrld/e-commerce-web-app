@@ -5,7 +5,7 @@ import { T } from "@/src/lib/tokens";
 import { NAV_ITEMS } from "@/src/lib/data";
 import { useCart } from "@/src/lib/cart-context";
 import { useNav, PageId } from "@/src/lib/nav-context";
-import { WABtn } from "@/src/components/ui/WABtn";
+import { WABtn } from "@/src/components/cards/WABtn";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
