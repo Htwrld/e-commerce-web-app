@@ -1,11 +1,9 @@
 "use client";
 
 import { T } from "@/src/lib/tokens";
-import { useNav, PageId } from "@/src/lib/nav-context";
 import { WABtn } from "@/src/components/cards/WABtn";
 
 export function Footer() {
-  const { navTo } = useNav();
 
   return (
     <footer style={{ background: T.charcoal, color: "#B0A898", padding: "60px 28px 28px" }}>

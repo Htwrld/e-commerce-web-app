@@ -2,14 +2,12 @@
 
 import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
-import { useNav } from "@/src/lib/nav-context"
 import { WABtn } from "@/src/components/cards/WABtn"
 import Image from "next/image"
 
 export function CartDrawer() {
     const { cart, cartOpen, setCartOpen, removeFromCart, updateQty, cartCount, cartTotal } =
         useCart()
-    const { navTo } = useNav()
 
     if (!cartOpen) return null
 

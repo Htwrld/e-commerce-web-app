@@ -7,9 +7,10 @@ import { Navbar } from "@/src/components/layouts/Navbar"
 import { Ticker } from "@/src/components/layouts/Ticker"
 import { CartDrawer } from "@/src/components/layouts/CartDrawer"
 import { Footer } from "@/src/components/layouts/Footer"
-import { HomePage } from "@/src/components/sections/HomePage"
+import { ContactPage } from "@/src/components/sections/ContactPage"
+import { AmbassadorsPage } from "@/src/components/sections/AmbassadorsPage"
 
-export default function HTWApp() {
+export default function HTWContactApp() {
     const { toast } = useCart()
     const [heroIdx, setHeroIdx] = useState(0)
 
@@ -66,7 +67,7 @@ export default function HTWApp() {
             <Ticker />
 
             <main>
-                <HomePage heroIdx={heroIdx} />
+                <AmbassadorsPage />
             </main>
 
             <Footer />
