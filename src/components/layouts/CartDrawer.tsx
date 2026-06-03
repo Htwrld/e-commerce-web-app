@@ -231,10 +231,7 @@ export function CartDrawer() {
                                     justifyContent: "center",
                                     marginBottom: 10,
                                 }}
-                                onClick={() => {
-                                    setCartOpen(false)
-                                    navTo("checkout")
-                                }}
+                                
                             >
                                 Proceed to Checkout →
                             </button>

@@ -1,6 +1,7 @@
 "use client"
 
 import { T } from "@/src/lib/tokens"
+import Link from "next/link"
 
 export function AboutPage() {
     const sections = [
@@ -172,9 +173,9 @@ export function AboutPage() {
                         Headquartered in Nigeria 🇳🇬 · Shipping Worldwide 🌍
                     </p>
                     <div style={{ marginTop: 24 }}>
-                        <button className="btn-primary" onClick={() => navTo("shop")}>
+                        <Link className="btn-primary" href="/shop">
                             Shop the Movement →
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </section>

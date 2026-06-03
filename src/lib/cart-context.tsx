@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useCallback, ReactNode } from "react"
-import { Product } from "@/lib/data"
+import { Product } from "@/src/lib/data"
 
 export interface CartItem extends Product {
     qty: number

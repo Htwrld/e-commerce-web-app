@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { T } from "@/src/lib/tokens"
+import Link from "next/link"
 
 const HERO_BGS = [
     "linear-gradient(135deg,#FDF0DC 0%,#F5D898 50%,#EFE4D0 100%)",
@@ -194,35 +195,27 @@ export function HeroSection({ heroIdx }: HeroSectionProps) {
                 <div
                     style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}
                 >
-                    <button
+                    <Link
                         className="btn-primary"
                         style={{ fontSize: 14, padding: "14px 28px" }}
-                        onClick={() => {
-                            setActiveCat("All")
-                            setActiveGen("Male")
-                            navTo("shop")
-                        }}
+                        href={`/shop?cat=All&gen=Male`}
                     >
                         Shop Men
-                    </button>
-                    <button
+                    </Link>
+                    <Link
                         className="btn-primary"
                         style={{ fontSize: 14, padding: "14px 28px", background: T.rust }}
-                        onClick={() => {
-                            setActiveCat("All")
-                            setActiveGen("Female")
-                            navTo("shop")
-                        }}
+                        href={`/shop?cat=All&gen=Female`}
                     >
                         Shop Women
-                    </button>
-                    <button
+                    </Link>
+                    <Link
                         className="btn-secondary"
                         style={{ fontSize: 14, padding: "13px 26px" }}
-                        onClick={() => navTo("collections")}
+                        href="/collections"
                     >
                         New Collection
-                    </button>
+                    </Link>
                 </div>
                 <p style={{ fontSize: 12, color: T.muted, marginTop: 16 }}>
                     Free delivery in Lagos &nbsp;·&nbsp; Ships nationwide &nbsp;·&nbsp; WhatsApp

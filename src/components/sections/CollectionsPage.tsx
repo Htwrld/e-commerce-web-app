@@ -2,6 +2,7 @@
 
 import { T } from "@/src/lib/tokens"
 import { Badge } from "@/src/components/cards/Badge"
+import Link from "next/link"
 
 const COLLECTIONS = [
     {
@@ -117,17 +118,13 @@ export function CollectionsPage() {
                         >
                             {col.verse}
                         </p>
-                        <button
+                        <Link
                             className="btn-primary"
                             style={{ alignSelf: "flex-start" }}
-                            onClick={() => {
-                                setActiveCat(col.cat)
-                                setActiveGen("All")
-                                navTo("shop")
-                            }}
+                            href={`/shop?cat=${col.cat}`}
                         >
                             Shop This Collection →
-                        </button>
+                        </Link>
                     </div>
                 </div>
             ))}

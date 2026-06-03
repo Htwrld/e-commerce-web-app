@@ -5,6 +5,7 @@ import Image from "next/image"
 import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
 import { WABtn } from "@/src/components/cards/WABtn"
+import Link from "next/link"
 
 export function CheckoutPage() {
     const { cart, cartTotal } = useCart()
@@ -261,9 +262,9 @@ export function CheckoutPage() {
                             </p>
                             <WABtn text="Track Order on WhatsApp" />
                             <div style={{ marginTop: 20 }}>
-                                <button className="btn-outline-gold" onClick={() => navTo("home")}>
+                                <Link className="btn-outline-gold" href="/">
                                     Continue Shopping →
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     )}
