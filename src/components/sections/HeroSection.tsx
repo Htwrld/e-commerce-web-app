@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { T } from "@/src/lib/tokens"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
 const HERO_BGS = [
     "linear-gradient(135deg,#FDF0DC 0%,#F5D898 50%,#EFE4D0 100%)",
@@ -22,11 +23,14 @@ const LIFESTYLE_IMGS = [
     "/images/polo_twopiece.jpg",
 ]
 
-interface HeroSectionProps {
-    heroIdx: number
-}
+export function HeroSection() {
+    const [heroIdx, setHeroIdx] = useState(0)
 
-export function HeroSection({ heroIdx }: HeroSectionProps) {
+    useEffect(() => {
+        const t = setInterval(() => setHeroIdx((i) => (i + 1) % 3), 5000)
+        return () => clearInterval(t)
+    }, [])
+
     const accent = HERO_ACCENTS[heroIdx]
 
     return (

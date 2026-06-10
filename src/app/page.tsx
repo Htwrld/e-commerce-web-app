@@ -1,23 +1,14 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import { T } from "@/src/lib/tokens"
-import { useCart } from "@/src/lib/cart-context"
 import { Navbar } from "@/src/components/layouts/Navbar"
 import { Ticker } from "@/src/components/layouts/Ticker"
 import { CartDrawer } from "@/src/components/layouts/CartDrawer"
 import { Footer } from "@/src/components/layouts/Footer"
 import { HomePage } from "@/src/components/sections/HomePage"
+import { getPageById } from "@/src/action/pageController"
 
-export default function HTWApp() {
-    const { toast } = useCart()
-    const [heroIdx, setHeroIdx] = useState(0)
-
-    useEffect(() => {
-        const t = setInterval(() => setHeroIdx((i) => (i + 1) % 3), 5000)
-        return () => clearInterval(t)
-    }, [])
-
+const MainPage = async () => {
+    const homepage = await getPageById(24)
+    console.log(homepage)
     return (
         <div
             style={{
@@ -39,37 +30,19 @@ export default function HTWApp() {
                 💬
             </a>
 
-            {/* Toast */}
-            {toast && (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: 80,
-                        right: 20,
-                        zIndex: 1001,
-                        background: T.sage,
-                        color: "#fff",
-                        padding: "11px 20px",
-                        borderRadius: 9,
-                        fontSize: 13,
-                        fontWeight: 700,
-                        animation: "slideUp .3s ease",
-                        boxShadow: "0 4px 20px rgba(59,122,87,.35)",
-                    }}
-                >
-                    ✓ {toast}
-                </div>
-            )}
+            
 
             <CartDrawer />
             <Navbar />
             <Ticker />
 
             <main>
-                <HomePage heroIdx={heroIdx} />
+                <HomePage   />
             </main>
 
             <Footer />
         </div>
     )
 }
+
+export default MainPage

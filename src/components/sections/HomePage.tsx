@@ -81,11 +81,8 @@ const FAQS = [
     },
 ]
 
-interface HomePageProps {
-    heroIdx: number
-}
 
-export function HomePage({ heroIdx }: HomePageProps) {
+export function HomePage() {
     const { addToCart } = useCart()
     const [detailProd, setDetailProd] = useState<Product | null>(null)
     const [faqOpen, setFaqOpen] = useState<number | null>(null)
@@ -108,7 +105,7 @@ export function HomePage({ heroIdx }: HomePageProps) {
             )}
 
             {/* ── 1. HERO ── */}
-            <HeroSection heroIdx={heroIdx} />
+            <HeroSection />
 
             {/* ── 2. TRUST BAR ── */}
             <section style={{ background: T.ink, padding: "28px 24px" }}>
