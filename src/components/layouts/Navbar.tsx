@@ -133,6 +133,7 @@ export function Navbar() {
                         )}
                     </button>
                     <button
+                        className="lg:hidden!"
                         onClick={() => setMenuOpen((o) => !o)}
                         style={{
                             background: "none",

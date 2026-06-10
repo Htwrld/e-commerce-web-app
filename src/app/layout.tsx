@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import { CartProvider } from "@/src/lib/cart-context"
+import "./globals.css"
+import { T } from "../lib/tokens"
 
 export const metadata: Metadata = {
     title: "HTW — Hope's Trendy World",
