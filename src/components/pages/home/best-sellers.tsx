@@ -6,9 +6,10 @@ import { T } from "@/src/lib/tokens"
 import { Product, PRODUCTS } from "@/src/lib/data"
 import { useCart } from "@/src/lib/cart-context"
 import { useState } from "react"
+import { useProductDetail } from "@/src/hools/use-product-detail"
 
 const BestSellers = ({ title, description }: { title: string; description: string }) => {
-    const [detailProd, setDetailProd] = useState<Product | null>(null)
+    const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
     const best = PRODUCTS.filter((p) => p.badge === "BESTSELLER" || p.badge === "POPULAR")
     return (
@@ -30,9 +31,7 @@ const BestSellers = ({ title, description }: { title: string; description: strin
                             {title}
                         </h2>
                         <div className="divider" />
-                        <p style={{ fontSize: 14, color: T.muted, marginTop: 8 }}>
-                            {description}
-                        </p>
+                        <p style={{ fontSize: 14, color: T.muted, marginTop: 8 }}>{description}</p>
                     </div>
                     <Link className="btn-outline-gold" href="/shop">
                         View All →

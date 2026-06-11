@@ -67,6 +67,7 @@ export default function HTWContactApp() {
             <Ticker />
 
             <main>
+                
                 <ShopPage />
             </main>
 

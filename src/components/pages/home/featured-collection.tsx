@@ -6,6 +6,7 @@ import { Product, PRODUCTS } from "@/src/lib/data"
 import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
 import { useState } from "react"
+import { useProductDetail } from "@/src/hools/use-product-detail"
 
 const FeaturedCollection = ({
     title,
@@ -16,7 +17,7 @@ const FeaturedCollection = ({
     description: string
     tagline: string
 }) => {
-    const [detailProd, setDetailProd] = useState<Product | null>(null)
+    const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
     const newArr = PRODUCTS.filter((p) => p.badge === "NEW").slice(0, 4)
     return (
