@@ -1,6 +1,12 @@
 import { T } from "@/src/lib/tokens"
 
-const TrustBar = () => {
+interface TrustBarProps {
+    icon: string
+    title: string
+    description: string
+}
+
+const TrustBar = ({ trustBar }: { trustBar: TrustBarProps[] }) => {
     return (
         <section style={{ background: T.ink, padding: "28px 24px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
@@ -24,15 +30,9 @@ const TrustBar = () => {
                         gap: 12,
                     }}
                 >
-                    {[
-                        ["🔒", "Secure Checkout", "Paystack & Flutterwave"],
-                        ["🚚", "Free Lagos Delivery", "On orders ₦50,000+"],
-                        ["↩️", "Easy Returns", "14-day return policy"],
-                        ["💬", "WhatsApp Support", "Order & track via chat"],
-                        ["🌍", "Ships Worldwide", "UK · USA · Canada & more"],
-                    ].map(([ico, title, sub]) => (
+                    {trustBar.map(({ icon, title, description }, i) => (
                         <div
-                            key={title}
+                            key={i}
                             style={{
                                 display: "flex",
                                 alignItems: "center",
@@ -43,7 +43,7 @@ const TrustBar = () => {
                                 border: "1px solid rgba(255,255,255,0.08)",
                             }}
                         >
-                            <span style={{ fontSize: 22, flexShrink: 0 }}>{ico}</span>
+                            <span style={{ fontSize: 22, flexShrink: 0 }}>{icon}</span>
                             <div>
                                 <div
                                     style={{
@@ -56,7 +56,7 @@ const TrustBar = () => {
                                     {title}
                                 </div>
                                 <div style={{ fontSize: 11, color: "#888", marginTop: 2 }}>
-                                    {sub}
+                                    {description}
                                 </div>
                             </div>
                         </div>

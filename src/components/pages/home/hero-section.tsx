@@ -19,11 +19,18 @@ const HERO_SUBS = [
 
 const LIFESTYLE_IMGS = [
     "/images/hoodie_lifestyle.png",
-    "/images/tee_she.png",
+    "/images/tee_she.jpg",
     "/images/polo_twopiece.jpg",
 ]
 
-export function HeroSection() {
+type HeroSectionProps = {
+    hero_headline: string
+    hero_subheadline: string
+    hero_background_color: string
+    hero_lifestyle_image: string
+}
+
+const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
     const [heroIdx, setHeroIdx] = useState(0)
 
     useEffect(() => {
@@ -32,6 +39,7 @@ export function HeroSection() {
     }, [])
 
     const accent = HERO_ACCENTS[heroIdx]
+    const activeSection = heroSection[heroIdx]
 
     return (
         <section
@@ -164,11 +172,7 @@ export function HeroSection() {
                         letterSpacing: "-0.025em",
                     }}
                 >
-                    Faith-Inspired
-                    <br />
-                    Fashion for
-                    <br />
-                    Bold Living.
+                    {activeSection.hero_headline}
                 </h1>
                 <p
                     style={{
@@ -183,7 +187,7 @@ export function HeroSection() {
                         marginRight: "auto",
                     }}
                 >
-                    {HERO_SUBS[heroIdx]}
+                    {activeSection.hero_subheadline}
                 </p>
                 <p
                     style={{
@@ -193,7 +197,7 @@ export function HeroSection() {
                         letterSpacing: "0.04em",
                     }}
                 >
-                    Scripture in every stitch. Purpose in every piece.
+                    {activeSection.hero_subheadline}
                 </p>
 
                 <div
@@ -245,3 +249,5 @@ export function HeroSection() {
         </section>
     )
 }
+
+export default HeroSection

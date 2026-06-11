@@ -1,6 +1,17 @@
 import { T } from "@/src/lib/tokens"
 
-const BrandSection = () => {
+const BrandSection = ({
+    ourMission,
+}: {
+    ourMission: {
+        mission_title: string
+        mission_tagline: string
+        mission_description: string
+        happy_customers: string
+        in_store: string
+        seasonal_drops: string
+    }
+}) => {
     return (
         <section style={{ background: T.white, padding: "72px 28px", textAlign: "center" }}>
             <div style={{ maxWidth: 780, margin: "0 auto" }}>
@@ -11,7 +22,7 @@ const BrandSection = () => {
                     className="section-title"
                     style={{ fontSize: "clamp(24px,4vw,38px)", marginBottom: 16 }}
                 >
-                    Fashion with Purpose
+                    {ourMission.mission_title}
                 </h2>
                 <div className="divider" style={{ margin: "14px auto 24px" }} />
                 <p
@@ -24,7 +35,7 @@ const BrandSection = () => {
                         marginBottom: 20,
                     }}
                 >
-                    What you wear should say something — before you even speak.
+                    {ourMission.mission_tagline}
                 </p>
                 <p
                     style={{
@@ -37,9 +48,7 @@ const BrandSection = () => {
                         marginRight: "auto",
                     }}
                 >
-                    At Hope&rsquo;s Trendy World, we create more than clothing. We create pieces
-                    that reflect identity, ignite confidence, and carry a message of faith into
-                    everyday life.
+                    {ourMission.mission_description}
                 </p>
                 <div
                     style={{
@@ -50,9 +59,9 @@ const BrandSection = () => {
                     }}
                 >
                     {[
-                        ["500+", "Happy Customers"],
-                        ["12+", "Pieces in Store"],
-                        ["4", "Seasonal Drops"],
+                        [ourMission.happy_customers, "Happy Customers"],
+                        [ourMission.in_store, "Pieces in Store"],
+                        [ourMission.seasonal_drops, "Seasonal Drops"],
                         ["100%", "Faith-Driven"],
                     ].map(([num, lbl]) => (
                         <div key={lbl} style={{ textAlign: "center" }}>

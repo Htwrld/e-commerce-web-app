@@ -4,7 +4,7 @@ import { Ticker } from "@/src/components/layouts/Ticker"
 import { CartDrawer } from "@/src/components/layouts/CartDrawer"
 import { Footer } from "@/src/components/layouts/Footer"
 import { getPageById } from "@/src/action/pageController"
-import { HeroSection } from "../components/pages/home/hero-section"
+import HeroSection from "../components/pages/home/hero-section"
 import BestSellers from "../components/pages/home/best-sellers"
 import CategoriesNav from "../components/pages/home/categories-nav"
 import LifestyleGallery from "../components/pages/home/lifestyle-gallery"
@@ -22,7 +22,7 @@ import { ProductDetailProvider } from "../hools/use-product-detail"
 
 const MainPage = async () => {
     const homepage = await getPageById(24)
-    
+
     return (
         <div
             style={{
@@ -48,10 +48,13 @@ const MainPage = async () => {
             <Ticker />
             <main>
                 <ProductDetailProvider>
-                    <HeroSection />
-                    <TrustBar />
-                    <BrandSection />
-                    <BestSellers />
+                    <HeroSection heroSection={homepage.heroSection} />
+                    <TrustBar trustBar={homepage.trustBar} />
+                    <BrandSection ourMission={homepage.ourMission} />
+                    <BestSellers
+                        title={homepage.otherTitles.trending_now_title}
+                        description={homepage.otherTitles.trending_now_description}
+                    />
                     <CategoriesNav />
                     <LifestyleGallery />
                     <FeaturedCollection />
