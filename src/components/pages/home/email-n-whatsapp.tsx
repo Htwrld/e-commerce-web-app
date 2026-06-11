@@ -1,9 +1,21 @@
-'use client'
+"use client"
 
 import { useState } from "react"
 import { T } from "@/src/lib/tokens"
 
-const EmailNWhatsApp = () => {
+const EmailNWhatsApp = ({
+    title,
+    stayInTheLoop,
+    stayInTheLoopDescription,
+    getLaunched,
+    getLaunchedDescription,
+}: {
+    title: string
+    stayInTheLoop: string
+    stayInTheLoopDescription: string
+    getLaunched: string
+    getLaunchedDescription: string
+}) => {
     const [emailSub, setEmailSub] = useState("")
     const [subDone, setSubDone] = useState(false)
     const [waNumber, setWaNumber] = useState("")
@@ -20,7 +32,7 @@ const EmailNWhatsApp = () => {
                         className="section-title"
                         style={{ fontSize: "clamp(26px,4vw,40px)", marginBottom: 8 }}
                     >
-                        Never Miss a Drop
+                        {title}
                     </h2>
                     <div className="divider" style={{ margin: "14px auto 0" }} />
                 </div>
@@ -54,7 +66,7 @@ const EmailNWhatsApp = () => {
                                 color: T.ink,
                             }}
                         >
-                            Join the HTW Community
+                            {stayInTheLoop}
                         </h3>
                         <p
                             style={{
@@ -64,8 +76,7 @@ const EmailNWhatsApp = () => {
                                 lineHeight: 1.7,
                             }}
                         >
-                            Get early access to drops, exclusive discounts, and weekly devotional
-                            style inspiration.
+                            {stayInTheLoopDescription}
                         </p>
                         {subDone ? (
                             <div
@@ -146,7 +157,7 @@ const EmailNWhatsApp = () => {
                                 color: T.ink,
                             }}
                         >
-                            WhatsApp Updates
+                            {getLaunched}
                         </h3>
                         <p
                             style={{
@@ -156,8 +167,7 @@ const EmailNWhatsApp = () => {
                                 lineHeight: 1.7,
                             }}
                         >
-                            Get new drops, restock alerts, and exclusive offers — straight to your
-                            WhatsApp. No spam. Ever.
+                            {getLaunchedDescription}
                         </p>
                         {waDone ? (
                             <div

@@ -107,6 +107,15 @@ export const getPageById = async (id: number) => {
         call_to_action_title: data.acf.call_to_action_title,
         call_to_action_description: data.acf.call_to_action_description,
         call_to_action_button_title: data.acf.call_to_action_button_title,
+        social_proof_title: data.acf.social_proof_title,
+        community_post_hashtag: data.acf.community_post_hashtag,
+        representing_the_kingdom_title: data.acf.representing_the_kingdom_title,
+        representing_the_kingdom_tagline: data.acf.representing_the_kingdom_tagline,
+        stay_connected_title: data.acf.stay_connected_title,
+        stay_in_the_loop_title: data.acf.stay_in_the_loop_title,
+        stay_in_the_loop_description: data.acf.stay_in_the_loop_description,
+        get_launched_title: data.acf.get_launched_title,
+        get_launched_description: data.acf.get_launched_description,
     }
 
     const ourDifferences = {

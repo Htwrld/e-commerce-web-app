@@ -71,15 +71,24 @@ const MainPage = async () => {
                         description={homepage.otherTitles.shop_the_look_description}
                     />
                     <WhyHTW ourDifferences={homepage.ourDifferences} />
-                    <Testimonials />
-                    <AmbassadorsStrip />
+                    <Testimonials title={homepage.otherTitles.social_proof_title} />
+                    <AmbassadorsStrip
+                        title={homepage.otherTitles.representing_the_kingdom_title}
+                        tagline={homepage.otherTitles.representing_the_kingdom_tagline}
+                    />
                     <FAQSection faqs={homepage.faqs} />
                     <FinalCTA
                         title={homepage.otherTitles.call_to_action_title}
                         description={homepage.otherTitles.call_to_action_description}
                         buttonTitle={homepage.otherTitles.call_to_action_button_title}
                     />
-                    <EmailNWhatsApp />
+                    <EmailNWhatsApp
+                        title={homepage.otherTitles.stay_connected_title}
+                        stayInTheLoop={homepage.otherTitles.stay_in_the_loop_title}
+                        stayInTheLoopDescription={homepage.otherTitles.stay_in_the_loop_description}
+                        getLaunched={homepage.otherTitles.get_launched_title}
+                        getLaunchedDescription={homepage.otherTitles.get_launched_description}
+                    />
                 </ProductDetailProvider>
             </main>
             <Footer />

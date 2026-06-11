@@ -2,7 +2,7 @@ import { T } from "@/src/lib/tokens"
 import { Stars } from "../../cards/Stars"
 import { TESTIMONIALS } from "@/src/lib/data"
 
-const Testimonials = () => {
+const Testimonials = ({title}: {title: string}) => {
     return (
         <section style={{ background: T.white, padding: "80px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
@@ -12,7 +12,7 @@ const Testimonials = () => {
                         className="section-title"
                         style={{ fontSize: "clamp(28px,5vw,46px)", marginBottom: 8 }}
                     >
-                        What People Are Saying
+                        {title}
                     </h2>
                     <div className="divider" style={{ margin: "14px auto" }} />
                 </div>

@@ -2,7 +2,7 @@ import { AMBASSADORS } from "@/src/lib/data"
 import { T } from "@/src/lib/tokens"
 import Link from "next/link"
 
-const AmbassadorsStrip = () => {
+const AmbassadorsStrip = ({ title, tagline }: { title: string; tagline: string }) => {
     return (
         <section style={{ background: T.warm, padding: "64px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
@@ -12,11 +12,11 @@ const AmbassadorsStrip = () => {
                         className="section-title"
                         style={{ fontSize: "clamp(24px,4vw,38px)", marginBottom: 8 }}
                     >
-                        HTW Ambassadors
+                        {title}
                     </h2>
                     <div className="divider" style={{ margin: "14px auto" }} />
                     <p style={{ fontSize: 14, color: T.muted }}>
-                        Real people. Real faith. Real style.
+                        {tagline}
                     </p>
                 </div>
                 <div
