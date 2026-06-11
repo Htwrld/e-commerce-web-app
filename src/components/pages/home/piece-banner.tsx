@@ -1,7 +1,7 @@
 import { T } from "@/src/lib/tokens"
 import Link from "next/link"
 
-const PieceBanner = () => {
+const PieceBanner = ({ title, description }: { title: string; description: string }) => {
     return (
         <section
             style={{
@@ -18,7 +18,7 @@ const PieceBanner = () => {
                     className="section-title"
                     style={{ fontSize: "clamp(28px,5vw,48px)", marginBottom: 14 }}
                 >
-                    Matching 2-Piece Sets
+                    {title}
                 </h2>
                 <p
                     style={{
@@ -30,7 +30,7 @@ const PieceBanner = () => {
                         lineHeight: 1.7,
                     }}
                 >
-                    &ldquo;Two are better than one.&rdquo; — Ecclesiastes 4:9
+                    {description}
                 </p>
                 <div
                     style={{

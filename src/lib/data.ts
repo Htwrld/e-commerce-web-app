@@ -163,7 +163,7 @@ export const PRODUCTS: Product[] = [
         usd: "$8",
         verse: "Pro 31:25",
         verseText: "She is clothed with strength and dignity.",
-        badge: "POPULAR",
+        badge: "NEW",
         colors: ["#7BA8C9", "#FDF8F2", "#C9923A"],
         bg: "#A8C4E0",
         img: "/images/tee_she.png",

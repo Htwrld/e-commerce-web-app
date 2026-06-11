@@ -1,7 +1,6 @@
 import { T } from "@/src/lib/tokens"
 import Image from "next/image"
 
-
 const LIFESTYLE_SHOTS = [
     {
         img: "/images/hoodie_lifestyle.png",
@@ -41,7 +40,15 @@ const LIFESTYLE_SHOTS = [
     },
 ]
 
-const LifestyleGallery = () => {
+const LifestyleGallery = ({
+    title,
+    description,
+    hashtag,
+}: {
+    title: string
+    description: string
+    hashtag: string
+}) => {
     return (
         <section style={{ background: T.sand, padding: "80px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
@@ -51,7 +58,7 @@ const LifestyleGallery = () => {
                         className="section-title"
                         style={{ fontSize: "clamp(28px,5vw,46px)", marginBottom: 10 }}
                     >
-                        Bold Living Looks Like This
+                        {title}
                     </h2>
                     <div className="divider" style={{ margin: "14px auto" }} />
                     <p
@@ -62,8 +69,7 @@ const LifestyleGallery = () => {
                             margin: "0 auto",
                         }}
                     >
-                        Real HTW community — real moments. From Lagos streets to London church
-                        steps.
+                        {description}
                     </p>
                 </div>
                 <div
@@ -139,7 +145,7 @@ const LifestyleGallery = () => {
                             marginBottom: 16,
                         }}
                     >
-                        #WearHopeLiveBold
+                        #{hashtag}
                     </div>
                     <div
                         style={{

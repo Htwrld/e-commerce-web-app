@@ -56,14 +56,29 @@ const MainPage = async () => {
                         description={homepage.otherTitles.trending_now_description}
                     />
                     <CategoriesNav />
-                    <LifestyleGallery />
-                    <FeaturedCollection />
-                    <PieceBanner />
-                    <WhyHTW />
+                    <LifestyleGallery
+                        title={homepage.otherTitles.styled_by_community_title}
+                        description={homepage.otherTitles.styled_by_community_description}
+                        hashtag={homepage.otherTitles.style_by_community_hashtag}
+                    />
+                    <FeaturedCollection
+                        title={homepage.otherTitles.featured_collection_title}
+                        description={homepage.otherTitles.featured_collection_description}
+                        tagline={homepage.otherTitles.featured_collection_tagline}
+                    />
+                    <PieceBanner
+                        title={homepage.otherTitles.shop_the_look_title}
+                        description={homepage.otherTitles.shop_the_look_description}
+                    />
+                    <WhyHTW ourDifferences={homepage.ourDifferences} />
                     <Testimonials />
                     <AmbassadorsStrip />
-                    <FAQSection />
-                    <FinalCTA />
+                    <FAQSection faqs={homepage.faqs} />
+                    <FinalCTA
+                        title={homepage.otherTitles.call_to_action_title}
+                        description={homepage.otherTitles.call_to_action_description}
+                        buttonTitle={homepage.otherTitles.call_to_action_button_title}
+                    />
                     <EmailNWhatsApp />
                 </ProductDetailProvider>
             </main>

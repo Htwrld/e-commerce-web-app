@@ -1,7 +1,14 @@
 import { WHY_HTW } from "@/src/lib/data"
 import { T } from "@/src/lib/tokens"
 
-const WhyHTW = () => {
+const WhyHTW = ({
+    ourDifferences,
+}: {
+    ourDifferences: {
+        our_difference_title: string
+        contents: { title: string; description: string }[]
+    }
+}) => {
     return (
         <section style={{ padding: "80px 28px", maxWidth: 1160, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 48 }}>
@@ -10,7 +17,7 @@ const WhyHTW = () => {
                     className="section-title"
                     style={{ fontSize: "clamp(28px,5vw,48px)", marginBottom: 8 }}
                 >
-                    Why Hope&rsquo;s Trendy World?
+                    {ourDifferences.our_difference_title}
                 </h2>
                 <div className="divider" style={{ margin: "14px auto" }} />
             </div>
@@ -21,7 +28,7 @@ const WhyHTW = () => {
                     gap: 20,
                 }}
             >
-                {WHY_HTW.map((w, i) => (
+                {ourDifferences.contents.map((w, i) => (
                     <div
                         key={i}
                         className="card"
@@ -33,7 +40,7 @@ const WhyHTW = () => {
                             textAlign: "center",
                         }}
                     >
-                        <div style={{ fontSize: 42, marginBottom: 14 }}>{w.icon}</div>
+                        <div style={{ fontSize: 42, marginBottom: 14 }}>{WHY_HTW[i].icon}</div>
                         <h3
                             style={{
                                 fontFamily: "'Cormorant Garamond',serif",
@@ -53,7 +60,7 @@ const WhyHTW = () => {
                                 margin: 0,
                             }}
                         >
-                            {w.desc}
+                            {w.description}
                         </p>
                     </div>
                 ))}

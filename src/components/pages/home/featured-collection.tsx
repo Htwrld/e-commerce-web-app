@@ -7,7 +7,15 @@ import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
 import { useState } from "react"
 
-const FeaturedCollection = () => {
+const FeaturedCollection = ({
+    title,
+    description,
+    tagline,
+}: {
+    title: string
+    description: string
+    tagline: string
+}) => {
     const [detailProd, setDetailProd] = useState<Product | null>(null)
     const { addToCart } = useCart()
     const newArr = PRODUCTS.filter((p) => p.badge === "NEW").slice(0, 4)
@@ -19,7 +27,7 @@ const FeaturedCollection = () => {
                     className="section-title"
                     style={{ fontSize: "clamp(30px,5vw,50px)", marginBottom: 12 }}
                 >
-                    Grace Season Collection
+                    {title}
                 </h2>
                 <div className="divider" style={{ margin: "14px auto" }} />
                 <p
@@ -32,10 +40,10 @@ const FeaturedCollection = () => {
                         margin: "0 auto 8px",
                     }}
                 >
-                    Every season tells a story — and this one is yours.
+                    {tagline}
                 </p>
                 <p style={{ fontSize: 14, color: T.muted, maxWidth: 560, margin: "0 auto" }}>
-                    Crafted for individuals stepping into their purpose with confidence and clarity.
+                    {description}
                 </p>
             </div>
             <div

@@ -1,7 +1,15 @@
 import { T } from "@/src/lib/tokens"
 import Link from "next/link"
 
-const FinalCTA = () => {
+const FinalCTA = ({
+    title,
+    description,
+    buttonTitle,
+}: {
+    title: string
+    description: string
+    buttonTitle: string
+}) => {
     return (
         <section
             style={{
@@ -22,9 +30,7 @@ const FinalCTA = () => {
                         lineHeight: 1.05,
                     }}
                 >
-                    Don&rsquo;t just wear clothes.
-                    <br />
-                    Wear a message.
+                    {title}
                 </h2>
                 <p
                     style={{
@@ -36,15 +42,14 @@ const FinalCTA = () => {
                         marginBottom: 36,
                     }}
                 >
-                    You weren&rsquo;t made to blend in. You were created to stand out — with
-                    purpose.
+                    {description}
                 </p>
                 <Link
                     className="btn-primary"
                     href="/shop"
                     style={{ fontSize: 16, padding: "16px 40px" }}
                 >
-                    Start Your Journey With HTW →
+                    {buttonTitle}
                 </Link>
             </div>
         </section>
