@@ -88,15 +88,14 @@ export function CartDrawer() {
                                         width: 60,
                                         height: 60,
                                         borderRadius: 10,
-                                        background: item.bg,
                                         overflow: "hidden",
                                         flexShrink: 0,
                                         position: "relative",
                                     }}
                                 >
-                                    {item.img ? (
+                                    {item.photo ? (
                                         <Image
-                                            src={item.img}
+                                            src={item.photo}
                                             alt={item.name}
                                             fill
                                             style={{
@@ -131,7 +130,7 @@ export function CartDrawer() {
                                         {item.name}
                                     </div>
                                     <div style={{ fontSize: 12, color: T.muted, marginBottom: 3 }}>
-                                        {item.subname}
+                                        {item.description}
                                     </div>
                                     <div
                                         style={{

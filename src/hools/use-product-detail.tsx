@@ -1,9 +1,9 @@
 'use client'
 
 import { createContext, useContext, useState } from "react"
-import { Product } from "../lib/data"
 import { ProductDetailModal } from "../components/cards/ProductDetailModal"
 import { useCart } from "../lib/cart-context"
+import { Product } from "../action/productController"
 
 type ProductDetailContext = {
     product: Product | null

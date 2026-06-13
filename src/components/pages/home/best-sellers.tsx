@@ -3,15 +3,16 @@
 import Link from "next/link"
 import { ProductCard } from "../../cards/ProductCard"
 import { T } from "@/src/lib/tokens"
-import { Product, PRODUCTS } from "@/src/lib/data"
 import { useCart } from "@/src/lib/cart-context"
-import { useState } from "react"
 import { useProductDetail } from "@/src/hools/use-product-detail"
+import { getProducts } from "@/src/action/productController"
 
-const BestSellers = ({ title, description }: { title: string; description: string }) => {
+const BestSellers = async ({ title, description }: { title: string; description: string }) => {
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
-    const best = PRODUCTS.filter((p) => p.badge === "BESTSELLER" || p.badge === "POPULAR")
+    const best = (await getProducts()).filter(
+        (p) => p.badge === "BESTSELLER" || p.badge === "POPULAR"
+    )
     return (
         <section style={{ background: T.warm, padding: "80px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>

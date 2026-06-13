@@ -308,15 +308,14 @@ export function CheckoutPage() {
                                         width: 44,
                                         height: 44,
                                         borderRadius: 8,
-                                        background: item.bg,
                                         overflow: "hidden",
                                         flexShrink: 0,
                                         position: "relative",
                                     }}
                                 >
-                                    {item.img ? (
+                                    {item.photo ? (
                                         <Image
-                                            src={item.img}
+                                            src={item.photo}
                                             alt={item.name}
                                             fill
                                             style={{
