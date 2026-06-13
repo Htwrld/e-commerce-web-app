@@ -5,12 +5,20 @@ import { ProductCard } from "../../cards/ProductCard"
 import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
 import { useProductDetail } from "@/src/hools/use-product-detail"
-import { getProducts } from "@/src/action/productController"
+import { Product } from "@/src/action/productController"
 
-const BestSellers = async ({ title, description }: { title: string; description: string }) => {
+const BestSellers = async ({
+    title,
+    description,
+    products,
+}: {
+    title: string
+    description: string
+    products: Product[]
+}) => {
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
-    const best = (await getProducts()).filter(
+    const best = products.filter(
         (p) => p.badge === "BESTSELLER" || p.badge === "POPULAR"
     )
     return (

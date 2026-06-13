@@ -14,10 +14,11 @@ import BrandSection from "../../components/pages/home/brand-section"
 import TrustBar from "../../components/pages/home/trust-bar"
 import EmailNWhatsApp from "../../components/pages/home/email-n-whatsapp"
 import { ProductDetailProvider } from "../../hools/use-product-detail"
+import { getProducts } from "@/src/action/productController"
 
 const MainPage = async () => {
     const homepage = await getPageHomePage()
-
+    const products = await getProducts()
     return (
         <main>
             <ProductDetailProvider>
@@ -27,6 +28,7 @@ const MainPage = async () => {
                 <BestSellers
                     title={homepage.otherTitles.trending_now_title}
                     description={homepage.otherTitles.trending_now_description}
+                    products={products}
                 />
                 <CategoriesNav />
                 <LifestyleGallery
@@ -38,6 +40,7 @@ const MainPage = async () => {
                     title={homepage.otherTitles.featured_collection_title}
                     description={homepage.otherTitles.featured_collection_description}
                     tagline={homepage.otherTitles.featured_collection_tagline}
+                    products={products}
                 />
                 <PieceBanner
                     title={homepage.otherTitles.shop_the_look_title}

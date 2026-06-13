@@ -5,20 +5,22 @@ import { ProductCard } from "../../cards/ProductCard"
 import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
 import { useProductDetail } from "@/src/hools/use-product-detail"
-import { getProducts } from "@/src/action/productController"
+import { Product } from "@/src/action/productController"
 
 const FeaturedCollection = async ({
     title,
     description,
     tagline,
+    products,
 }: {
     title: string
     description: string
     tagline: string
+    products: Product[]
 }) => {
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
-    const newArr = (await getProducts()).filter((p) => p.badge === "NEW").slice(0, 4)
+    const newArr = products.filter((p) => p.badge === "NEW").slice(0, 4)
     return (
         <section style={{ padding: "80px 28px", maxWidth: 1160, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 48 }}>
