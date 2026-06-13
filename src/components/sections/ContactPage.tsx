@@ -4,39 +4,59 @@ import { useState } from "react"
 import { T } from "@/src/lib/tokens"
 import { WABtn } from "@/src/components/cards/WABtn"
 
-export function ContactPage() {
+type PageContent = {
+    page_description: string
+    whatsapp_contact_title: string
+    whatsapp_contact_description: string
+    whatsapp_contact_number: string
+    whatsapp_contact_message: string
+    email_section_description: string
+    email: string
+    location: string
+    location_description: string
+    social_handle: string
+    social_media_channels: string
+}
+
+export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
     const [sent, setSent] = useState(false)
 
     const contacts = [
         {
             icon: "💬",
             title: "WhatsApp (Fastest)",
-            val: "Chat with us instantly",
-            sub: "Our team typically responds within 1 hour",
+            val: pageContent.whatsapp_contact_title,
+            sub: pageContent.whatsapp_contact_description,
             color: T.sage,
-            action: <WABtn text="Open WhatsApp Chat" />,
+            action: (
+                <WABtn
+                    text="Open WhatsApp Chat"
+                    number={pageContent.whatsapp_contact_number}
+                    message={pageContent.whatsapp_contact_message}
+                />
+            ),
         },
         {
             icon: "📧",
             title: "Email",
-            val: "hello@hopestrendyworld.com",
-            sub: "We respond within 24 hours",
+            val: pageContent.email,
+            sub: pageContent.email_section_description,
             color: T.cobalt,
             action: null,
         },
         {
             icon: "📍",
             title: "Location",
-            val: "Lagos, Nigeria",
-            sub: "Shipping nationwide & internationally",
+            val: pageContent.location,
+            sub: pageContent.location_description,
             color: T.gold,
             action: null,
         },
         {
             icon: "📱",
             title: "Social Media",
-            val: "@HopesTrendyWorld",
-            sub: "Instagram · TikTok · Facebook",
+            val: pageContent.social_handle,
+            sub: pageContent.social_media_channels,
             color: T.rust,
             action: null,
         },
@@ -64,7 +84,7 @@ export function ContactPage() {
                 >
                     Contact Us
                 </h1>
-                <p style={{ fontSize: 15, color: T.muted }}>We&rsquo;d love to hear from you.</p>
+                <p style={{ fontSize: 15, color: T.muted }}>{pageContent.page_description}</p>
             </section>
 
             <div

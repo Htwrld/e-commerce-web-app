@@ -1,9 +1,11 @@
+import { getContactPage } from "@/src/action/pageController"
 import { ContactPage } from "@/src/components/sections/ContactPage"
 
-const HTWContactApp = () => {
+const HTWContactApp = async () => {
+    const pageContent = await getContactPage()
     return (
         <main>
-            <ContactPage />
+            <ContactPage pageContent={pageContent} />
         </main>
     )
 }

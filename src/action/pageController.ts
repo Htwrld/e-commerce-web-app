@@ -235,7 +235,7 @@ export const getContactPage = async () => {
         whatsapp_contact_title: data.acf.whatsapp_contact_title,
         whatsapp_contact_description: data.acf.whatsapp_contact_description,
         whatsapp_contact_number: data.acf.whatsapp_contact_number,
-        email_section_title: data.acf.email_section_title,
+        whatsapp_contact_message: data.acf.whatsapp_contact_message,
         email_section_description: data.acf.email_section_description,
         email: data.acf.email,
         location: data.acf.location,

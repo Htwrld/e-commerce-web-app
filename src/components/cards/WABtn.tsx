@@ -1,15 +1,18 @@
 interface WABtnProps {
+    number?: string
+    message?: string
     text?: string
     product?: string
 }
 
-export function WABtn({ text = "Order via WhatsApp", product = "" }: WABtnProps) {
-    const msg = encodeURIComponent(
-        `Hi HTW! I'd like to order: ${product || "an item from your store"}`
-    )
+export function WABtn({ text = "Order via WhatsApp", product = "", number, message }: WABtnProps) {
+    const msg =
+        message ||
+        encodeURIComponent(`Hi HTW! I'd like to order: ${product || "an item from your store"}`)
+    const no = number || "2348000000000"
     return (
         <a
-            href={`https://wa.me/2348000000000?text=${msg}`}
+            href={`https://wa.me/${no}?text=${msg}`}
             target="_blank"
             rel="noreferrer"
             style={{
