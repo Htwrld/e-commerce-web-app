@@ -21,9 +21,7 @@ export type Product = {
 }
 
 export const getProducts = async () => {
-    const res = await fetch(`${website_url}/wp-json/wp/v2/product?acf_format=standard`, {
-        cache: "no-store",
-    })
+    const res = await fetch(`${website_url}/wp-json/wp/v2/product?acf_format=standard`)
     const data = await res.json()
 
     const products: Product[] = data.map((p: any) => {
