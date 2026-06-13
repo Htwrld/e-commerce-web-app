@@ -1,11 +1,11 @@
 "use client"
 
 import Image from "next/image"
-import { Product } from "@/src/lib/data"
 import { T } from "@/src/lib/tokens"
 import { Badge } from "@/src/components/cards/Badge"
 import { VerseChip } from "@/src/components/cards/VerseChip"
 import { WABtn } from "@/src/components/cards/WABtn"
+import { Product } from "@/src/action/productController"
 
 interface ProductCardProps {
     product: Product
@@ -27,25 +27,23 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
             }}
         >
             {/* Image area */}
-            <div
-                style={{ height: 220, background: p.bg, position: "relative", overflow: "hidden" }}
-            >
-                {p.img ? (
+            <div style={{ height: 220, position: "relative", overflow: "hidden" }}>
+                {p.photo ? (
                     <Image
-                        src={p.img}
+                        src={p.photo}
                         alt={p.name}
-                        fill
-                        style={{ objectFit: "cover", objectPosition: "center top" }}
-                        onError={(e) => {
-                            ;(e.currentTarget as HTMLImageElement).style.display = "none"
-                        }}
+                        height={700}
+                        width={500}
+                        className="object-cover object-center w-full h-full"
+                        onError={(e) =>
+                            ((e.currentTarget as HTMLImageElement).style.display = "none")
+                        }
                     />
                 ) : (
                     <div
                         style={{
                             width: "100%",
                             height: "100%",
-                            background: p.bg,
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
@@ -87,7 +85,7 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                         marginBottom: 3,
                     }}
                 >
-                    {p.cat}
+                    {p.badge}
                 </div>
                 <h3
                     style={{
@@ -102,7 +100,7 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                     {p.name}
                 </h3>
                 <div style={{ fontSize: 12, color: T.muted, marginBottom: 8, fontStyle: "italic" }}>
-                    {p.subname}
+                    {p.description}
                 </div>
                 <p
                     style={{
@@ -113,7 +111,7 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                         fontStyle: "italic",
                     }}
                 >
-                    {p.story}
+                    {p.description}
                 </p>
                 <div
                     style={{
@@ -124,10 +122,10 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                     }}
                 >
                     <span style={{ fontSize: 18, color: T.rust, fontWeight: 700 }}>{p.price}</span>
-                    <span style={{ fontSize: 12, color: "#BBB" }}>{p.usd}</span>
+                    <span style={{ fontSize: 12, color: "#BBB" }}>{p.price}</span>
                 </div>
                 <div style={{ marginBottom: 12 }}>
-                    <VerseChip verse={p.verse} verseText={p.verseText} />
+                    <VerseChip verse={p.bible_verse} verseText={p.bible_verse_content} />
                 </div>
                 <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
                     {p.colors.map((c, i) => (

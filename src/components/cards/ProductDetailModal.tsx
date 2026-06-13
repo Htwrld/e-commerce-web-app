@@ -1,11 +1,11 @@
 "use client"
 
 import Image from "next/image"
-import { Product } from "@/src/lib/data"
 import { T } from "@/src/lib/tokens"
 import { Badge } from "@/src/components/cards/Badge"
 import { VerseChip } from "@/src/components/cards/VerseChip"
 import { WABtn } from "@/src/components/cards/WABtn"
+import { Product } from "@/src/action/productController"
 
 interface ProductDetailModalProps {
     product: Product
@@ -67,16 +67,15 @@ export function ProductDetailModal({ product: p, onClose, onAdd }: ProductDetail
                 <div
                     style={{
                         height: 260,
-                        background: p.bg,
                         borderRadius: 10,
                         overflow: "hidden",
                         marginBottom: 20,
                         position: "relative",
                     }}
                 >
-                    {p.img ? (
+                    {p.photo ? (
                         <Image
-                            src={p.img}
+                            src={p.photo}
                             alt={p.name}
                             fill
                             style={{ objectFit: "cover", objectPosition: "center top" }}
@@ -118,12 +117,12 @@ export function ProductDetailModal({ product: p, onClose, onAdd }: ProductDetail
                 <div
                     style={{ fontSize: 14, color: T.muted, fontStyle: "italic", marginBottom: 12 }}
                 >
-                    {p.subname}
+                    {p.description}
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
                     <span style={{ fontSize: 22, color: T.rust, fontWeight: 700 }}>{p.price}</span>
-                    <span style={{ fontSize: 14, color: T.muted }}>{p.usd}</span>
+                    <span style={{ fontSize: 14, color: T.muted }}>{p.price}</span>
                 </div>
 
                 <p
@@ -135,11 +134,11 @@ export function ProductDetailModal({ product: p, onClose, onAdd }: ProductDetail
                         fontStyle: "italic",
                     }}
                 >
-                    &ldquo;{p.story}&rdquo;
+                    &ldquo;{p.description}&rdquo;
                 </p>
 
                 <div style={{ marginBottom: 16 }}>
-                    <VerseChip verse={p.verse} verseText={p.verseText} />
+                    <VerseChip verse={p.bible_verse} verseText={p.bible_verse_content} />
                 </div>
 
                 <div style={{ marginBottom: 14 }}>
@@ -232,7 +231,7 @@ export function ProductDetailModal({ product: p, onClose, onAdd }: ProductDetail
                         {[
                             [
                                 "🧵 Fabric",
-                                p.cat === "2-Piece Sets"
+                                p.badge === "2-Piece Sets"
                                     ? "Premium woven blend"
                                     : "380gsm cotton-polyester blend",
                             ],

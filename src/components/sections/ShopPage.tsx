@@ -2,20 +2,21 @@
 
 import { useState } from "react"
 import { T } from "@/src/lib/tokens"
-import { CATS, GENDERS, PRODUCTS, Product } from "@/src/lib/data"
+import { CATS, GENDERS, PRODUCTS } from "@/src/lib/data"
 import { useCart } from "@/src/lib/cart-context"
 import { ProductCard } from "@/src/components/cards/ProductCard"
 import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal"
+import { Product } from "@/src/action/productController"
 
-export function ShopPage() {
-	const [activeCat, setActiveCat] = useState("All")
-	const [activeGen, setActiveGen] = useState("All")
+export const ShopPage = ({ products }: { products: Product[] }) => {
+    const [activeCat, setActiveCat] = useState("All")
+    const [activeGen, setActiveGen] = useState("All")
     const { addToCart } = useCart()
     const [detailProd, setDetailProd] = useState<Product | null>(null)
 
-    const filtered = PRODUCTS.filter(
+    const filtered = products.filter(
         (p) =>
-            (activeCat === "All" || p.cat === activeCat) &&
+            (activeCat === "All" || p.badge === activeCat) &&
             (activeGen === "All" || p.gender === activeGen || p.gender === "Unisex")
     )
 
