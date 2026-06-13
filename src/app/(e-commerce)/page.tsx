@@ -1,4 +1,4 @@
-import { getPageById } from "@/src/action/pageController"
+import { getPageHomePage } from "@/src/action/pageController"
 import HeroSection from "../../components/pages/home/hero-section"
 import BestSellers from "../../components/pages/home/best-sellers"
 import CategoriesNav from "../../components/pages/home/categories-nav"
@@ -16,7 +16,7 @@ import EmailNWhatsApp from "../../components/pages/home/email-n-whatsapp"
 import { ProductDetailProvider } from "../../hools/use-product-detail"
 
 const MainPage = async () => {
-    const homepage = await getPageById(24)
+    const homepage = await getPageHomePage()
 
     return (
         <main>

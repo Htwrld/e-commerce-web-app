@@ -1,13 +1,9 @@
+import { T } from "../lib/tokens"
+
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
 
-export const getPageBySlug = async (slug: string) => {
-    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/${slug}`)
-    const data = await res.json()
-    return data
-}
-
-export const getPageById = async (id: number) => {
-    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/${id}`, {
+export const getPageHomePage = async () => {
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/24`, {
         cache: "no-store",
     })
     const data = await res.json()
@@ -149,5 +145,59 @@ export const getPageById = async (id: number) => {
         faqs,
         otherTitles,
         ourDifferences,
+    }
+}
+
+export const getAmbassadorsPage = async () => {
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/315`, {
+        cache: "no-store",
+    })
+    const data = await res.json()
+
+    const ambassadorsStrip = [
+        {
+            icon: "💰",
+            ambassador_benefit_title: data.acf.ambassador_benefit_1_title,
+            ambassador_benefit_description: data.acf.ambassador_benefit_1_description,
+            color: T.gold,
+        },
+        {
+            icon: "👗",
+            ambassador_benefit_title: data.acf.ambassador_benefit_2_title,
+            ambassador_benefit_description: data.acf.ambassador_benefit_2_description,
+            color: T.rust,
+        },
+        {
+            icon: "🎯",
+            ambassador_benefit_title: data.acf.ambassador_benefit_3_title,
+            ambassador_benefit_description: data.acf.ambassador_benefit_3_description,
+            color: T.cobalt,
+        },
+        {
+            icon: "📣",
+            ambassador_benefit_title: data.acf.ambassador_benefit_4_title,
+            ambassador_benefit_description: data.acf.ambassador_benefit_4_description,
+            color: T.sage,
+        },
+        {
+            icon: "🙏",
+            ambassador_benefit_title: data.acf.ambassador_benefit_5_title,
+            ambassador_benefit_description: data.acf.ambassador_benefit_5_description,
+            color: T.gold,
+        },
+        {
+            icon: "📊",
+            ambassador_benefit_title: data.acf.ambassador_benefit_6_title,
+            ambassador_benefit_description: data.acf.ambassador_benefit_6_description,
+            color: T.cobalt,
+        },
+    ]
+
+    return {
+        title: data.acf.page_title,
+        bible_verse: data.acf.bible_verse,
+        page_description: data.acf.page_description,
+        ambassador_benefits_title: data.acf.ambassador_benefits_title,
+        ambassadorsStrip,
     }
 }

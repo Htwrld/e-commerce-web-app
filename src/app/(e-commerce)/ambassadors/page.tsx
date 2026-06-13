@@ -1,9 +1,13 @@
 import { AmbassadorsPage } from "@/src/components/sections/AmbassadorsPage"
+import { getAmbassadorsPage } from "@/src/action/pageController"
 
-export default function HTWContactApp() {
+const HTWContactApp = async () => {
+    const pageContent = await getAmbassadorsPage()
     return (
         <main>
-            <AmbassadorsPage />
+            <AmbassadorsPage pageContent={pageContent} />
         </main>
     )
 }
+
+export default HTWContactApp
