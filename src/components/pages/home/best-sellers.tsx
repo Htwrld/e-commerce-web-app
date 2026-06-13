@@ -7,7 +7,7 @@ import { useCart } from "@/src/lib/cart-context"
 import { useProductDetail } from "@/src/hools/use-product-detail"
 import { Product } from "@/src/action/productController"
 
-const BestSellers = async ({
+const BestSellers = ({
     title,
     description,
     products,
