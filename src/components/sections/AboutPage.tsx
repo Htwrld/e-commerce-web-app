@@ -3,32 +3,46 @@
 import { T } from "@/src/lib/tokens"
 import Link from "next/link"
 
-export function AboutPage() {
+type PageContent = {
+    title: string
+    bible_verse: string
+    in_our_words: string
+    why_we_exist: string
+    our_product_range: string
+    faith_at_the_center: string
+    our_community: string
+    our_vision: string
+    call_to_action_title: string
+    call_to_action_description: string
+    call_to_action_tagline: string
+}
+
+export const AboutPage = ({ pageContent }: { pageContent: PageContent }) => {
     const sections = [
         {
             title: "Why We Exist",
             color: T.rust,
-            text: "We exist at the intersection of faith and fashion. HTW was founded on the belief that clothing is not neutral — it communicates identity. We design pieces that reflect your values and carry a message that transcends trends.",
+            text: pageContent.why_we_exist,
         },
         {
             title: "Our Product Range",
             color: T.cobalt,
-            text: "From premium sweatshirts and hoodies to comfort-first joggers, sharp polos, everyday graphic tees, and our signature 2-piece sets — every HTW piece is designed with intention. Quality you can feel. Faith you can wear.",
+            text: pageContent.our_product_range,
         },
         {
             title: "Faith at the Centre",
             color: T.sage,
-            text: "HTW is proudly faith-based. We don't just add scripture to tags — we build entire collections around them. Each seasonal drop is inspired by a biblical theme. Every product description carries the verse that gave it life.",
+            text: pageContent.faith_at_the_center,
         },
         {
             title: "Our Community",
             color: T.gold,
-            text: "From Lagos to London, Port Harcourt to Toronto — the HTW community refuses to blend in. Our ambassadors aren't just brand partners; they are kingdom representatives spreading the message through every outfit they wear.",
+            text: pageContent.our_community,
         },
         {
             title: "Our Vision",
             color: T.rust,
-            text: "To become Africa's most intentional faith-fashion brand — not just a clothing store, but a global movement for bold living. A brand people choose not because it's trendy, but because it means something.",
+            text: pageContent.our_vision,
         },
     ]
 
@@ -48,7 +62,7 @@ export function AboutPage() {
                     className="section-title"
                     style={{ fontSize: "clamp(36px,7vw,66px)", marginBottom: 16 }}
                 >
-                    Dressed for the Kingdom
+                    {pageContent.title}
                 </h1>
                 <p
                     style={{
@@ -60,7 +74,7 @@ export function AboutPage() {
                         margin: "0 auto",
                     }}
                 >
-                    &ldquo;She is clothed with strength and dignity.&rdquo; — Proverbs 31:25
+                    {pageContent.bible_verse}
                 </p>
             </section>
 
@@ -80,9 +94,7 @@ export function AboutPage() {
                             margin: 0,
                         }}
                     >
-                        &ldquo;Hope&rsquo;s Trendy World was born to inspire confidence, faith, and
-                        bold living through fashion — because we believe your identity should never
-                        be just what you wear, but why you wear it.&rdquo;
+                        {pageContent.in_our_words}
                     </p>
                 </div>
 
@@ -153,9 +165,7 @@ export function AboutPage() {
                             margin: "0 0 12px",
                         }}
                     >
-                        This is more than fashion.
-                        <br />
-                        This is a movement.
+                        {pageContent.call_to_action_title}
                     </h3>
                     <p
                         style={{
@@ -167,10 +177,10 @@ export function AboutPage() {
                             lineHeight: 1.7,
                         }}
                     >
-                        &ldquo;To make faith fashionable, and fashion faithful.&rdquo;
+                        {pageContent.call_to_action_tagline}
                     </p>
                     <p style={{ fontSize: 13, color: T.muted }}>
-                        Headquartered in Nigeria 🇳🇬 · Shipping Worldwide 🌍
+                        {pageContent.call_to_action_description}
                     </p>
                     <div style={{ marginTop: 24 }}>
                         <Link className="btn-primary" href="/shop">

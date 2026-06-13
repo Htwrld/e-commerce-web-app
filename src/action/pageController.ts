@@ -201,3 +201,46 @@ export const getAmbassadorsPage = async () => {
         ambassadorsStrip,
     }
 }
+
+
+export const getOurStoryPage = async () => {
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/319`, {
+        cache: "no-store",
+    })
+    const data = await res.json()
+
+    return {
+        title: data.acf.our_story_title,
+        bible_verse: data.acf.our_story_bible_verse,
+        in_our_words: data.acf.in_our_words,
+        why_we_exist: data.acf.why_we_exist,
+        our_product_range: data.acf.our_product_range,
+        faith_at_the_center: data.acf.faith_at_the_center,
+        our_community: data.acf.our_community,
+        our_vision: data.acf.our_vision,
+        call_to_action_title: data.acf.call_to_action_title,
+        call_to_action_description: data.acf.call_to_action_description,
+        call_to_action_tagline: data.acf.call_to_action_tagline,
+    }
+}
+
+export const getContactPage = async () => {
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/321`, {
+        cache: "no-store",
+    })
+    const data = await res.json()
+
+    return {
+        page_description: data.acf.page_description,
+        whatsapp_contact_title: data.acf.whatsapp_contact_title,
+        whatsapp_contact_description: data.acf.whatsapp_contact_description,
+        whatsapp_contact_number: data.acf.whatsapp_contact_number,
+        email_section_title: data.acf.email_section_title,
+        email_section_description: data.acf.email_section_description,
+        email: data.acf.email,
+        location: data.acf.location,
+        location_description: data.acf.location_description,
+        social_handle: data.acf.social_handle,
+        social_media_channels: data.acf.social_media_channels,
+    }   
+}   
