@@ -100,7 +100,7 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                     {p.name}
                 </h3>
                 <div style={{ fontSize: 12, color: T.muted, marginBottom: 8, fontStyle: "italic" }}>
-                    {p.description}
+                    {p.description.replaceAll("\n", " ")}
                 </div>
                 <p
                     style={{
@@ -111,7 +111,7 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                         fontStyle: "italic",
                     }}
                 >
-                    {p.description}
+                    {p.quotes}
                 </p>
                 <div
                     style={{

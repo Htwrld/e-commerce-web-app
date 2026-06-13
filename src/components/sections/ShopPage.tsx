@@ -17,7 +17,9 @@ export const ShopPage = ({ products }: { products: Product[] }) => {
     const filtered = products.filter(
         (p) =>
             (activeCat === "All" || p.badge === activeCat) &&
-            (activeGen === "All" || p.gender === activeGen || p.gender === "Unisex")
+            (activeGen === "All" ||
+                p.gender.toLowerCase() === activeGen ||
+                p.gender.toLowerCase() === "Unisex".toLowerCase())
     )
 
     return (
@@ -104,7 +106,7 @@ export const ShopPage = ({ products }: { products: Product[] }) => {
                 {GENDERS.map((g) => (
                     <button
                         key={g}
-                        onClick={() => setActiveGen(g)}
+                        onClick={() => setActiveGen(g.toLowerCase())}
                         style={{
                             background: activeGen === g ? T.cobalt : "none",
                             border: `2px solid ${activeGen === g ? T.cobalt : T.border}`,

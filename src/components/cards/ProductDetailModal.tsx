@@ -134,7 +134,7 @@ export function ProductDetailModal({ product: p, onClose, onAdd }: ProductDetail
                         fontStyle: "italic",
                     }}
                 >
-                    &ldquo;{p.description}&rdquo;
+                    &ldquo;{p.quotes}&rdquo;
                 </p>
 
                 <div style={{ marginBottom: 16 }}>
