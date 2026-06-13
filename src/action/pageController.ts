@@ -7,7 +7,9 @@ export const getPageBySlug = async (slug: string) => {
 }
 
 export const getPageById = async (id: number) => {
-    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/${id}`)
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/${id}`, {
+        cache: "no-store",
+    })
     const data = await res.json()
     const heroSection = [
         {
@@ -19,7 +21,7 @@ export const getPageById = async (id: number) => {
         {
             hero_headline: data.acf.hero_headline_2,
             hero_subheadline: data.acf.hero_subheadline_2,
-            hero_background_color: data.acf.hero_background_color_2,    
+            hero_background_color: data.acf.hero_background_color_2,
             hero_lifestyle_image: data.acf.hero_lifestyle_image_2,
         },
         {
@@ -59,7 +61,7 @@ export const getPageById = async (id: number) => {
             icon: data.acf.icon_4.value,
             title: data.acf.title_4,
             description: data.acf.description_4,
-        }
+        },
     ]
 
     const faqs = [
@@ -137,7 +139,7 @@ export const getPageById = async (id: number) => {
                 title: data.acf.our_difference__tag_title_4,
                 description: data.acf.our_difference__tag_description_4,
             },
-        ]
+        ],
     }
 
     return {
