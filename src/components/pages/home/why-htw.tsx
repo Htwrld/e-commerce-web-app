@@ -9,6 +9,7 @@ const WhyHTW = ({
         contents: { title: string; description: string }[]
     }
 }) => {
+
     return (
         <section style={{ padding: "80px 28px", maxWidth: 1160, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 48 }}>

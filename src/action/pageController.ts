@@ -120,20 +120,20 @@ export const getPageHomePage = async () => {
         our_difference_title: data.acf.our_difference_title,
         contents: [
             {
-                title: data.acf.our_difference__tag_title_1,
-                description: data.acf.our_difference__tag_description_1,
+                title: data.acf.our_difference_tag_title_1,
+                description: data.acf.our_difference_tag_description_1,
             },
             {
-                title: data.acf.our_difference__tag_title_2,
-                description: data.acf.our_difference__tag_description_2,
+                title: data.acf.our_difference_tag_title_2,
+                description: data.acf.our_difference_tag_description_2,
             },
             {
-                title: data.acf.our_difference__tag_title_3,
-                description: data.acf.our_difference__tag_description_3,
+                title: data.acf.our_difference_tag_title_3,
+                description: data.acf.our_difference_tag_description_3,
             },
             {
-                title: data.acf.our_difference__tag_title_4,
-                description: data.acf.our_difference__tag_description_4,
+                title: data.acf.our_difference_tag_title_4,
+                description: data.acf.our_difference_tag_description_4,
             },
         ],
     }
