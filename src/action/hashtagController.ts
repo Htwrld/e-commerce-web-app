@@ -1,3 +1,5 @@
+import { T } from "@/src/lib/tokens"
+
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
 
 export type Hashtag = {
@@ -6,6 +8,7 @@ export type Hashtag = {
     name: string
     quote: string
     hearts: number
+    color: string
 }
 
 export const getHashtags = async () => {
@@ -20,6 +23,7 @@ export const getHashtags = async () => {
                 name: a.acf.name,
                 quote: a.acf.quote,
                 hearts: a.acf.hearts,
+                color: Object.keys(T)[Math.floor(Math.random() * Object.keys(T).length)],
             }
         })
 

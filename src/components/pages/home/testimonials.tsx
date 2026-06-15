@@ -1,8 +1,19 @@
 import { T } from "@/src/lib/tokens"
 import { Stars } from "../../cards/Stars"
-import { TESTIMONIALS } from "@/src/lib/data"
+import { Testimonial } from "@/src/action/testimonialController"
+import { Hashtag } from "@/src/action/hashtagController"
 
-const Testimonials = ({title}: {title: string}) => {
+const Testimonials = ({
+    title,
+    testimonials,
+    hashtag,
+    hashtags,
+}: {
+    title: string
+    testimonials: Testimonial[]
+    hashtag: string
+    hashtags: Hashtag[]
+}) => {
     return (
         <section style={{ background: T.white, padding: "80px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
@@ -24,7 +35,7 @@ const Testimonials = ({title}: {title: string}) => {
                         marginBottom: 48,
                     }}
                 >
-                    {TESTIMONIALS.map((t, i) => (
+                    {testimonials.map((t, i) => (
                         <div
                             key={i}
                             className="card"
@@ -68,7 +79,7 @@ const Testimonials = ({title}: {title: string}) => {
                             margin: "0 0 8px",
                         }}
                     >
-                        #WearHopeLiveBold
+                        #{hashtag}
                     </h3>
                     <div className="divider" style={{ margin: "12px auto 0" }} />
                 </div>
@@ -79,50 +90,7 @@ const Testimonials = ({title}: {title: string}) => {
                         gap: 10,
                     }}
                 >
-                    {[
-                        {
-                            e: "🤩",
-                            n: "Blessing A.",
-                            c: "Wore the Royal Cord set to Easter service — 40 compliments 🙏",
-                            h: 312,
-                            col: T.rust,
-                        },
-                        {
-                            e: "🥰",
-                            n: "Ngozi E.",
-                            c: "HTW puts a verse on every piece. I cry every time I read them 💛",
-                            h: 204,
-                            col: T.gold,
-                        },
-                        {
-                            e: "✨",
-                            n: "Femi J.",
-                            c: "Arrived in 2 days to the UK! Quality is insane for the price",
-                            h: 187,
-                            col: T.sage,
-                        },
-                        {
-                            e: "👑",
-                            n: "Amara O.",
-                            c: "The Crowned Sweatshirt is giving EXACTLY what it's supposed to give",
-                            h: 445,
-                            col: T.cobalt,
-                        },
-                        {
-                            e: "🙌🏾",
-                            n: "Pastor C.",
-                            c: "My whole family wore HTW sets for Christmas. Best decision!",
-                            h: 289,
-                            col: T.gold,
-                        },
-                        {
-                            e: "🔥",
-                            n: "Temi R.",
-                            c: "The He Wore It First Zip Hoodie had the whole church talking",
-                            h: 521,
-                            col: T.rust,
-                        },
-                    ].map((post, i) => (
+                    {hashtags.map((post, i) => (
                         <div
                             key={i}
                             className="card"
@@ -131,10 +99,10 @@ const Testimonials = ({title}: {title: string}) => {
                                 border: `1px solid ${T.border}`,
                                 borderRadius: 12,
                                 padding: 14,
-                                borderTop: `3px solid ${post.col}`,
+                                borderTop: `3px solid ${post.color}`,
                             }}
                         >
-                            <div style={{ fontSize: 32, marginBottom: 8 }}>{post.e}</div>
+                            <div style={{ fontSize: 32, marginBottom: 8 }}>{post.icon}</div>
                             <div
                                 style={{
                                     fontSize: 13,
@@ -143,7 +111,7 @@ const Testimonials = ({title}: {title: string}) => {
                                     marginBottom: 4,
                                 }}
                             >
-                                {post.n}
+                                {post.name}
                             </div>
                             <p
                                 style={{
@@ -153,10 +121,10 @@ const Testimonials = ({title}: {title: string}) => {
                                     margin: "0 0 8px",
                                 }}
                             >
-                                {post.c}
+                                {post.quote}
                             </p>
-                            <div style={{ fontSize: 11, color: post.col, fontWeight: 700 }}>
-                                ❤ {post.h}
+                            <div style={{ fontSize: 11, color: post.color, fontWeight: 700 }}>
+                                ❤ {post.hearts}
                             </div>
                         </div>
                     ))}

@@ -1,8 +1,16 @@
-import { AMBASSADORS } from "@/src/lib/data"
+import { Ambassador } from "@/src/action/ambassadorController"
 import { T } from "@/src/lib/tokens"
 import Link from "next/link"
 
-const AmbassadorsStrip = ({ title, tagline }: { title: string; tagline: string }) => {
+const AmbassadorsStrip = ({
+    title,
+    tagline,
+    ambassadors,
+}: {
+    title: string
+    tagline: string
+    ambassadors: Ambassador[]
+}) => {
     return (
         <section style={{ background: T.warm, padding: "64px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
@@ -15,9 +23,7 @@ const AmbassadorsStrip = ({ title, tagline }: { title: string; tagline: string }
                         {title}
                     </h2>
                     <div className="divider" style={{ margin: "14px auto" }} />
-                    <p style={{ fontSize: 14, color: T.muted }}>
-                        {tagline}
-                    </p>
+                    <p style={{ fontSize: 14, color: T.muted }}>{tagline}</p>
                 </div>
                 <div
                     style={{
@@ -27,7 +33,7 @@ const AmbassadorsStrip = ({ title, tagline }: { title: string; tagline: string }
                         marginBottom: 28,
                     }}
                 >
-                    {AMBASSADORS.map((a, i) => (
+                    {ambassadors.map((a, i) => (
                         <div
                             key={i}
                             className="card"
@@ -39,7 +45,7 @@ const AmbassadorsStrip = ({ title, tagline }: { title: string; tagline: string }
                                 textAlign: "center",
                             }}
                         >
-                            <div style={{ fontSize: 44, marginBottom: 10 }}>{a.emoji}</div>
+                            <div style={{ fontSize: 44, marginBottom: 10 }}>{a.photo}</div>
                             <div
                                 style={{
                                     fontSize: 16,
@@ -59,7 +65,7 @@ const AmbassadorsStrip = ({ title, tagline }: { title: string; tagline: string }
                                     marginBottom: 4,
                                 }}
                             >
-                                {a.handle}
+                                {a.social_handle}
                             </div>
                             <div style={{ fontSize: 12, color: T.muted, marginBottom: 8 }}>
                                 {a.city}

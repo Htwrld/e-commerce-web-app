@@ -18,6 +18,7 @@ import { getProducts } from "@/src/action/productController"
 import { getHashtags } from "@/src/action/hashtagController"
 import { getStyles } from "@/src/action/styleController"
 import { getAmbassadors } from "@/src/action/ambassadorController"
+import { getTestimonials } from "@/src/action/testimonialController"
 
 const MainPage = async () => {
     const homepage = await getPageHomePage()
@@ -25,6 +26,7 @@ const MainPage = async () => {
     const hashtags = await getHashtags()
     const styles = await getStyles()
     const ambassadors = await getAmbassadors()
+    const testimonials = await getTestimonials()
     return (
         <main>
             <ProductDetailProvider>
@@ -54,10 +56,16 @@ const MainPage = async () => {
                     description={homepage.otherTitles.shop_the_look_description}
                 />
                 <WhyHTW ourDifferences={homepage.ourDifferences} />
-                <Testimonials title={homepage.otherTitles.social_proof_title} />
+                <Testimonials
+                    title={homepage.otherTitles.social_proof_title}
+                    testimonials={testimonials}
+                    hashtag={homepage.otherTitles.community_post_hashtag}
+                    hashtags={hashtags}
+                />
                 <AmbassadorsStrip
                     title={homepage.otherTitles.representing_the_kingdom_title}
                     tagline={homepage.otherTitles.representing_the_kingdom_tagline}
+                    ambassadors={ambassadors}
                 />
                 <FAQSection faqs={homepage.faqs} />
                 <FinalCTA

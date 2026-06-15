@@ -15,7 +15,7 @@ export const getStyles = async () => {
     try {
         const res = await fetch(`${website_url}wp-json/wp/v2/style?acf_format=standard`)
         const data = await res.json()
-        console.log(data)
+  
         const styles: Style[] = data.map((p: any) => {
             return {
                 id: p.id,
