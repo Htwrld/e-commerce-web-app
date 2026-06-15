@@ -102,7 +102,7 @@ const Testimonials = ({
                                 borderTop: `3px solid ${post.color}`,
                             }}
                         >
-                            <div style={{ fontSize: 32, marginBottom: 8 }}>{post.icon}</div>
+                            <div style={{ fontSize: 32, marginBottom: 8 }}>{post.emoji}</div>
                             <div
                                 style={{
                                     fontSize: 13,

@@ -4,6 +4,7 @@ const website_url = process.env.WORDPRESS_URL_ENDPOINT
 
 export type Ambassador = {
     id: number
+    emoji: string
     photo: string
     name: string
     social_handle: string
@@ -11,6 +12,8 @@ export type Ambassador = {
     city: string
     color: string
 }
+
+const emojis = ["👸🏾", "👨🏾‍💼", "💃🏾", "🎤"]
 
 export const getAmbassadors = async () => {
     try {
@@ -20,12 +23,13 @@ export const getAmbassadors = async () => {
         const ambassadors: Ambassador[] = data.map((a: any) => {
             return {
                 id: a.id,
+                emoji: emojis[Math.floor(Math.random() * emojis.length)],
                 photo: a.acf.profile_photo,
                 name: a.acf.ambassadors_full_name,
                 social_handle: a.acf.social_media_handle,
                 city: a.acf.city,
                 quote: a.acf.personal_quote,
-                color: Object.keys(T)[Math.floor(Math.random() * Object.keys(T).length)],
+                color: Object.values(T)[Math.floor(Math.random() * Object.keys(T).length)],
             }
         })
 

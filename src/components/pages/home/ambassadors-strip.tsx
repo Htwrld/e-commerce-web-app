@@ -11,6 +11,7 @@ const AmbassadorsStrip = ({
     tagline: string
     ambassadors: Ambassador[]
 }) => {
+    console.log(ambassadors)
     return (
         <section style={{ background: T.warm, padding: "64px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
@@ -45,7 +46,7 @@ const AmbassadorsStrip = ({
                                 textAlign: "center",
                             }}
                         >
-                            <div style={{ fontSize: 44, marginBottom: 10 }}>{a.photo}</div>
+                            <div style={{ fontSize: 44, marginBottom: 10 }}>{a.emoji}</div>
                             <div
                                 style={{
                                     fontSize: 16,
@@ -65,7 +66,7 @@ const AmbassadorsStrip = ({
                                     marginBottom: 4,
                                 }}
                             >
-                                {a.social_handle}
+                                @{a.social_handle}
                             </div>
                             <div style={{ fontSize: 12, color: T.muted, marginBottom: 8 }}>
                                 {a.city}
