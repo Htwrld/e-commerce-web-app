@@ -1,53 +1,17 @@
+import { Style } from "@/src/action/styleController"
 import { T } from "@/src/lib/tokens"
 import Image from "next/image"
-
-const LIFESTYLE_SHOTS = [
-    {
-        img: "/images/hoodie_lifestyle.png",
-        label: "Street Style",
-        tag: "@tunde.w — London",
-        col: T.ink,
-    },
-    {
-        img: "/images/tee_walkbyfaith.png",
-        label: "Walk By Faith",
-        tag: "@emeka.t — Abuja",
-        col: "#1A1612",
-    },
-    {
-        img: "/images/tee_she.png",
-        label: "She Prays. She Wins.",
-        tag: "@chisom.b — Port Harcourt",
-        col: "#7BA8C9",
-    },
-    {
-        img: "/images/polo_twopiece.jpg",
-        label: "Kingdom Living",
-        tag: "@adaeze.k — Lagos",
-        col: T.gold,
-    },
-    {
-        img: "/images/twopiece_black.jpg",
-        label: "Prestige Set",
-        tag: "@pastor_c — Enugu",
-        col: "#1A1612",
-    },
-    {
-        img: "/images/hoodie_mockup.jpg",
-        label: "Trust God Bro",
-        tag: "@blessing.a — Lagos",
-        col: T.ink,
-    },
-]
 
 const LifestyleGallery = ({
     title,
     description,
     hashtag,
+    styles,
 }: {
     title: string
     description: string
     hashtag: string
+    styles: Style[]
 }) => {
     return (
         <section style={{ background: T.sand, padding: "80px 28px" }}>
@@ -80,7 +44,7 @@ const LifestyleGallery = ({
                         marginBottom: 24,
                     }}
                 >
-                    {LIFESTYLE_SHOTS.map((shot, i) => (
+                    {styles.map((shot, i) => (
                         <div
                             key={i}
                             className="card"
@@ -89,12 +53,12 @@ const LifestyleGallery = ({
                                 overflow: "hidden",
                                 position: "relative",
                                 aspectRatio: "3/4",
-                                background: shot.col,
+                                background: shot.color,
                             }}
                         >
                             <Image
-                                src={shot.img}
-                                alt={shot.label}
+                                src={shot.image}
+                                alt={shot.title}
                                 fill
                                 style={{ objectFit: "cover", objectPosition: "center top" }}
                             />
@@ -117,7 +81,7 @@ const LifestyleGallery = ({
                                         lineHeight: 1.3,
                                     }}
                                 >
-                                    {shot.label}
+                                    {shot.title}
                                 </div>
                                 <div
                                     style={{
@@ -126,7 +90,7 @@ const LifestyleGallery = ({
                                         marginTop: 2,
                                     }}
                                 >
-                                    {shot.tag}
+                                    {`${shot.handle} — ${shot.city}`}
                                 </div>
                             </div>
                         </div>

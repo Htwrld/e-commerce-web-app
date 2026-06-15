@@ -15,10 +15,16 @@ import TrustBar from "../../components/pages/home/trust-bar"
 import EmailNWhatsApp from "../../components/pages/home/email-n-whatsapp"
 import { ProductDetailProvider } from "../../hools/use-product-detail"
 import { getProducts } from "@/src/action/productController"
+import { getHashtags } from "@/src/action/hashtagController"
+import { getStyles } from "@/src/action/styleController"
+import { getAmbassadors } from "@/src/action/ambassadorController"
 
 const MainPage = async () => {
     const homepage = await getPageHomePage()
     const products = await getProducts()
+    const hashtags = await getHashtags()
+    const styles = await getStyles()
+    const ambassadors = await getAmbassadors()
     return (
         <main>
             <ProductDetailProvider>
@@ -35,6 +41,7 @@ const MainPage = async () => {
                     title={homepage.otherTitles.styled_by_community_title}
                     description={homepage.otherTitles.styled_by_community_description}
                     hashtag={homepage.otherTitles.style_by_community_hashtag}
+                    styles={styles}
                 />
                 <FeaturedCollection
                     title={homepage.otherTitles.featured_collection_title}

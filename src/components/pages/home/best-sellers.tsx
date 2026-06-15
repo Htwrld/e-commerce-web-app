@@ -19,7 +19,7 @@ const BestSellers = ({
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
     const best = products.filter(
-        (p) => p.badge === "BESTSELLER" || p.badge === "POPULAR"
+        (p) => p.badge.toLowerCase() === "bestseller" || p.badge.toLowerCase() === "popular"
     )
     return (
         <section style={{ background: T.warm, padding: "80px 28px" }}>
