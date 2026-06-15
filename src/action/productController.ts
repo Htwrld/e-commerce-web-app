@@ -21,30 +21,35 @@ export type Product = {
 }
 
 export const getProducts = async () => {
-    const res = await fetch(`${website_url}wp-json/wp/v2/product?acf_format=standard`)
-    const data = await res.json()
+    try {
+        const res = await fetch(`${website_url}wp-json/wp/v2/product?acf_format=standard`)
+        const data = await res.json()
 
-    const products: Product[] = data.map((p: any) => {
-        return {
-            id: p.id,
-            photo: p.acf.photo,
-            badge: p.acf.badge,
-            gender: p.acf.gender,
-            name: p.acf.name,
-            description: p.acf.description,
-            price: p.acf.price,
-            quotes: p.acf.quotes,
-            bible_verse: p.acf.bible_verse,
-            bible_verse_content: p.acf.bible_verse_content,
-            colors: p.acf.colors,
-            sizes: p.acf.sizes,
-            fabric: p.acf.fabric,
-            fit: p.acf.fit,
-            care: p.acf.care,
-            delivery: p.acf.delivery,
-            size_guide: p.acf.size_guide,
-        }
-    })
-
-    return products
+        const products: Product[] = data.map((p: any) => {
+            return {
+                id: p.id,
+                photo: p.acf.photo,
+                badge: p.acf.badge,
+                gender: p.acf.gender,
+                name: p.acf.name,
+                description: p.acf.description,
+                price: p.acf.price,
+                quotes: p.acf.quotes,
+                bible_verse: p.acf.bible_verse,
+                bible_verse_content: p.acf.bible_verse_content,
+                colors: p.acf.colors,
+                sizes: p.acf.sizes,
+                fabric: p.acf.fabric,
+                fit: p.acf.fit,
+                care: p.acf.care,
+                delivery: p.acf.delivery,
+                size_guide: p.acf.size_guide,
+            }
+        })
+        
+        return products
+    } catch (error) {
+        console.log(error)
+        return []
+    }
 }

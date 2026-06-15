@@ -128,7 +128,7 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                     <VerseChip verse={p.bible_verse} verseText={p.bible_verse_content} />
                 </div>
                 <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-                    {p.colors.map((c, i) => (
+                    {p.colors && p.colors.map((c, i) => (
                         <div
                             key={i}
                             style={{
