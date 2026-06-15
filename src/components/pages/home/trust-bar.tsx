@@ -1,4 +1,5 @@
 import { T } from "@/src/lib/tokens"
+import { Dashicon } from '@wordpress/components'
 
 interface TrustBarProps {
     icon: string
@@ -43,7 +44,9 @@ const TrustBar = ({ trustBar }: { trustBar: TrustBarProps[] }) => {
                                 border: "1px solid rgba(255,255,255,0.08)",
                             }}
                         >
-                            <span style={{ fontSize: 22, flexShrink: 0 }}>{icon}</span>
+                            <span style={{ fontSize: 22, flexShrink: 0 }}>
+                                <Dashicon icon={icon as any} />
+                            </span>
                             <div>
                                 <div
                                     style={{

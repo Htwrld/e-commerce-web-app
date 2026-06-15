@@ -11,7 +11,6 @@ const AmbassadorsStrip = ({
     tagline: string
     ambassadors: Ambassador[]
 }) => {
-    console.log(ambassadors)
     return (
         <section style={{ background: T.warm, padding: "64px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>

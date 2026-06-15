@@ -40,23 +40,23 @@ export const getPageHomePage = async () => {
     const trustBar = [
         {
             icon: data.acf.icon_1.value,
-            title: data.acf.title_1,
-            description: data.acf.description_1,
+            title: data.acf.icon_1_title,
+            description: data.acf.icon_1_description,
         },
         {
             icon: data.acf.icon_2.value,
-            title: data.acf.title_2,
-            description: data.acf.description_2,
+            title: data.acf.icon_2_title,
+            description: data.acf.icon_2_description,
         },
         {
             icon: data.acf.icon_3.value,
-            title: data.acf.title_3,
-            description: data.acf.description_3,
+            title: data.acf.icon_3_title,
+            description: data.acf.icon_3_description,
         },
         {
             icon: data.acf.icon_4.value,
-            title: data.acf.title_4,
-            description: data.acf.description_4,
+            title: data.acf.icon_4_title,
+            description: data.acf.icon_4_description,
         },
     ]
 
