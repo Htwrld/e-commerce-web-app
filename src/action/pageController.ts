@@ -202,7 +202,6 @@ export const getAmbassadorsPage = async () => {
     }
 }
 
-
 export const getOurStoryPage = async () => {
     const res = await fetch(`${website_url}/wp-json/wp/v2/pages/319`, {
         cache: "no-store",
@@ -242,5 +241,30 @@ export const getContactPage = async () => {
         location_description: data.acf.location_description,
         social_handle: data.acf.social_handle,
         social_media_channels: data.acf.social_media_channels,
-    }   
-}   
+    }
+}
+
+export type NavbarandFooter = {
+    site_title: string
+    site_description: string
+    navbar_scrollbar: string
+    footer_tagline: string
+    footer_quotes: string
+    footer_final_quote: string
+}
+
+export const getNavbarandFooter = async () => {
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/323`, {
+        cache: "no-store",
+    })
+    const data = await res.json()
+
+    return {
+        site_title: data.acf.site_title,
+        site_description: data.acf.site_description,
+        navbar_scrollbar: data.acf.navbar_scrollbar,
+        footer_tagline: data.acf.footer_tagline,
+        footer_quotes: data.acf.footer_quotes,
+        footer_final_quote: data.acf.footer_final_quote,
+    }
+}

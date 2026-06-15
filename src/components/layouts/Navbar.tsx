@@ -7,11 +7,12 @@ import { useCart } from "@/src/lib/cart-context"
 import { WABtn } from "@/src/components/cards/WABtn"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { NavbarandFooter } from "@/src/action/pageController"
 
-export function Navbar() {
+export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }) {
     const [menuOpen, setMenuOpen] = useState(false)
     const { cartCount, setCartOpen } = useCart()
-	const pathname = usePathname()
+    const pathname = usePathname()
     return (
         <nav
             style={{
@@ -35,10 +36,7 @@ export function Navbar() {
                 }}
             >
                 {/* Logo */}
-                <Link
-					href="/"
-                    style={{ cursor: "pointer", flexShrink: 0, minWidth: 0 }}
-                >
+                <Link href="/" style={{ cursor: "pointer", flexShrink: 0, minWidth: 0 }}>
                     <div
                         style={{
                             fontSize: 8,
@@ -50,7 +48,7 @@ export function Navbar() {
                             whiteSpace: "nowrap",
                         }}
                     >
-                        Hope&rsquo;s Trendy World
+                        {footerandnavbar.site_description}
                     </div>
                     <div
                         style={{
@@ -61,7 +59,7 @@ export function Navbar() {
                             lineHeight: 1,
                         }}
                     >
-                        HTW
+                        {footerandnavbar.site_title}
                     </div>
                 </Link>
 
@@ -179,7 +177,7 @@ export function Navbar() {
                     {NAV_ITEMS.map((n) => (
                         <Link
                             key={n.id}
-                           	href={n.id}
+                            href={n.id}
                             style={{
                                 padding: "14px 24px",
                                 fontSize: 16,

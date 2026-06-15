@@ -2,8 +2,9 @@
 
 import { T } from "@/src/lib/tokens"
 import { WABtn } from "@/src/components/cards/WABtn"
+import { NavbarandFooter } from "@/src/action/pageController"
 
-export function Footer() {
+export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }) {
     return (
         <footer style={{ background: T.charcoal, color: "#B0A898", padding: "60px 28px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
@@ -27,7 +28,7 @@ export function Footer() {
                                 marginBottom: 6,
                             }}
                         >
-                            HOPE&rsquo;S TRENDY WORLD
+                            {footerandnavbar.site_description}
                         </div>
                         <div
                             style={{
@@ -38,7 +39,7 @@ export function Footer() {
                                 marginBottom: 12,
                             }}
                         >
-                            HTW
+                            {footerandnavbar.site_title}
                         </div>
                         <p
                             style={{
@@ -48,7 +49,7 @@ export function Footer() {
                                 color: "#888",
                             }}
                         >
-                            Faith-inspired fashion for bold living. Scripture in every stitch.
+                            {footerandnavbar.footer_tagline}
                         </p>
                         <div
                             style={{
@@ -59,7 +60,7 @@ export function Footer() {
                                 marginBottom: 16,
                             }}
                         >
-                            &ldquo;You were made to stand out.&rdquo;
+                            &ldquo;{footerandnavbar.footer_quotes}&rdquo;
                         </div>
                         <div style={{ display: "flex", gap: 14 }}>
                             {["📘", "📸", "▶️", "🎵"].map((s) => (
@@ -206,7 +207,7 @@ export function Footer() {
                         © 2026 Hope&rsquo;s Trendy World. All rights reserved.
                     </div>
                     <div style={{ fontSize: 12, color: "#555", fontStyle: "italic" }}>
-                        &ldquo;Dressed for the kingdom.&rdquo; &nbsp;·&nbsp; Made in Nigeria 🇳🇬
+                        &ldquo;{footerandnavbar.footer_final_quote}&rdquo; &nbsp;·&nbsp; Made in Nigeria 🇳🇬
                     </div>
                 </div>
             </div>

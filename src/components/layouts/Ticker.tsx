@@ -1,8 +1,7 @@
+import { NavbarandFooter } from "@/src/action/pageController"
 import { T } from "@/src/lib/tokens"
 
-export function Ticker() {
-    const text =
-        "✝ FREE DELIVERY IN LAGOS \u00a0·\u00a0 SHIPS NATIONWIDE \u00a0·\u00a0 DIASPORA ORDERS WELCOME \u00a0·\u00a0 ₦ NGN & $ USD \u00a0·\u00a0 WHATSAPP SUPPORT \u00a0·\u00a0 SCRIPTURE IN EVERY STITCH \u00a0·\u00a0 #WEARHOPELIVEBBOLD \u00a0·\u00a0"
+export function Ticker({ footerandnavbar }: { footerandnavbar: NavbarandFooter }) {
     return (
         <div
             style={{
@@ -32,7 +31,7 @@ export function Ticker() {
                             fontWeight: 700,
                         }}
                     >
-                        {text}
+                        {footerandnavbar.navbar_scrollbar}
                     </span>
                 ))}
             </div>

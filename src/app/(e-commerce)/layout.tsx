@@ -4,8 +4,10 @@ import { CartDrawer } from "@/src/components/layouts/CartDrawer"
 import { Navbar } from "@/src/components/layouts/Navbar"
 import { Ticker } from "@/src/components/layouts/Ticker"
 import { Footer } from "@/src/components/layouts/Footer"
+import { getNavbarandFooter } from "@/src/action/pageController"
 
-const EcommerceLayout = ({ children }: { children: React.ReactNode }) => {
+const EcommerceLayout = async ({ children }: { children: React.ReactNode }) => {
+    const footerandnavbar = await getNavbarandFooter()
     return (
         <div
             style={{
@@ -27,10 +29,10 @@ const EcommerceLayout = ({ children }: { children: React.ReactNode }) => {
                     💬
                 </a>
                 <CartDrawer />
-                <Navbar />
-                <Ticker />
+                <Navbar footerandnavbar={footerandnavbar} />
+                <Ticker footerandnavbar={footerandnavbar} />
                 {children}
-                <Footer />
+                <Footer footerandnavbar={footerandnavbar} />
             </CartProvider>
         </div>
     )
