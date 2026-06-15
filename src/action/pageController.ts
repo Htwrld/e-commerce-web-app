@@ -149,9 +149,7 @@ export const getPageHomePage = async () => {
 }
 
 export const getAmbassadorsPage = async () => {
-    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/315`, {
-        cache: "no-store",
-    })
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/315`)
     const data = await res.json()
 
     const ambassadorsStrip = [
@@ -203,9 +201,7 @@ export const getAmbassadorsPage = async () => {
 }
 
 export const getOurStoryPage = async () => {
-    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/319`, {
-        cache: "no-store",
-    })
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/319`)
     const data = await res.json()
 
     return {
@@ -224,9 +220,7 @@ export const getOurStoryPage = async () => {
 }
 
 export const getContactPage = async () => {
-    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/321`, {
-        cache: "no-store",
-    })
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/321`)
     const data = await res.json()
 
     return {
@@ -254,9 +248,7 @@ export type NavbarandFooter = {
 }
 
 export const getNavbarandFooter = async () => {
-    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/323`, {
-        cache: "no-store",
-    })
+    const res = await fetch(`${website_url}/wp-json/wp/v2/pages/323`)
     const data = await res.json()
 
     return {
