@@ -18,9 +18,7 @@ const BestSellers = ({
 }) => {
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
-    const best = products.filter(
-        (p) => p.badge.toLowerCase() === "bestseller" || p.badge.toLowerCase() === "popular"
-    )
+    const best = products.filter((p) => p.badge.toLowerCase().includes("bestseller")).slice(0, 8)
     return (
         <section style={{ background: T.warm, padding: "80px 28px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
