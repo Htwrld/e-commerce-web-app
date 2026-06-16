@@ -27,6 +27,7 @@ export const getProducts = async () => {
             cache: "no-cache"
         })
         const data = await res.json()
+    
         const products: Product[] = data.map((p: any) => {
             return {
                 id: p.id,
