@@ -4,8 +4,10 @@ import { CartDrawer } from "@/src/components/layouts/CartDrawer"
 import { Navbar } from "@/src/components/layouts/Navbar"
 import { Ticker } from "@/src/components/layouts/Ticker"
 import { Footer } from "@/src/components/layouts/Footer"
+import { getNavbarandFooter } from "@/src/action/pageController"
 
-const EcommerceNotFound = () => {
+const EcommerceNotFound = async () => {
+    const footerandnavbar = await getNavbarandFooter()
     return (
         <div
             style={{
@@ -27,15 +29,15 @@ const EcommerceNotFound = () => {
                     💬
                 </a>
                 <CartDrawer />
-                <Navbar />
-                <Ticker />
+                <Navbar footerandnavbar={footerandnavbar} />
+                <Ticker footerandnavbar={footerandnavbar} />
                 <div className="flex min-h-screen flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-md">
                         <h1 className="text-center text-4xl font-bold text-gray-900">404</h1>
                         <p className="mt-2 text-center text-gray-500">Page not found</p>
                     </div>
                 </div>
-                <Footer />
+                <Footer footerandnavbar={footerandnavbar} />
             </CartProvider>
         </div>
     )

@@ -1,3 +1,5 @@
+'use server'
+
 import { T } from "../lib/tokens"
 
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
@@ -79,6 +81,7 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             cache: "no-store",
         })
         const data = await res.json()
+        // console.log(data)
         const heroSection = [
             {
                 hero_headline: data.acf.hero_headline_1,
@@ -219,6 +222,7 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             ourDifferences,
         }
     } catch (e) {
+        console.log(e)
         return {} as PageHome
     }
 }

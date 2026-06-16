@@ -22,6 +22,7 @@ import { getTestimonials } from "@/src/action/testimonialController"
 
 const MainPage = async () => {
     const homepage = await getPageHomePage()
+    console.log(homepage)
     const products = await getProducts()
     const hashtags = await getHashtags()
     const styles = await getStyles()
