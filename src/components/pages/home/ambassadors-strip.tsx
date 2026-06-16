@@ -1,5 +1,6 @@
 import { Ambassador } from "@/src/action/ambassadorController"
 import { T } from "@/src/lib/tokens"
+import Image from "next/image"
 import Link from "next/link"
 
 const AmbassadorsStrip = ({
@@ -33,7 +34,7 @@ const AmbassadorsStrip = ({
                         marginBottom: 28,
                     }}
                 >
-                    {ambassadors.map((a, i) => (
+                    {ambassadors.slice(0, 4).map((a, i) => (
                         <div
                             key={i}
                             className="card"
@@ -42,33 +43,43 @@ const AmbassadorsStrip = ({
                                 border: `2px solid ${a.color}33`,
                                 borderRadius: 14,
                                 padding: "22px 18px",
-                                textAlign: "center",
                             }}
                         >
-                            <div style={{ fontSize: 44, marginBottom: 10 }}>{a.emoji}</div>
-                            <div
+                            <div className="h-12 w-12 overflow-hidden rounded-sm border p-1">
+                                <Image
+                                    src={a.photo}
+                                    alt={a.name}
+                                    height={120}
+                                    width={120}
+                                    className="h-full w-full rounded-sm object-cover object-center"
+                                />
+                            </div>
+                            <h3
+                                className="text-start"
                                 style={{
-                                    fontSize: 16,
                                     fontFamily: "'Cormorant Garamond',serif",
-                                    color: T.ink,
-                                    marginBottom: 3,
+                                    fontSize: 20,
                                     fontWeight: 600,
+                                    color: T.ink,
+                                    marginBottom: 2,
                                 }}
                             >
                                 {a.name}
-                            </div>
-                            <div
-                                style={{
-                                    fontSize: 12,
-                                    color: a.color,
-                                    fontWeight: 700,
-                                    marginBottom: 4,
-                                }}
-                            >
-                                @{a.social_handle}
-                            </div>
-                            <div style={{ fontSize: 12, color: T.muted, marginBottom: 8 }}>
-                                {a.city}
+                            </h3>
+                            <div className="flex items-center justify-between">
+                                <div
+                                    style={{
+                                        fontSize: 13,
+                                        color: a.color,
+                                        fontWeight: 700,
+                                        marginBottom: 4,
+                                    }}
+                                >
+                                    @{a.social_handle}
+                                </div>
+                                <div style={{ fontSize: 12, color: T.muted, marginBottom: 10 }}>
+                                    {a.city}
+                                </div>
                             </div>
                             <p
                                 style={{

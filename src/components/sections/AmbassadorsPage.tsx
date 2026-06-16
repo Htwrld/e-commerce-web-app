@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { T } from "@/src/lib/tokens"
 import { Ambassador } from "@/src/action/ambassadorController"
+import Image from "next/image"
 
 type AmbassadorStrip = {
     icon: string
@@ -155,7 +156,19 @@ export const AmbassadorsPage = ({
                                     padding: "26px 22px",
                                 }}
                             >
-                                <div style={{ fontSize: 52, marginBottom: 12 }}>{a.emoji}</div>
+                                <div className="h-12 w-12 overflow-hidden rounded-sm border p-1">
+                                    <Image
+                                        src={a.photo}
+                                        alt={a.name}
+                                        height={120}
+                                        width={120}
+                                        className="h-full w-full rounded-sm object-cover object-center"
+                                        onError={(e) =>
+                                            ((e.currentTarget as HTMLImageElement).style.display =
+                                                "none")
+                                        }
+                                    />
+                                </div>
                                 <h3
                                     style={{
                                         fontFamily: "'Cormorant Garamond',serif",
@@ -167,18 +180,20 @@ export const AmbassadorsPage = ({
                                 >
                                     {a.name}
                                 </h3>
-                                <div
-                                    style={{
-                                        fontSize: 13,
-                                        color: a.color,
-                                        fontWeight: 700,
-                                        marginBottom: 4,
-                                    }}
-                                >
-                                    {a.social_handle}
-                                </div>
-                                <div style={{ fontSize: 12, color: T.muted, marginBottom: 10 }}>
-                                    {a.city}
+                                <div className="flex items-center justify-between">
+                                    <div
+                                        style={{
+                                            fontSize: 13,
+                                            color: a.color,
+                                            fontWeight: 700,
+                                            marginBottom: 4,
+                                        }}
+                                    >
+                                        @{a.social_handle}
+                                    </div>
+                                    <div style={{ fontSize: 12, color: T.muted, marginBottom: 10 }}>
+                                        {a.city}
+                                    </div>
                                 </div>
                                 <p
                                     style={{

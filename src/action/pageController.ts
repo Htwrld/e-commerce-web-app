@@ -79,7 +79,6 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
     try {
         const res = await fetch(`${website_url}/wp-json/wp/v2/pages/24`)
         const data = await res.json()
-        // console.log(data)
         const heroSection = [
             {
                 hero_headline: data.acf.hero_headline_1,
@@ -220,7 +219,7 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             ourDifferences,
         }
     } catch (e) {
-        console.log(e)
+        
         return {} as PageHome
     }
 }
