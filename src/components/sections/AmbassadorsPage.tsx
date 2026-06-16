@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { T } from "@/src/lib/tokens"
-import { AMBASSADORS } from "@/src/lib/data"
+import { Ambassador } from "@/src/action/ambassadorController"
 
 type AmbassadorStrip = {
     icon: string
@@ -19,7 +19,13 @@ type PageContent = {
     ambassadorsStrip: AmbassadorStrip[]
 }
 
-export const AmbassadorsPage = ({ pageContent }: { pageContent: PageContent }) => {
+export const AmbassadorsPage = ({
+    pageContent,
+    ambassadors,
+}: {
+    pageContent: PageContent
+    ambassadors: Ambassador[]
+}) => {
     const [form, setForm] = useState({ name: "", email: "", city: "", ig: "" })
     const [formSent, setFormSent] = useState(false)
 
@@ -138,7 +144,7 @@ export const AmbassadorsPage = ({ pageContent }: { pageContent: PageContent }) =
                             gap: 14,
                         }}
                     >
-                        {AMBASSADORS.map((a, i) => (
+                        {ambassadors.map((a, i) => (
                             <div
                                 key={i}
                                 className="card"
@@ -169,7 +175,7 @@ export const AmbassadorsPage = ({ pageContent }: { pageContent: PageContent }) =
                                         marginBottom: 4,
                                     }}
                                 >
-                                    {a.handle}
+                                    {a.social_handle}
                                 </div>
                                 <div style={{ fontSize: 12, color: T.muted, marginBottom: 10 }}>
                                     {a.city}

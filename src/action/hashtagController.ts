@@ -26,13 +26,12 @@ export const getHashtags = async () => {
                 name: a.acf.name,
                 quote: a.acf.quote,
                 hearts: a.acf.hearts,
-                color: Object.values(T)[Math.floor(Math.random() * Object.keys(T).length)],
+                color: T.charcoal,
             }
         })
 
         return hashtags
     } catch (e) {
-        console.log(e)
         return []
     }
 }

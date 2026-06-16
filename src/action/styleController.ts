@@ -23,13 +23,12 @@ export const getStyles = async () => {
                 title: p.acf.title,
                 handle: p.acf.handle,
                 city: p.acf.city,
-                color: Object.values(T)[Math.floor(Math.random() * Object.keys(T).length)],
+                color: T.goldPale,
             }
         })
 
         return styles
     } catch (e) {
-        console.log(e)
         return []
     }
 }

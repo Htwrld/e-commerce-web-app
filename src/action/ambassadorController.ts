@@ -29,13 +29,12 @@ export const getAmbassadors = async () => {
                 social_handle: a.acf.social_media_handle,
                 city: a.acf.city,
                 quote: a.acf.personal_quote,
-                color: Object.values(T)[Math.floor(Math.random() * Object.keys(T).length)],
+                color: T.gold,
             }
         })
 
         return ambassadors
     } catch (e) {
-        console.log(e)
         return []
     }
 }

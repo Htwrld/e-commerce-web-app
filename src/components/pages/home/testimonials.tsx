@@ -52,7 +52,7 @@ const Testimonials = ({
                                     fontFamily: "'EB Garamond',serif",
                                     fontSize: 16,
                                     fontStyle: "italic",
-                                    color: T.charcoal,
+                                    color: T.rust,
                                     lineHeight: 1.8,
                                     margin: "12px 0 16px",
                                 }}
