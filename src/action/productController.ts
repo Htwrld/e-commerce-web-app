@@ -11,6 +11,7 @@ export type Product = {
     quotes: string
     bible_verse: string
     bible_verse_content: string
+    categories: string[]
     colors: string[]
     sizes: string[]
     fabric: string
@@ -31,6 +32,7 @@ export const getProducts = async () => {
                 id: p.id,
                 photo: p.acf.photo,
                 badge: p.acf.badge,
+                categories: p.acf.category ? p.acf.category.map((c: any) => c.name) : [],
                 gender: p.acf.gender,
                 name: p.acf.name,
                 description: p.acf.description,
@@ -38,8 +40,8 @@ export const getProducts = async () => {
                 quotes: p.acf.quotes,
                 bible_verse: p.acf.bible_verse,
                 bible_verse_content: p.acf.bible_verse_content,
-                colors: p.acf.colors,
-                sizes: p.acf.sizes,
+                colors: p.acf.colors ? p.acf.colors.map((c: any) => c.name) : [],
+                sizes: p.acf.sizes ? p.acf.sizes.map((s: any) => s.name) : [],
                 fabric: p.acf.fabric,
                 fit: p.acf.fit,
                 care: p.acf.care,

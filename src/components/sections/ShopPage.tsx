@@ -9,18 +9,16 @@ import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal"
 import { Product } from "@/src/action/productController"
 
 export const ShopPage = ({ products }: { products: Product[] }) => {
-    const [activeCat, setActiveCat] = useState("All")
-    const [activeGen, setActiveGen] = useState("All")
+    const [activeCat, setActiveCat] = useState("all")
+    const [activeGen, setActiveGen] = useState("all")
     const { addToCart } = useCart()
     const [detailProd, setDetailProd] = useState<Product | null>(null)
 
-    const filtered = products.filter(
-        (p) =>
-            (activeCat === "All" || p.badge === activeCat) &&
-            (activeGen === "All" ||
-                p.gender.toLowerCase() === activeGen ||
-                p.gender.toLowerCase() === "Unisex".toLowerCase())
-    )
+    const filtered = products.filter((p) => {
+        const isCat = p.categories.includes(activeCat)
+        const isGen = p.gender.toLowerCase() === activeGen || p.gender.toLowerCase() === "unisex"
+        return (activeCat === "all" || isCat) && (activeGen === "all" || isGen)
+    })
 
     return (
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "44px 28px" }}>
@@ -64,11 +62,11 @@ export const ShopPage = ({ products }: { products: Product[] }) => {
                 {CATS.map((c) => (
                     <button
                         key={c}
-                        onClick={() => setActiveCat(c)}
+                        onClick={() => setActiveCat(c.toLowerCase())}
                         style={{
-                            background: activeCat === c ? T.rust : "none",
-                            border: `2px solid ${activeCat === c ? T.rust : T.border}`,
-                            color: activeCat === c ? "#fff" : T.muted,
+                            background: activeCat === c.toLowerCase() ? T.rust : "none",
+                            border: `2px solid ${activeCat === c.toLowerCase() ? T.rust : T.border}`,
+                            color: activeCat === c.toLowerCase() ? "#fff" : T.muted,
                             padding: "8px 20px",
                             borderRadius: 24,
                             fontSize: 13,
@@ -108,9 +106,9 @@ export const ShopPage = ({ products }: { products: Product[] }) => {
                         key={g}
                         onClick={() => setActiveGen(g.toLowerCase())}
                         style={{
-                            background: activeGen === g ? T.cobalt : "none",
-                            border: `2px solid ${activeGen === g ? T.cobalt : T.border}`,
-                            color: activeGen === g ? "#fff" : T.muted,
+                            background: activeGen === g.toLowerCase() ? T.cobalt : "none",
+                            border: `2px solid ${activeGen === g.toLowerCase() ? T.cobalt : T.border}`,
+                            color: activeGen === g.toLowerCase() ? "#fff" : T.muted,
                             padding: "7px 16px",
                             borderRadius: 20,
                             fontSize: 12,
