@@ -96,8 +96,8 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
 
                 {/* Right: cart + hamburger */}
                 <div style={{ display: "flex", gap: 12, alignItems: "center", flexShrink: 0 }}>
-                    <button
-                        onClick={() => setCartOpen(true)}
+                    <Link
+                        href="/checkout"
                         style={{
                             background: "none",
                             border: "none",
@@ -129,7 +129,7 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                                 {cartCount}
                             </span>
                         )}
-                    </button>
+                    </Link>
                     <button
                         className="bg-none md:hidden!"
                         onClick={() => setMenuOpen((o) => !o)}
