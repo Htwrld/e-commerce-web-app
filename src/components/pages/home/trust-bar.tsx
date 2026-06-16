@@ -1,6 +1,5 @@
 import { T } from "@/src/lib/tokens"
 import iv, { Dashicon } from "@wordpress/components"
-import "@icon/dashicons/dashicons.css"
 
 interface TrustBarProps {
     icon: string

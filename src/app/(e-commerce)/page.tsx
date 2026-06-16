@@ -19,6 +19,7 @@ import { getHashtags } from "@/src/action/hashtagController"
 import { getStyles } from "@/src/action/styleController"
 import { getAmbassadors } from "@/src/action/ambassadorController"
 import { getTestimonials } from "@/src/action/testimonialController"
+import "@icon/dashicons/dashicons.css"
 
 const MainPage = async () => {
     const homepage = await getPageHomePage()

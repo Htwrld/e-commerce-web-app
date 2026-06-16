@@ -63,6 +63,7 @@ export type OurDifferences = {
 }
 
 export type OurDifference = {
+    icon: string
     title: string
     description: string
 }
@@ -193,24 +194,26 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             get_launched_description: data.acf.get_launched_description,
         }
 
-        console.log(data.acf)
-
         const ourDifferences = {
             our_difference_title: data.acf.our_difference_title,
             contents: [
                 {
+                    icon: data.acf.our_difference_icon_1.replaceAll("dashicons-", ""),
                     title: data.acf.our_difference_tag_title_1,
                     description: data.acf.our_difference_tag_description_1,
                 },
                 {
+                    icon: data.acf.our_difference_icon_2.replaceAll("dashicons-", ""),
                     title: data.acf.our_difference_tag_title_2,
                     description: data.acf.our_difference_tag_description_2,
                 },
                 {
+                    icon: data.acf.our_difference_icon_3.replaceAll("dashicons-", ""),
                     title: data.acf.our_difference_tag_title_3,
                     description: data.acf.our_difference_tag_description_3,
                 },
                 {
+                    icon: data.acf.our_difference_icon_4.replaceAll("dashicons-", ""),
                     title: data.acf.our_difference_tag_title_4,
                     description: data.acf.our_difference_tag_description_4,
                 },

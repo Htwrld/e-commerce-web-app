@@ -1,12 +1,13 @@
 import { WHY_HTW } from "@/src/lib/data"
 import { T } from "@/src/lib/tokens"
+import { Dashicon } from '@wordpress/components'
 
 const WhyHTW = ({
     ourDifferences,
 }: {
     ourDifferences: {
         our_difference_title: string
-        contents: { title: string; description: string }[]
+        contents: { icon: string; title: string; description: string }[]
     }
 }) => {
  
@@ -41,7 +42,9 @@ const WhyHTW = ({
                             textAlign: "center",
                         }}
                     >
-                        <div style={{ fontSize: 42, marginBottom: 14 }}>{WHY_HTW[i].icon}</div>
+                        <div style={{ fontSize: 42, marginBottom: 14 }}>
+                            <Dashicon icon={w.icon as any} />
+                        </div>
                         <h3
                             style={{
                                 fontFamily: "'Cormorant Garamond',serif",
