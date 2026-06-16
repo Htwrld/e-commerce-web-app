@@ -77,9 +77,7 @@ export type PageHome = {
 
 export const getPageHomePage: () => Promise<PageHome> = async () => {
     try {
-        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/24`, {
-            cache: "no-store",
-        })
+        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/24`)
         const data = await res.json()
         // console.log(data)
         const heroSection = [
