@@ -111,22 +111,22 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
 
         const trustBar = [
             {
-                icon: data.acf.icon_1.value,
+                icon: data.acf.icon_1.value.replaceAll("dashicons-", ""),
                 title: data.acf.icon_1_title,
                 description: data.acf.icon_1_description,
             },
             {
-                icon: data.acf.icon_2.value,
+                icon: data.acf.icon_2.value.replaceAll("dashicons-", ""),
                 title: data.acf.icon_2_title,
                 description: data.acf.icon_2_description,
             },
             {
-                icon: data.acf.icon_3.value,
+                icon: data.acf.icon_3.value.replaceAll("dashicons-", ""),
                 title: data.acf.icon_3_title,
                 description: data.acf.icon_3_description,
             },
             {
-                icon: data.acf.icon_4.value,
+                icon: data.acf.icon_4.value.replaceAll("dashicons-", ""),
                 title: data.acf.icon_4_title,
                 description: data.acf.icon_4_description,
             },

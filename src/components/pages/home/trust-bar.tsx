@@ -1,5 +1,6 @@
 import { T } from "@/src/lib/tokens"
-import { Dashicon } from '@wordpress/components'
+import iv, { Dashicon } from "@wordpress/components"
+import "@icon/dashicons/dashicons.css"
 
 interface TrustBarProps {
     icon: string
@@ -8,6 +9,7 @@ interface TrustBarProps {
 }
 
 const TrustBar = ({ trustBar }: { trustBar: TrustBarProps[] }) => {
+    console.log(trustBar)
     return (
         <section style={{ background: T.ink, padding: "28px 24px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
@@ -44,9 +46,9 @@ const TrustBar = ({ trustBar }: { trustBar: TrustBarProps[] }) => {
                                 border: "1px solid rgba(255,255,255,0.08)",
                             }}
                         >
-                            <span style={{ fontSize: 22, flexShrink: 0 }}>
-                                <Dashicon icon={icon as any} />
-                            </span>
+                            <div className="flex items-center justify-center">
+                                <Dashicon className="text-white text-xl" icon={icon as any} />
+                            </div>
                             <div>
                                 <div
                                     style={{
