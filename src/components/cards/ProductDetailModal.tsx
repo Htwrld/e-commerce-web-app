@@ -181,7 +181,7 @@ export function ProductDetailModal({ product: p, onClose, onAdd }: ProductDetail
                         SELECT SIZE
                     </div>
                     <div style={{ display: "flex", gap: 8 }}>
-                        {["XS", "S", "M", "L", "XL", "XXL"].map((s) => (
+                        {p.sizes.map((s) => (
                             <button
                                 key={s}
                                 style={{

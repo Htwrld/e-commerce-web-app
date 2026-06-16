@@ -125,19 +125,18 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                     <VerseChip verse={p.bible_verse} verseText={p.bible_verse_content} />
                 </div>
                 <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-                    {p.colors &&
-                        p.colors.map((c, i) => (
-                            <div
-                                key={i}
-                                style={{
-                                    width: 14,
-                                    height: 14,
-                                    borderRadius: "50%",
-                                    background: c,
-                                    border: `2px solid ${T.border}`,
-                                }}
-                            />
-                        ))}
+                    {p.colors.map((c, i) => (
+                        <div
+                            key={i}
+                            style={{
+                                width: 14,
+                                height: 14,
+                                borderRadius: "50%",
+                                background: c,
+                                border: `2px solid ${T.border}`,
+                            }}
+                        />
+                    ))}
                 </div>
                 <div style={{ display: "flex", gap: 8 }}>
                     <button
