@@ -43,7 +43,7 @@ const WhyHTW = ({
                         }}
                     >
                         <div style={{ fontSize: 42, marginBottom: 14 }}>
-                            <Dashicon icon={w.icon as any} />
+                            <Dashicon className="text-green-600" icon={w.icon as any} />
                         </div>
                         <h3
                             style={{

@@ -36,13 +36,7 @@ const EmailNWhatsApp = ({
                     </h2>
                     <div className="divider" style={{ margin: "14px auto 0" }} />
                 </div>
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit,minmax(380px,1fr))",
-                        gap: 24,
-                    }}
-                >
+                <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 md:gap-y-24">
                     {/* Email */}
                     <div
                         style={{
@@ -99,6 +93,7 @@ const EmailNWhatsApp = ({
                                     borderRadius: 8,
                                     overflow: "hidden",
                                     border: `2px solid ${T.gold}`,
+                                    flexShrink: 0,
                                 }}
                             >
                                 <input
@@ -106,15 +101,7 @@ const EmailNWhatsApp = ({
                                     value={emailSub}
                                     onChange={(e) => setEmailSub(e.target.value)}
                                     placeholder="your@email.com"
-                                    style={{
-                                        flex: 1,
-                                        background: T.cream,
-                                        border: "none",
-                                        color: T.ink,
-                                        padding: "12px 16px",
-                                        fontSize: 14,
-                                        fontFamily: "'Georgia',serif",
-                                    }}
+                                    className="flex-1 border-none bg-[#F5F0DC] font-sans text-[0.5rem] sm:text-xs text-[#1A8A3C] md:text-sm p-2"
                                 />
                                 <button
                                     className="btn-primary"
@@ -176,7 +163,6 @@ const EmailNWhatsApp = ({
                                     border: "1px solid #25D36644",
                                     borderRadius: 8,
                                     padding: 14,
-                                    fontSize: 14,
                                     color: "#1A8A3C",
                                     fontWeight: 700,
                                 }}
@@ -199,15 +185,7 @@ const EmailNWhatsApp = ({
                                         value={waNumber}
                                         onChange={(e) => setWaNumber(e.target.value)}
                                         placeholder="+234 XXX XXX XXXX"
-                                        style={{
-                                            flex: 1,
-                                            background: T.white,
-                                            border: "none",
-                                            color: T.ink,
-                                            padding: "12px 16px",
-                                            fontSize: 14,
-                                            fontFamily: "'Georgia',serif",
-                                        }}
+                                        className="flex-1 border-none bg-white font-sans text-[0.5rem] sm:text-xs text-[#1A1612] md:text-sm p-2"
                                     />
                                     <button
                                         style={{
