@@ -1,4 +1,4 @@
-'use server'
+"use server"
 
 import { T } from "../lib/tokens"
 
@@ -77,8 +77,9 @@ export type PageHome = {
 
 export const getPageHomePage: () => Promise<PageHome> = async () => {
     try {
-        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/24`)
+        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/24?acf_format=standard`)
         const data = await res.json()
+        
         const heroSection = [
             {
                 hero_headline: data.acf.hero_headline_1,
@@ -111,22 +112,22 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
 
         const trustBar = [
             {
-                icon: data.acf.icon_1.value.replaceAll("dashicons-", ""),
+                icon: data.acf.icon_1.replaceAll("dashicons-", ""),
                 title: data.acf.icon_1_title,
                 description: data.acf.icon_1_description,
             },
             {
-                icon: data.acf.icon_2.value.replaceAll("dashicons-", ""),
+                icon: data.acf.icon_2.replaceAll("dashicons-", ""),
                 title: data.acf.icon_2_title,
                 description: data.acf.icon_2_description,
             },
             {
-                icon: data.acf.icon_3.value.replaceAll("dashicons-", ""),
+                icon: data.acf.icon_3.replaceAll("dashicons-", ""),
                 title: data.acf.icon_3_title,
                 description: data.acf.icon_3_description,
             },
             {
-                icon: data.acf.icon_4.value.replaceAll("dashicons-", ""),
+                icon: data.acf.icon_4.replaceAll("dashicons-", ""),
                 title: data.acf.icon_4_title,
                 description: data.acf.icon_4_description,
             },
@@ -219,7 +220,7 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             ourDifferences,
         }
     } catch (e) {
-        
+        console.log(e)
         return {} as PageHome
     }
 }

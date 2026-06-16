@@ -124,10 +124,17 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
                     overflow: "hidden",
                 }}
             >
-                {LIFESTYLE_IMGS.map((src, i) => (
-                    <div key={i} style={{ flex: 1, overflow: "hidden", position: "relative" }}>
+                {heroSection.map((hero, i) => (
+                    <div
+                        key={hero.hero_headline + i}
+                        style={{
+                            flex: 1,
+                            overflow: "hidden",
+                            position: "relative",
+                        }}
+                    >
                         <Image
-                            src={src}
+                            src={hero.hero_lifestyle_image ?? "/images/hoodie_lifestyle.png"}
                             alt=""
                             fill
                             style={{ objectFit: "cover", objectPosition: "center top" }}
