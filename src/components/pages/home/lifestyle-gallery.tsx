@@ -121,38 +121,15 @@ const LifestyleGallery = ({
                     >
                         <a
                             href="#"
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 6,
-                                background:
-                                    "linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)",
-                                color: "#fff",
-                                padding: "9px 20px",
-                                borderRadius: 8,
-                                textDecoration: "none",
-                                fontSize: 13,
-                                fontWeight: 700,
-                            }}
+                            className="flex items-center gap-2 bg-linear-to-r from-blue-800 to-blue-700 text-white px-4 py-2 rounded-md"
                         >
-                            📸 Instagram
+                            📸 Facebook
                         </a>
                         <a
                             href="#"
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 6,
-                                background: "#000",
-                                color: "#fff",
-                                padding: "9px 20px",
-                                borderRadius: 8,
-                                textDecoration: "none",
-                                fontSize: 13,
-                                fontWeight: 700,
-                            }}
+                            className="flex items-center gap-2 bg-linear-to-r from-red-700 to-red-800 text-white px-4 py-2 rounded-md"
                         >
-                            🎵 TikTok
+                            🎬 Youtube
                         </a>
                     </div>
                 </div>

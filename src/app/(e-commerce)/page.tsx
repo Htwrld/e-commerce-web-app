@@ -28,6 +28,7 @@ const MainPage = async () => {
     const styles = await getStyles()
     const ambassadors = await getAmbassadors()
     const testimonials = await getTestimonials()
+    
     return (
         <main>
             <ProductDetailProvider>
@@ -43,7 +44,7 @@ const MainPage = async () => {
                 <LifestyleGallery
                     title={homepage.otherTitles.styled_by_community_title}
                     description={homepage.otherTitles.styled_by_community_description}
-                    hashtag={homepage.otherTitles.style_by_community_hashtag}
+                    hashtag={homepage.otherTitles.styled_by_community_hashtag}
                     styles={styles}
                 />
                 <FeaturedCollection

@@ -11,19 +11,9 @@ const HERO_BGS = [
     "linear-gradient(135deg,#F5E0DC 0%,#F5B8A8 50%,#EDD4CC 100%)",
 ]
 const HERO_ACCENTS = [T.gold, T.sage, T.rust]
-const HERO_SUBS = [
-    "Faith-inspired fashion for a generation that refuses to blend in.",
-    "A new standard of bold living — rooted in faith, draped in style.",
-    "Confidence, faith, and identity — stitched into every piece.",
-]
-
-const LIFESTYLE_IMGS = [
-    "/images/hoodie_lifestyle.png",
-    "/images/tee_she.jpg",
-    "/images/polo_twopiece.jpg",
-]
 
 type HeroSectionProps = {
+    hero_badge: string
     hero_headline: string
     hero_subheadline: string
     hero_tagline: string
@@ -167,7 +157,7 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
                         marginBottom: 22,
                     }}
                 >
-                    ✝ EASTER 2026 · NEW COLLECTION
+                    ✝ {activeSection.hero_badge}
                 </div>
                 <h1
                     style={{

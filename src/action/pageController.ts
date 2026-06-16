@@ -5,6 +5,7 @@ import { T } from "../lib/tokens"
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
 
 export type HeroSection = {
+    hero_badge: string
     hero_headline: string
     hero_subheadline: string
     hero_tagline: string
@@ -37,7 +38,7 @@ export type OtherTitles = {
     trending_now_description: string
     styled_by_community_title: string
     styled_by_community_description: string
-    style_by_community_hashtag: string
+    styled_by_community_hashtag: string
     featured_collection_title: string
     featured_collection_description: string
     featured_collection_tagline: string
@@ -84,6 +85,7 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
         
         const heroSection = [
             {
+                hero_badge: data.acf.hero_badge_1,
                 hero_headline: data.acf.hero_headline_1,
                 hero_subheadline: data.acf.hero_subheadline_1,
                 hero_tagline: data.acf.hero_tagline_1,
@@ -91,6 +93,7 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_1,
             },
             {
+                hero_badge: data.acf.hero_badge_2,
                 hero_headline: data.acf.hero_headline_2,
                 hero_subheadline: data.acf.hero_subheadline_2,
                 hero_tagline: data.acf.hero_tagline_2,
@@ -98,6 +101,7 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_2,
             },
             {
+                hero_badge: data.acf.hero_badge_3,
                 hero_headline: data.acf.hero_headline_3,
                 hero_subheadline: data.acf.hero_subheadline_3,
                 hero_tagline: data.acf.hero_tagline_3,
@@ -174,7 +178,7 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             trending_now_description: data.acf.trending_now_description,
             styled_by_community_title: data.acf.styled_by_community_title,
             styled_by_community_description: data.acf.styled_by_community_description,
-            style_by_community_hashtag: data.acf.style_by_community_hashtag,
+            styled_by_community_hashtag: data.acf.styled_by_community_hashtag,
             featured_collection_title: data.acf.featured_collection_title,
             featured_collection_description: data.acf.featured_collection_description,
             featured_collection_tagline: data.acf.featured_collection_tagline,
@@ -229,7 +233,7 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             ourDifferences,
         }
     } catch (e) {
-        console.log(e)
+        
         return {} as PageHome
     }
 }

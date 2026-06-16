@@ -8,7 +8,6 @@ interface TrustBarProps {
 }
 
 const TrustBar = ({ trustBar }: { trustBar: TrustBarProps[] }) => {
-    console.log(trustBar)
     return (
         <section style={{ background: T.ink, padding: "28px 24px" }}>
             <div style={{ maxWidth: 1160, margin: "0 auto" }}>
