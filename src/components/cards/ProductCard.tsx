@@ -133,7 +133,7 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                                 height: 14,
                                 borderRadius: "50%",
                                 background: c,
-                                border: `2px solid ${T.border}`,
+                                border: `2px solid ${c} 80%`,
                             }}
                         />
                     ))}
