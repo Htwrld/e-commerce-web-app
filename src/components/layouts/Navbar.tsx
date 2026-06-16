@@ -131,7 +131,7 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                         )}
                     </button>
                     <button
-                        className="lg:hidden!"
+                        className="bg-none md:hidden!"
                         onClick={() => setMenuOpen((o) => !o)}
                         style={{
                             background: "none",

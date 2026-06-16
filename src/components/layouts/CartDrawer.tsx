@@ -4,10 +4,13 @@ import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
 import { WABtn } from "@/src/components/cards/WABtn"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export function CartDrawer() {
     const { cart, cartOpen, setCartOpen, removeFromCart, updateQty, cartCount, cartTotal } =
         useCart()
+    const router = useRouter()
 
     if (!cartOpen) return null
 
@@ -223,17 +226,17 @@ export function CartDrawer() {
                                     ₦{cartTotal.toLocaleString()}
                                 </span>
                             </div>
-                            <button
+                            <Link
+                                href="/checkout"
                                 className="btn-primary"
                                 style={{
                                     width: "100%",
                                     justifyContent: "center",
                                     marginBottom: 10,
                                 }}
-                                
                             >
                                 Proceed to Checkout →
-                            </button>
+                            </Link>
                             <WABtn
                                 text="Complete via WhatsApp"
                                 product={cart.map((c) => `${c.name} x${c.qty}`).join(", ")}

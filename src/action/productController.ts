@@ -35,7 +35,7 @@ export const getProducts = async () => {
                 gender: p.acf.gender,
                 name: p.acf.name,
                 description: p.acf.description,
-                price: p.acf.price,
+                price: p.acf.price !== "" ? p.acf.price : '100',
                 quotes: p.acf.quotes,
                 bible_verse: p.acf.bible_verse,
                 bible_verse_content: p.acf.bible_verse_content,
