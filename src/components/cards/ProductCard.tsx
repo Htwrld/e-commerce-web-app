@@ -34,7 +34,7 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                         alt={p.name}
                         height={700}
                         width={500}
-                        className="object-cover object-center w-full h-full"
+                        className="h-full w-full object-cover object-center"
                         onError={(e) =>
                             ((e.currentTarget as HTMLImageElement).style.display = "none")
                         }
@@ -53,24 +53,21 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                         👕
                     </div>
                 )}
-                <div style={{ position: "absolute", top: 10, left: 10 }}>
-                    <Badge text={p.badge} />
-                </div>
-                <div
-                    style={{
-                        position: "absolute",
-                        top: 10,
-                        right: 10,
-                        background: "rgba(255,255,255,0.9)",
-                        color: T.muted,
-                        borderRadius: 20,
-                        padding: "2px 10px",
-                        fontSize: 10,
-                        fontFamily: "monospace",
-                        fontWeight: 700,
-                    }}
-                >
-                    {p.gender.toUpperCase()}
+                <div className="absolute top-0 z-10 flex w-full items-center justify-between p-3">
+                    <Badge text={p.badge.toUpperCase()} color={T.gold} />
+                    <div
+                        style={{
+                            background: "rgba(255,255,255,0.9)",
+                            color: T.muted,
+                            borderRadius: 5,
+                            padding: "2px 10px",
+                            fontSize: 10,
+                            fontFamily: "monospace",
+                            fontWeight: 700,
+                        }}
+                    >
+                        {p.gender.toUpperCase()}
+                    </div>
                 </div>
             </div>
 
@@ -128,18 +125,19 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                     <VerseChip verse={p.bible_verse} verseText={p.bible_verse_content} />
                 </div>
                 <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-                    {p.colors && p.colors.map((c, i) => (
-                        <div
-                            key={i}
-                            style={{
-                                width: 14,
-                                height: 14,
-                                borderRadius: "50%",
-                                background: c,
-                                border: `2px solid ${T.border}`,
-                            }}
-                        />
-                    ))}
+                    {p.colors &&
+                        p.colors.map((c, i) => (
+                            <div
+                                key={i}
+                                style={{
+                                    width: 14,
+                                    height: 14,
+                                    borderRadius: "50%",
+                                    background: c,
+                                    border: `2px solid ${T.border}`,
+                                }}
+                            />
+                        ))}
                 </div>
                 <div style={{ display: "flex", gap: 8 }}>
                     <button

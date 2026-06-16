@@ -24,7 +24,7 @@ export const getProducts = async () => {
     try {
         const res = await fetch(`${website_url}wp-json/wp/v2/product?acf_format=standard`)
         const data = await res.json()
-
+        console.log(data)
         const products: Product[] = data.map((p: any) => {
             return {
                 id: p.id,
@@ -49,7 +49,6 @@ export const getProducts = async () => {
         
         return products
     } catch (error) {
-        console.log(error)
         return []
     }
 }

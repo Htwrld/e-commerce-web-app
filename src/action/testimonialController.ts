@@ -25,7 +25,6 @@ export const getTestimonials = async () => {
 
         return testimonials
     } catch (e) {
-        console.log(e)
         return []
     }
 }

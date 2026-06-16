@@ -20,7 +20,7 @@ const FeaturedCollection = ({
 }) => {
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
-    const newArr = products.filter((p) => p.badge === "NEW").slice(0, 4)
+    const newArr = products.filter((p) => p.badge.toLowerCase() === "featured").slice(0, 4)
     return (
         <section style={{ padding: "80px 28px", maxWidth: 1160, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 48 }}>

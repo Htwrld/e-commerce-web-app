@@ -2,10 +2,11 @@ import { BADGE_COLORS } from "@/src/lib/tokens"
 
 interface BadgeProps {
     text: string
+    color?: string
 }
 
-export function Badge({ text }: BadgeProps) {
-    const color = BADGE_COLORS[text] ?? "#888"
+export function Badge({ text, color: newColor }: BadgeProps) {
+    const color = newColor ?? BADGE_COLORS[text] ?? "#888"
     return (
         <span
             style={{
