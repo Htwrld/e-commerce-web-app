@@ -26,6 +26,7 @@ const LIFESTYLE_IMGS = [
 type HeroSectionProps = {
     hero_headline: string
     hero_subheadline: string
+    hero_tagline: string
     hero_background_color: string
     hero_lifestyle_image: string
 }
@@ -204,7 +205,7 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
                         letterSpacing: "0.04em",
                     }}
                 >
-                    {activeSection.hero_subheadline}
+                    {activeSection.hero_tagline}
                 </p>
 
                 <div

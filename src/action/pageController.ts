@@ -7,6 +7,7 @@ const website_url = process.env.WORDPRESS_URL_ENDPOINT
 export type HeroSection = {
     hero_headline: string
     hero_subheadline: string
+    hero_tagline: string
     hero_background_color: string
     hero_lifestyle_image: string
 }
@@ -84,18 +85,21 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             {
                 hero_headline: data.acf.hero_headline_1,
                 hero_subheadline: data.acf.hero_subheadline_1,
+                hero_tagline: data.acf.hero_tagline_1,
                 hero_background_color: data.acf.hero_background_color_1,
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_1,
             },
             {
                 hero_headline: data.acf.hero_headline_2,
                 hero_subheadline: data.acf.hero_subheadline_2,
+                hero_tagline: data.acf.hero_tagline_2,
                 hero_background_color: data.acf.hero_background_color_2,
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_2,
             },
             {
                 hero_headline: data.acf.hero_headline_3,
                 hero_subheadline: data.acf.hero_subheadline_3,
+                hero_tagline: data.acf.hero_tagline_3,
                 hero_background_color: data.acf.hero_background_color_3,
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_3,
             },
@@ -188,6 +192,8 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             get_launched_title: data.acf.get_launched_title,
             get_launched_description: data.acf.get_launched_description,
         }
+
+        console.log(data.acf)
 
         const ourDifferences = {
             our_difference_title: data.acf.our_difference_title,
