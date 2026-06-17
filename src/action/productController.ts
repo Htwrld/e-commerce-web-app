@@ -21,14 +21,18 @@ export type Product = {
     size_guide: string
 }
 
-export const getProducts = async () => {
+export const getProducts = async (acfField?: string | undefined) => {
     try {
-        const res = await fetch(`${website_url}wp-json/wp/v2/product?acf_format=standard`, {
-            cache: 'no-cache',
+        let endpoint = `${website_url}wp-json/wp/v2/product?acf_format=standard`
+        if (acfField) endpoint += `orderby=meta_value_num&meta_key=${acfField}`
+        endpoint += `&order=desc&per_page=36`
+        const res = await fetch(endpoint, {
+            cache: "no-store",
         })
+        const totalPagesHeader = res.headers.get("X-WP-TotalPages")
         const data = await res.json()
-    
         const products: Product[] = data.map((p: any) => {
+            console.log(p.acf.category)
             return {
                 id: p.id,
                 photo: p.acf.photo,
@@ -37,7 +41,7 @@ export const getProducts = async () => {
                 gender: p.acf.gender,
                 name: p.acf.name,
                 description: p.acf.description,
-                price: p.acf.price !== "" ? p.acf.price : '100',
+                price: p.acf.price !== "" ? p.acf.price : "100",
                 quotes: p.acf.quotes,
                 bible_verse: p.acf.bible_verse,
                 bible_verse_content: p.acf.bible_verse_content,
@@ -50,9 +54,15 @@ export const getProducts = async () => {
                 size_guide: p.acf.size_guide,
             }
         })
-        
-        return products
+
+        return {
+            products,
+            pages: totalPagesHeader ? parseInt(totalPagesHeader) : 1,
+        }
     } catch (error) {
-        return []
+        return {
+            products: [],
+            pages: 1,
+        }
     }
 }

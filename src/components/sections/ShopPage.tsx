@@ -24,7 +24,8 @@ export const ShopPage = ({
     const [detailProd, setDetailProd] = useState<Product | null>(null)
 
     const filtered = products.filter((p) => {
-        const isCat = p.categories.includes(activeCat)
+        const newCats = p.categories.map((c) => (c === "polos &amp; tees" ? "polos & tees" : c))
+        const isCat = newCats.includes(activeCat)
         const isGen = p.gender.toLowerCase() === activeGen || p.gender.toLowerCase() === "unisex"
         return (activeCat === "all" || isCat) && (activeGen === "all" || isGen)
     })
@@ -69,26 +70,28 @@ export const ShopPage = ({
                 >
                     Category:
                 </span>
-                {CATS.map((c) => (
-                    <button
-                        key={c}
-                        onClick={() => setActiveCat(c.toLowerCase())}
-                        style={{
-                            background: activeCat === c.toLowerCase() ? T.rust : "none",
-                            border: `2px solid ${activeCat === c.toLowerCase() ? T.rust : T.border}`,
-                            color: activeCat === c.toLowerCase() ? "#fff" : T.muted,
-                            padding: "8px 20px",
-                            borderRadius: 24,
-                            fontSize: 13,
-                            cursor: "pointer",
-                            fontFamily: "'Georgia',serif",
-                            letterSpacing: "0.04em",
-                            transition: "all .2s",
-                        }}
-                    >
-                        {c}
-                    </button>
-                ))}
+                {CATS.map((c) => {
+                    return (
+                        <button
+                            key={c}
+                            onClick={() => setActiveCat(c.toLowerCase())}
+                            style={{
+                                background: activeCat === c.toLowerCase() ? T.rust : "none",
+                                border: `2px solid ${activeCat === c.toLowerCase() ? T.rust : T.border}`,
+                                color: activeCat === c.toLowerCase() ? "#fff" : T.muted,
+                                padding: "8px 20px",
+                                borderRadius: 24,
+                                fontSize: 13,
+                                cursor: "pointer",
+                                fontFamily: "'Georgia',serif",
+                                letterSpacing: "0.04em",
+                                transition: "all .2s",
+                            }}
+                        >
+                            {c}
+                        </button>
+                    )
+                })}
             </div>
             <div
                 style={{

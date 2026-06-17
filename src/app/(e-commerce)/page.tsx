@@ -23,7 +23,8 @@ import "@icon/dashicons/dashicons.css"
 
 const MainPage = async () => {
     const homepage = await getPageHomePage()
-    const products = await getProducts()
+    const { products:bestSellers } = await getProducts("Bestseller")
+    const { products:featured } = await getProducts("Featured")
     const hashtags = await getHashtags()
     const styles = await getStyles()
     const ambassadors = await getAmbassadors()
@@ -39,7 +40,7 @@ const MainPage = async () => {
                     title={homepage.otherTitles.trending_now_title}
                     description={homepage.otherTitles.trending_now_description}
                     mobileNumber={navbarandfooter.site_mobile_number}
-                    products={products}
+                    products={bestSellers}
                 />
                 <CategoriesNav />
                 <LifestyleGallery
@@ -55,7 +56,7 @@ const MainPage = async () => {
                     description={homepage.otherTitles.featured_collection_description}
                     tagline={homepage.otherTitles.featured_collection_tagline}
                     mobileNumber={navbarandfooter.site_mobile_number}
-                    products={products}
+                    products={featured}
                 />
                 <PieceBanner
                     title={homepage.otherTitles.shop_the_look_title}

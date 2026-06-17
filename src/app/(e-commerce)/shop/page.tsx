@@ -4,7 +4,7 @@ import { ShopPage } from "@/src/components/sections/ShopPage"
 import { Suspense } from "react"
 
 const HTWContactApp = async () => {
-    const products = await getProducts()
+    const { products, pages } = await getProducts()
     const navbarandfooter = await getNavbarandFooter()
     return (
         <main>
