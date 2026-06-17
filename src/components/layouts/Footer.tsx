@@ -96,13 +96,11 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                             "Polos & Tees",
                             "2-Piece Sets",
                         ].map((l) => (
-                            <Link
-                                key={l}
-                                href={`/shop?cat=${l.toLowerCase()}`}
-                                className="text-sm text-gray-500 hover:text-white"
-                            >
-                                {l}
-                            </Link>
+                            <div key={l} className="text-sm text-gray-500 hover:text-white">
+                                <Link href={`/shop?cat=${l.toLowerCase()}`}>
+                                    {l}
+                                </Link>
+                            </div>
                         ))}
                     </div>
 
@@ -129,13 +127,11 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                                 ["policy", "Privacy Policy"],
                             ] as [String, string][]
                         ).map(([p, l]) => (
-                            <Link
-                                key={l}
-                                href={`/${p}`}
-                                className="text-sm text-gray-500 hover:text-white"
-                            >
-                                {l}
-                            </Link>
+                            <div key={l} className="text-sm text-gray-500 hover:text-white">
+                                <Link href={`/${p}`}>
+                                    {l}
+                                </Link>
+                            </div>
                         ))}
                     </div>
 
