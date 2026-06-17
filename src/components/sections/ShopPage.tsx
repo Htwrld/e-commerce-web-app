@@ -7,9 +7,12 @@ import { useCart } from "@/src/lib/cart-context"
 import { ProductCard } from "@/src/components/cards/ProductCard"
 import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal"
 import { Product } from "@/src/action/productController"
+import { useSearchParams } from "next/navigation"
 
 export const ShopPage = ({ products }: { products: Product[] }) => {
-    const [activeCat, setActiveCat] = useState("all")
+    const searchParams = useSearchParams()
+    const cat = searchParams.get("cat")
+    const [activeCat, setActiveCat] = useState(cat ? cat : "all")
     const [activeGen, setActiveGen] = useState("all")
     const { addToCart } = useCart()
     const [detailProd, setDetailProd] = useState<Product | null>(null)
@@ -29,9 +32,9 @@ export const ShopPage = ({ products }: { products: Product[] }) => {
                     onAdd={addToCart}
                 />
             )}
-
+            
             <div style={{ marginBottom: 32 }}>
-                <p className="section-label">SHOP</p>
+                <p className="section-label">Shop</p>
                 <h1 className="section-title" style={{ fontSize: "clamp(30px,5vw,50px)" }}>
                     All Pieces
                 </h1>

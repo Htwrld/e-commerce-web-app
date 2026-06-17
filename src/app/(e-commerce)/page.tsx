@@ -45,6 +45,8 @@ const MainPage = async () => {
                     title={homepage.otherTitles.styled_by_community_title}
                     description={homepage.otherTitles.styled_by_community_description}
                     hashtag={homepage.otherTitles.styled_by_community_hashtag}
+                    facebookLink={homepage.otherTitles.styled_by_community_facebook_link}
+                    instagramLink={homepage.otherTitles.styled_by_community_instagram_link}
                     styles={styles}
                 />
                 <FeaturedCollection

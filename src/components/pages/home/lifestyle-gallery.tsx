@@ -7,10 +7,14 @@ const LifestyleGallery = ({
     description,
     hashtag,
     styles,
+    facebookLink,
+    instagramLink,
 }: {
     title: string
     description: string
     hashtag: string
+    facebookLink: string
+    instagramLink: string
     styles: Style[]
 }) => {
     return (
@@ -120,13 +124,16 @@ const LifestyleGallery = ({
                         }}
                     >
                         <a
-                            href="#"
+                            href={facebookLink}
+                            target="_blank"
                             className="flex items-center gap-2 bg-linear-to-r from-blue-800 to-blue-700 text-white px-4 py-2 rounded-md"
+
                         >
                             📸 Facebook
                         </a>
                         <a
-                            href="#"
+                            href={instagramLink}
+                            target="_blank"
                             className="flex items-center gap-2 bg-linear-to-r from-red-700 to-red-800 text-white px-4 py-2 rounded-md"
                         >
                             🎬 Youtube

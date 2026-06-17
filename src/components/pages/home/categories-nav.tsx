@@ -34,11 +34,11 @@ const CategoriesNav = () => {
                                 }}
                             >
                                 {[
-                                    ["Sweatshirts", "🧥"],
-                                    ["Hoodies", "🫙"],
-                                    ["Joggers", "👟"],
-                                    ["Polos & Tees", "👔"],
-                                    ["2-Piece Sets", "👗"],
+                                    ["sweatshirts", "🧥"],
+                                    ["hoodies", "🫙"],
+                                    ["joggers", "👟"],
+                                    ["polos & tees", "👔"],
+                                    ["2-piece sets", "👗"],
                                 ].map(([cat, ico]) => (
                                     <Link
                                         key={cat}

@@ -39,6 +39,8 @@ export type OtherTitles = {
     styled_by_community_title: string
     styled_by_community_description: string
     styled_by_community_hashtag: string
+    styled_by_community_facebook_link: string
+    styled_by_community_instagram_link: string
     featured_collection_title: string
     featured_collection_description: string
     featured_collection_tagline: string
@@ -179,6 +181,8 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             styled_by_community_title: data.acf.styled_by_community_title,
             styled_by_community_description: data.acf.styled_by_community_description,
             styled_by_community_hashtag: data.acf.styled_by_community_hashtag,
+            styled_by_community_facebook_link: data.acf.styled_by_community_facebook_link,
+            styled_by_community_instagram_link: data.acf.styled_by_community_instagram_link,
             featured_collection_title: data.acf.featured_collection_title,
             featured_collection_description: data.acf.featured_collection_description,
             featured_collection_tagline: data.acf.featured_collection_tagline,
