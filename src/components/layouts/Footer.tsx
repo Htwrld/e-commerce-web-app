@@ -96,7 +96,7 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                             "Polos & Tees",
                             "2-Piece Sets",
                         ].map((l) => (
-                            <div key={l} className="text-sm text-[#666] hover:text-white mb-0.5">
+                            <div key={l} className="text-xs text-[#666] hover:text-white mb-0.5">
                                 <Link href={`/shop?cat=${l.toLowerCase()}`}>
                                     {l}
                                 </Link>
@@ -127,7 +127,7 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                                 ["policy", "Privacy Policy"],
                             ] as [String, string][]
                         ).map(([p, l]) => (
-                            <div key={l} className="text-sm text-[#666] hover:text-white mb-0.5">
+                            <div key={l} className="text-xs text-[#666] hover:text-white mb-0.5">
                                 <Link href={`/${p}`}>
                                     {l}
                                 </Link>
