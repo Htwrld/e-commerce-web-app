@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { createContext, useContext, useState } from "react"
 import { ProductDetailModal } from "../components/cards/ProductDetailModal"
@@ -15,7 +15,13 @@ const productDetailContext = createContext<ProductDetailContext>({
     setProduct: () => {},
 })
 
-export const ProductDetailProvider = ({ children }: { children: React.ReactNode }) => {
+export const ProductDetailProvider = ({
+    children,
+    mobileNumber,
+}: {
+    children: React.ReactNode
+    mobileNumber: string
+}) => {
     const [product, setProduct] = useState<Product | null>(null)
     const { addToCart } = useCart()
 
@@ -26,6 +32,7 @@ export const ProductDetailProvider = ({ children }: { children: React.ReactNode 
                     product={product}
                     onClose={() => setProduct(null)}
                     onAdd={addToCart}
+                    mobileNumber={mobileNumber}
                 />
             )}
             {children}

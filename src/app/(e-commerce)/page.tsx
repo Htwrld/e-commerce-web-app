@@ -31,7 +31,7 @@ const MainPage = async () => {
     const navbarandfooter = await getNavbarandFooter()
     return (
         <main>
-            <ProductDetailProvider>
+            <ProductDetailProvider mobileNumber={navbarandfooter.site_mobile_number}>
                 <HeroSection heroSection={homepage.heroSection} />
                 <TrustBar trustBar={homepage.trustBar} />
                 <BrandSection ourMission={homepage.ourMission} />
