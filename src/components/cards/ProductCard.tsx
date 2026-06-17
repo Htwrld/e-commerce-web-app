@@ -12,9 +12,10 @@ interface ProductCardProps {
     product: Product
     onAdd: (product: Product) => void
     onClick: (product: Product) => void
+    mobileNumber: string
 }
 
-export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
+export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: ProductCardProps) {
     const { cart, updateQty, removeFromCart } = useCart()
     const isInCart = cart.find((c) => c.id === p.id)
     return (
@@ -218,7 +219,7 @@ export function ProductCard({ product: p, onAdd, onClick }: ProductCardProps) {
                         Add to Cart
                     </button>
                 )}
-                <WABtn text="Order" product={p.name} />
+                <WABtn text="Order" product={p.name} number={mobileNumber} />
             </div>
         </div>
     )

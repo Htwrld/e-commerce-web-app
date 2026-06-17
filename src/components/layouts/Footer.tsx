@@ -167,7 +167,7 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                         >
                             ORDER SUPPORT
                         </div>
-                        <WABtn text="Chat on WhatsApp" />
+                        <WABtn text="Chat on WhatsApp" number={footerandnavbar.site_mobile_number} />
                         <div style={{ marginTop: 18 }}>
                             <div
                                 style={{

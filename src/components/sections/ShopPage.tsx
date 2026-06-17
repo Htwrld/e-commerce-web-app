@@ -9,7 +9,13 @@ import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal"
 import { Product } from "@/src/action/productController"
 import { useSearchParams } from "next/navigation"
 
-export const ShopPage = ({ products }: { products: Product[] }) => {
+export const ShopPage = ({
+    products,
+    mobileNumber,
+}: {
+    products: Product[]
+    mobileNumber: string
+}) => {
     const searchParams = useSearchParams()
     const cat = searchParams.get("cat")
     const [activeCat, setActiveCat] = useState(cat ? cat : "all")
@@ -30,9 +36,10 @@ export const ShopPage = ({ products }: { products: Product[] }) => {
                     product={detailProd}
                     onClose={() => setDetailProd(null)}
                     onAdd={addToCart}
+                    mobileNumber={mobileNumber}
                 />
             )}
-            
+
             <div style={{ marginBottom: 32 }}>
                 <p className="section-label">Shop</p>
                 <h1 className="section-title" style={{ fontSize: "clamp(30px,5vw,50px)" }}>
@@ -151,6 +158,7 @@ export const ShopPage = ({ products }: { products: Product[] }) => {
                             product={p}
                             onAdd={addToCart}
                             onClick={setDetailProd}
+                            mobileNumber={mobileNumber}
                         />
                     ))}
                 </div>

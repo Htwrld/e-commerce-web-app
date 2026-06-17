@@ -390,6 +390,7 @@ export const getContactPage = async () => {
 export type NavbarandFooter = {
     site_title: string
     site_description: string
+    site_mobile_number: string
     navbar_scrollbar: string
     footer_tagline: string
     footer_quotes: string
@@ -404,6 +405,7 @@ export const getNavbarandFooter = async () => {
         return {
             site_title: data.acf.site_title,
             site_description: data.acf.site_description,
+            site_mobile_number: data.acf.site_mobile_number,
             navbar_scrollbar: data.acf.navbar_scrollbar,
             footer_tagline: data.acf.footer_tagline,
             footer_quotes: data.acf.footer_quotes,

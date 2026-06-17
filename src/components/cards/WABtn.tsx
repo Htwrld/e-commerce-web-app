@@ -9,7 +9,7 @@ export function WABtn({ text = "Order via WhatsApp", product = "", number, messa
     const msg =
         message ||
         encodeURIComponent(`Hi HTW! I'd like to order: ${product || "an item from your store"}`)
-    const no = number || "2348000000000"
+    const no = number || "2348131458625"
     return (
         <a
             href={`https://wa.me/${no}?text=${msg}`}

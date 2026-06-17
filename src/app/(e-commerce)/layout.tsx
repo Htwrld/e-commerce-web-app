@@ -20,7 +20,7 @@ const EcommerceLayout = async ({ children }: { children: React.ReactNode }) => {
         >
             <CartProvider>
                 <a
-                    href="https://wa.me/2348000000000"
+                    href={`https://wa.me/${footerandnavbar.site_mobile_number}`}
                     target="_blank"
                     rel="noreferrer"
                     className="wa-float"

@@ -11,9 +11,10 @@ interface ProductDetailModalProps {
     product: Product
     onClose: () => void
     onAdd: (product: Product) => void
+    mobileNumber: string
 }
 
-export function ProductDetailModal({ product: p, onClose, onAdd }: ProductDetailModalProps) {
+export function ProductDetailModal({ product: p, onClose, onAdd, mobileNumber }: ProductDetailModalProps) {
     return (
         <div
             style={{
@@ -212,7 +213,7 @@ export function ProductDetailModal({ product: p, onClose, onAdd }: ProductDetail
                     >
                         Add to Cart
                     </button>
-                    <WABtn text="Order Now" product={p.name} />
+                    <WABtn text="Order Now" product={p.name} number={mobileNumber} />
                 </div>
 
                 <div style={{ marginTop: 16, padding: 14, background: T.warm, borderRadius: 8 }}>
