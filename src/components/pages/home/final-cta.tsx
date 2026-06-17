@@ -20,7 +20,7 @@ const FinalCTA = ({
             }}
         >
             <div style={{ maxWidth: 680, margin: "0 auto" }}>
-                <div style={{ fontSize: 52, marginBottom: 20, opacity: 0.6, color: T.gold }}>
+                <div className="mb-5 flex w-full items-center justify-center text-2xl text-[#C9923A] opacity-60">
                     <Image src="/favicon.png" alt="" width={50} height={50} />
                 </div>
                 <h2
