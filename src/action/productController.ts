@@ -26,7 +26,7 @@ export type Product = {
 export const getProducts = async (acfField?: string, page?: number) => {
     try {
         let endpoint = `${website_url}wp-json/wp/v2/product?acf_format=standard`
-        if (acfField) endpoint += `orderby=meta_value_num&meta_key=${acfField}`
+        if (acfField) endpoint += `&meta_key=${acfField}`
         endpoint += `&order=desc&per_page=36`
         if (page) endpoint += `&page=${page}`
         const res = await fetch(endpoint)
