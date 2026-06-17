@@ -1,3 +1,5 @@
+'use server'
+
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
 
 export type Product = {
@@ -21,14 +23,13 @@ export type Product = {
     size_guide: string
 }
 
-export const getProducts = async (acfField?: string | undefined) => {
+export const getProducts = async (acfField?: string, page?: number) => {
     try {
         let endpoint = `${website_url}wp-json/wp/v2/product?acf_format=standard`
         if (acfField) endpoint += `orderby=meta_value_num&meta_key=${acfField}`
         endpoint += `&order=desc&per_page=36`
-        const res = await fetch(endpoint, {
-            cache: "no-store",
-        })
+        if (page) endpoint += `&page=${page}`
+        const res = await fetch(endpoint)
         const totalPagesHeader = res.headers.get("X-WP-TotalPages")
         const data = await res.json()
         const products: Product[] = data.map((p: any) => {

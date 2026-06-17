@@ -6,16 +6,20 @@ import { CATS, GENDERS, PRODUCTS } from "@/src/lib/data"
 import { useCart } from "@/src/lib/cart-context"
 import { ProductCard } from "@/src/components/cards/ProductCard"
 import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal"
-import { Product } from "@/src/action/productController"
+import { getProducts, Product } from "@/src/action/productController"
 import { useSearchParams } from "next/navigation"
+import Pagination from "../cards/pagination"
 
 export const ShopPage = ({
     products,
     mobileNumber,
+    pages,
 }: {
     products: Product[]
     mobileNumber: string
+    pages: number
 }) => {
+    const [currProducts, setCurrProducts] = useState(products)
     const searchParams = useSearchParams()
     const cat = searchParams.get("cat")
     const [activeCat, setActiveCat] = useState(cat ? cat : "all")
@@ -23,12 +27,17 @@ export const ShopPage = ({
     const { addToCart } = useCart()
     const [detailProd, setDetailProd] = useState<Product | null>(null)
 
-    const filtered = products.filter((p) => {
+    const filtered = currProducts.filter((p) => {
         const newCats = p.categories.map((c) => (c === "polos &amp; tees" ? "polos & tees" : c))
         const isCat = newCats.includes(activeCat)
         const isGen = p.gender.toLowerCase() === activeGen || p.gender.toLowerCase() === "unisex"
         return (activeCat === "all" || isCat) && (activeGen === "all" || isGen)
     })
+
+    const handlePageChange = async (page: number) => {
+        const { products, pages } = await getProducts(undefined, page)
+        setCurrProducts(products)
+    }
 
     return (
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "44px 28px" }}>
@@ -166,6 +175,9 @@ export const ShopPage = ({
                     ))}
                 </div>
             )}
+            <div className="mt-8">
+                <Pagination pages={pages} handlePageChange={handlePageChange} />
+            </div>
         </div>
     )
 }

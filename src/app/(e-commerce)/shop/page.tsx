@@ -9,7 +9,11 @@ const HTWContactApp = async () => {
     return (
         <main>
             <Suspense fallback={<div>Loading...</div>}>
-                <ShopPage products={products} mobileNumber={navbarandfooter.site_mobile_number} />
+                <ShopPage
+                    products={products}
+                    mobileNumber={navbarandfooter.site_mobile_number}
+                    pages={pages}
+                />
             </Suspense>
         </main>
     )
