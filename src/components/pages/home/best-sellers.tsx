@@ -11,10 +11,12 @@ const BestSellers = ({
     title,
     description,
     products,
+    mobileNumber
 }: {
     title: string
     description: string
     products: Product[]
+    mobileNumber: string
 }) => {
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
@@ -57,6 +59,7 @@ const BestSellers = ({
                             product={p}
                             onAdd={addToCart}
                             onClick={setDetailProd}
+                            mobileNumber={mobileNumber}
                         />
                     ))}
                 </div>

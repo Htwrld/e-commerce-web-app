@@ -1,4 +1,4 @@
-import { getPageHomePage } from "@/src/action/pageController"
+import { getNavbarandFooter, getPageHomePage } from "@/src/action/pageController"
 import HeroSection from "../../components/pages/home/hero-section"
 import BestSellers from "../../components/pages/home/best-sellers"
 import CategoriesNav from "../../components/pages/home/categories-nav"
@@ -28,7 +28,7 @@ const MainPage = async () => {
     const styles = await getStyles()
     const ambassadors = await getAmbassadors()
     const testimonials = await getTestimonials()
-    
+    const navbarandfooter = await getNavbarandFooter()
     return (
         <main>
             <ProductDetailProvider>
@@ -38,6 +38,7 @@ const MainPage = async () => {
                 <BestSellers
                     title={homepage.otherTitles.trending_now_title}
                     description={homepage.otherTitles.trending_now_description}
+                    mobileNumber={navbarandfooter.site_mobile_number}
                     products={products}
                 />
                 <CategoriesNav />
@@ -53,6 +54,7 @@ const MainPage = async () => {
                     title={homepage.otherTitles.featured_collection_title}
                     description={homepage.otherTitles.featured_collection_description}
                     tagline={homepage.otherTitles.featured_collection_tagline}
+                    mobileNumber={navbarandfooter.site_mobile_number}
                     products={products}
                 />
                 <PieceBanner

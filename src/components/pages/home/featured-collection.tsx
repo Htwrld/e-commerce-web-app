@@ -12,11 +12,13 @@ const FeaturedCollection = ({
     description,
     tagline,
     products,
+    mobileNumber,
 }: {
     title: string
     description: string
     tagline: string
     products: Product[]
+    mobileNumber: string
 }) => {
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()
@@ -56,7 +58,13 @@ const FeaturedCollection = ({
                 }}
             >
                 {newArr.map((p) => (
-                    <ProductCard key={p.id} product={p} onAdd={addToCart} onClick={setDetailProd} />
+                    <ProductCard
+                        key={p.id}
+                        product={p}
+                        onAdd={addToCart}
+                        onClick={setDetailProd}
+                        mobileNumber={mobileNumber}
+                    />
                 ))}
             </div>
             <div style={{ textAlign: "center", marginTop: 36 }}>
