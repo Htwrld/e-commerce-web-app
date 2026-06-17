@@ -134,9 +134,9 @@ const LifestyleGallery = ({
                         <a
                             href={instagramLink}
                             target="_blank"
-                            className="flex items-center gap-2 bg-linear-to-r from-red-700 to-red-800 text-white px-4 py-2 rounded-md"
+                            className="flex items-center gap-2 bg-linear-to-r from-amber-700 to-amber-800 text-white px-4 py-2 rounded-md"
                         >
-                            🎬 Youtube
+                            🎬 Instagram
                         </a>
                     </div>
                 </div>
