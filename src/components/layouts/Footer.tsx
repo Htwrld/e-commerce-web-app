@@ -3,6 +3,7 @@
 import { T } from "@/src/lib/tokens"
 import { WABtn } from "@/src/components/cards/WABtn"
 import { NavbarandFooter } from "@/src/action/pageController"
+import Link from "next/link"
 
 export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }) {
     return (
@@ -88,29 +89,20 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                             SHOP
                         </div>
                         {[
-                            "New Arrivals",
                             "Best Sellers",
                             "Sweatshirts",
                             "Hoodies",
                             "Joggers",
                             "Polos & Tees",
                             "2-Piece Sets",
-                            "Size Guide",
                         ].map((l) => (
-                            <div
+                            <Link
                                 key={l}
-                                style={{
-                                    fontSize: 13,
-                                    color: "#888",
-                                    marginBottom: 9,
-                                    cursor: "pointer",
-                                    transition: "color .2s",
-                                }}
-                                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-                                onMouseLeave={(e) => (e.currentTarget.style.color = "#888")}
+                                href={`/shop?cat=${l.toLowerCase()}`}
+                                className="text-sm text-gray-500 hover:text-white"
                             >
                                 {l}
-                            </div>
+                            </Link>
                         ))}
                     </div>
 
@@ -137,20 +129,13 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                                 ["policy", "Privacy Policy"],
                             ] as [String, string][]
                         ).map(([p, l]) => (
-                            <div
+                            <Link
                                 key={l}
-                                style={{
-                                    fontSize: 13,
-                                    color: "#888",
-                                    marginBottom: 9,
-                                    cursor: "pointer",
-                                    transition: "color .2s",
-                                }}
-                                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-                                onMouseLeave={(e) => (e.currentTarget.style.color = "#888")}
+                                href={`/${p}`}
+                                className="text-sm text-gray-500 hover:text-white"
                             >
                                 {l}
-                            </div>
+                            </Link>
                         ))}
                     </div>
 
@@ -167,7 +152,10 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                         >
                             ORDER SUPPORT
                         </div>
-                        <WABtn text="Chat on WhatsApp" number={footerandnavbar.site_mobile_number} />
+                        <WABtn
+                            text="Chat on WhatsApp"
+                            number={footerandnavbar.site_mobile_number}
+                        />
                         <div style={{ marginTop: 18 }}>
                             <div
                                 style={{
@@ -207,7 +195,8 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                         © 2026 Hope&rsquo;s Trendy World. All rights reserved.
                     </div>
                     <div style={{ fontSize: 12, color: "#555", fontStyle: "italic" }}>
-                        &ldquo;{footerandnavbar.footer_final_quote}&rdquo; &nbsp;·&nbsp; Made in Nigeria 🇳🇬
+                        &ldquo;{footerandnavbar.footer_final_quote}&rdquo; &nbsp;·&nbsp; Made in
+                        Nigeria 🇳🇬
                     </div>
                 </div>
             </div>
