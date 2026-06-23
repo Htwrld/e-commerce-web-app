@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { T } from "@/src/lib/tokens"
 import { WABtn } from "@/src/components/cards/WABtn"
+import { sendMail } from "@/src/action/mailController"
 
 type PageContent = {
     page_description: string
@@ -19,7 +20,25 @@ type PageContent = {
 }
 
 export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [subject, setSubject] = useState("")
+    const [message, setMessage] = useState("")
     const [sent, setSent] = useState(false)
+
+    const onSubmit = async () => {
+        try {
+            const sent = await sendMail(
+                email,
+                subject,
+                `<div style="white-space: pre-wrap;">${message}</div>`
+            )
+            console.log(sent)
+            setSent(true)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const contacts = [
         {
@@ -63,9 +82,24 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
     ]
 
     const fields = [
-        { l: "Your Name", p: "Full name", t: "text" },
-        { l: "Email Address", p: "your@email.com", t: "email" },
-        { l: "Subject", p: "How can we help?", t: "text" },
+        {
+            l: "Your Name",
+            p: "Full name",
+            t: "text",
+            action: (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value),
+        },
+        {
+            l: "Email Address",
+            p: "your@email.com",
+            t: "email",
+            action: (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value),
+        },
+        {
+            l: "Subject",
+            p: "How can we help?",
+            t: "text",
+            action: (e: ChangeEvent<HTMLInputElement>) => setSubject(e.target.value),
+        },
     ]
 
     return (
@@ -226,6 +260,7 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
                                     <input
                                         type={f.t}
                                         placeholder={f.p}
+                                        onChange={f.action}
                                         style={{
                                             width: "100%",
                                             background: T.warm,
@@ -254,6 +289,7 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
                                 <textarea
                                     placeholder="Tell us what's on your mind…"
                                     rows={4}
+                                    onChange={(e) => setMessage(e.target.value)}
                                     style={{
                                         width: "100%",
                                         background: T.warm,
@@ -269,7 +305,7 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
                             <button
                                 className="btn-primary"
                                 style={{ width: "100%", justifyContent: "center" }}
-                                onClick={() => setSent(true)}
+                                onClick={onSubmit}
                             >
                                 Send Message →
                             </button>

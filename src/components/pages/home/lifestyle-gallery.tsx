@@ -1,6 +1,7 @@
 import { Style } from "@/src/action/styleController"
 import { T } from "@/src/lib/tokens"
 import Image from "next/image"
+import { FaFacebook, FaInstagram } from "react-icons/fa"
 
 const LifestyleGallery = ({
     title,
@@ -124,19 +125,18 @@ const LifestyleGallery = ({
                         }}
                     >
                         <a
-                            href={facebookLink}
+                            href={facebookLink ?? 'https://www.facebook.com/hashtag/htw'}
                             target="_blank"
-                            className="flex items-center gap-2 bg-linear-to-r from-blue-800 to-blue-700 text-white px-4 py-2 rounded-md"
-
+                            className="flex items-center gap-2 rounded-md bg-linear-to-r from-blue-800 to-blue-700 px-4 py-2 text-white"
                         >
-                            📸 Facebook
+                            <FaFacebook style={{ fontSize: 20 }} /> Facebook
                         </a>
                         <a
-                            href={instagramLink}
+                            href={instagramLink ?? 'https://www.instagram.com/hashtag/htw'}
                             target="_blank"
-                            className="flex items-center gap-2 bg-linear-to-r from-amber-700 to-amber-800 text-white px-4 py-2 rounded-md"
+                            className="flex items-center gap-2 rounded-md bg-linear-to-r from-amber-700 to-amber-800 px-4 py-2 text-white"
                         >
-                            🎬 Instagram
+                            <FaInstagram style={{ fontSize: 20 }} /> Instagram
                         </a>
                     </div>
                 </div>
