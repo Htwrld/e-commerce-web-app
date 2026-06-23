@@ -137,6 +137,7 @@ export const AboutPage = ({ pageContent }: { pageContent: PageContent }) => {
                                     lineHeight: 2,
                                     margin: 0,
                                     fontFamily: "'EB Garamond',serif",
+                                    whiteSpace: 'pre-wrap'
                                 }}
                             >
                                 {s.text}

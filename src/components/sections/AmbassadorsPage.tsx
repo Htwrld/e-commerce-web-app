@@ -4,6 +4,8 @@ import { useState } from "react"
 import { T } from "@/src/lib/tokens"
 import { Ambassador } from "@/src/action/ambassadorController"
 import Image from "next/image"
+import { sendMail } from "@/src/action/mailController"
+import { FaSpinner } from "react-icons/fa"
 
 type AmbassadorStrip = {
     icon: string
@@ -27,8 +29,33 @@ export const AmbassadorsPage = ({
     pageContent: PageContent
     ambassadors: Ambassador[]
 }) => {
+    const [loading, setLoading] = useState(false)
     const [form, setForm] = useState({ name: "", email: "", city: "", ig: "" })
     const [formSent, setFormSent] = useState(false)
+
+    const onSubmit = async () => {
+        try {
+            setLoading(true)
+            const sent = await sendMail({
+                to: "host",
+                subject: form.name,
+                body: form.email,
+                replyTo: form.email,
+                name: form.name,
+            })
+            setForm({
+                name: '',
+                email: '',
+                city: '',
+                ig: ''
+            })
+            setFormSent(true)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const fields = [
         { k: "name", l: "Full Name", p: "Your name", t: "text" },
@@ -306,9 +333,10 @@ export const AmbassadorsPage = ({
                                     fontSize: 14,
                                     marginTop: 6,
                                 }}
-                                onClick={() => setFormSent(true)}
+                                onClick={onSubmit}
                             >
-                                Submit Application ✝
+                                {loading && <FaSpinner className="animate-spin" />} Submit
+                                Application
                             </button>
                         </div>
                     )}

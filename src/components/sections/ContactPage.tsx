@@ -4,6 +4,7 @@ import { ChangeEvent, useState } from "react"
 import { T } from "@/src/lib/tokens"
 import { WABtn } from "@/src/components/cards/WABtn"
 import { sendMail } from "@/src/action/mailController"
+import { FaSpinner } from "react-icons/fa"
 
 type PageContent = {
     page_description: string
@@ -20,6 +21,7 @@ type PageContent = {
 }
 
 export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
+    const [loading, setLoading] = useState(false)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [subject, setSubject] = useState("")
@@ -28,15 +30,23 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
 
     const onSubmit = async () => {
         try {
-            const sent = await sendMail(
-                email,
+            setLoading(true)
+            const sent = await sendMail({
+                to: 'host',
                 subject,
-                `<div style="white-space: pre-wrap;">${message}</div>`
-            )
-            console.log(sent)
+                body: message,
+                replyTo: 'host',
+                name
+            })
             setSent(true)
+            setName('')
+            setEmail('')
+            setSubject('')
+            setMessage('')
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -86,18 +96,21 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
             l: "Your Name",
             p: "Full name",
             t: "text",
+            v: name,
             action: (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value),
         },
         {
             l: "Email Address",
             p: "your@email.com",
             t: "email",
+            v: email,
             action: (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value),
         },
         {
             l: "Subject",
             p: "How can we help?",
             t: "text",
+            v: subject,
             action: (e: ChangeEvent<HTMLInputElement>) => setSubject(e.target.value),
         },
     ]
@@ -261,6 +274,7 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
                                         type={f.t}
                                         placeholder={f.p}
                                         onChange={f.action}
+                                        value={f.v}
                                         style={{
                                             width: "100%",
                                             background: T.warm,
@@ -290,6 +304,7 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
                                     placeholder="Tell us what's on your mind…"
                                     rows={4}
                                     onChange={(e) => setMessage(e.target.value)}
+                                    value={message}
                                     style={{
                                         width: "100%",
                                         background: T.warm,
@@ -307,7 +322,7 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
                                 style={{ width: "100%", justifyContent: "center" }}
                                 onClick={onSubmit}
                             >
-                                Send Message →
+                                {loading && <FaSpinner className="animate-spin" />} Send Message →
                             </button>
                         </div>
                     )}

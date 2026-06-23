@@ -1,11 +1,23 @@
-'use server'
+"use server"
 
 import nodemailer from "nodemailer"
 import SMTPTransport from "nodemailer/lib/smtp-transport"
 
-export const sendMail = async (to: string, subject: string, body: string) => {
-    const options: SMTPTransport.Options  = {
-        host: process.env.NODEMAILER_HOST ?? 'smtp.gmail.com',
+export const sendMail = async ({
+    name,
+    to,
+    subject,
+    body,
+    replyTo,
+}: {
+    to: string
+    subject: string
+    body: string
+    name?: string
+    replyTo?: string
+}) => {
+    const options: SMTPTransport.Options = {
+        host: process.env.NODEMAILER_HOST ?? "smtp.gmail.com",
         port: Number(process.env.NODEMAILER_PORT ?? 465),
         secure: true,
         auth: {
@@ -16,11 +28,12 @@ export const sendMail = async (to: string, subject: string, body: string) => {
 
     const transporter = nodemailer.createTransport(options)
 
-    const mailOptions = {
-        from: process.env.NODEMAILER_FROM,
-        to,
+    const mailOptions: nodemailer.SendMailOptions = {
+        from: to === "host" ? to : process.env.NODEMAILER_USER,
+        to: to === "host" ? process.env.NODEMAILER_USER : to,
+        replyTo: replyTo === "host" ? process.env.NODEMAILER_USER : replyTo,
         subject,
-        text: body,
+        text: ` Hi ${name}, ${body}`,
     }
 
     const sent = await transporter.sendMail(mailOptions)
