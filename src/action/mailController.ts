@@ -32,8 +32,8 @@ export const sendMail = async ({
         from: to === "host" ? to : process.env.NODEMAILER_USER,
         to: to === "host" ? process.env.NODEMAILER_USER : to,
         replyTo: replyTo === "host" ? process.env.NODEMAILER_USER : replyTo,
-        subject,
-        text: ` Hi ${name}, ${body}`,
+        subject: `${subject} ${name ? "from " + name : ""}`,
+        text: `${body} `,
     }
 
     const sent = await transporter.sendMail(mailOptions)

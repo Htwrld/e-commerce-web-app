@@ -21,7 +21,7 @@ export const ProductDetailProvider = ({
 }: {
     children: React.ReactNode
     mobileNumber: string
-}) => {
+}) => { 
     const [product, setProduct] = useState<Product | null>(null)
     const { addToCart } = useCart()
 

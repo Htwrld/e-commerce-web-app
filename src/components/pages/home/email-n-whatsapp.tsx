@@ -27,7 +27,7 @@ const EmailNWhatsApp = ({
             setSubDone(true)
             await sendMail({
                 to: "host",
-                subject: "I want to join your movement",
+                subject: "I want to join your Email subscribers movement",
                 body: `My email address is ${emailSub}.`,
                 replyTo: emailSub,
                 name: "",
@@ -42,7 +42,7 @@ const EmailNWhatsApp = ({
         try {
             await sendMail({
                 to: "host",
-                subject: "I want to join your movement",
+                subject: "I want to join your WhatsApp group",
                 body: `My whatsapp number is ${waNumber}.`,
                 name: "",
             })
