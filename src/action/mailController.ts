@@ -29,7 +29,7 @@ export const sendMail = async ({
     const transporter = nodemailer.createTransport(options)
 
     const mailOptions: nodemailer.SendMailOptions = {
-        from: to === "host" ? to : process.env.NODEMAILER_USER,
+        from: process.env.NODEMAILER_USER,
         to: to === "host" ? process.env.NODEMAILER_USER : to,
         replyTo: replyTo === "host" ? process.env.NODEMAILER_USER : replyTo,
         subject: `${subject} ${name ? "from " + name : ""}`,
