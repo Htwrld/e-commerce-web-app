@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { T } from "@/src/lib/tokens"
+import { sendMail } from "@/src/action/mailController"
 
 const EmailNWhatsApp = ({
     title,
@@ -20,6 +21,36 @@ const EmailNWhatsApp = ({
     const [subDone, setSubDone] = useState(false)
     const [waNumber, setWaNumber] = useState("")
     const [waDone, setWaDone] = useState(false)
+
+    const onEmailSub = async () => {
+        try {
+            setSubDone(true)
+            await sendMail({
+                to: "host",
+                subject: "I want to join your movement",
+                body: `My email address is ${emailSub}.`,
+                replyTo: emailSub,
+                name: "",
+            })
+            setSubDone(true)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const onWhatsApp = async () => {
+        try {
+            await sendMail({
+                to: "host",
+                subject: "I want to join your movement",
+                body: `My whatsapp number is ${waNumber}.`,
+                name: "",
+            })
+            setWaDone(true)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <section style={{ padding: "80px 28px", background: T.warm }}>
@@ -101,12 +132,12 @@ const EmailNWhatsApp = ({
                                     value={emailSub}
                                     onChange={(e) => setEmailSub(e.target.value)}
                                     placeholder="your@email.com"
-                                    className="flex-1 border-none bg-[#F5F0DC] font-sans text-[0.5rem] sm:text-xs text-[#1A8A3C] md:text-sm p-2"
+                                    className="flex-1 border-none bg-[#F5F0DC] p-2 font-sans text-[0.5rem] text-[#1A8A3C] sm:text-xs md:text-sm"
                                 />
                                 <button
                                     className="btn-primary"
                                     style={{ borderRadius: 0, padding: "0 18px", fontSize: 13 }}
-                                    onClick={() => setSubDone(true)}
+                                    onClick={onEmailSub}
                                 >
                                     Subscribe
                                 </button>
@@ -185,7 +216,7 @@ const EmailNWhatsApp = ({
                                         value={waNumber}
                                         onChange={(e) => setWaNumber(e.target.value)}
                                         placeholder="+234 XXX XXX XXXX"
-                                        className="flex-1 border-none bg-white font-sans text-[0.5rem] sm:text-xs text-[#1A1612] md:text-sm p-2"
+                                        className="flex-1 border-none bg-white p-2 font-sans text-[0.5rem] text-[#1A1612] sm:text-xs md:text-sm"
                                     />
                                     <button
                                         style={{
@@ -198,7 +229,7 @@ const EmailNWhatsApp = ({
                                             cursor: "pointer",
                                             fontFamily: "'Georgia',serif",
                                         }}
-                                        onClick={() => setWaDone(true)}
+                                        onClick={onWhatsApp}
                                     >
                                         Sign Up
                                     </button>

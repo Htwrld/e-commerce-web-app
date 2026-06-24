@@ -155,7 +155,14 @@ export function CartDrawer() {
                                             }}
                                         >
                                             <button
-                                                onClick={() => updateQty(item.id, item.qty - 1)}
+                                                onClick={() =>
+                                                    updateQty({
+                                                        id: item.id,
+                                                        qty: item.qty - 1,
+                                                        color: item.selectedColor,
+                                                        size: item.selectedSize,
+                                                    })
+                                                }
                                                 style={{
                                                     background: T.sand,
                                                     border: "none",
@@ -173,7 +180,14 @@ export function CartDrawer() {
                                                 {item.qty}
                                             </span>
                                             <button
-                                                onClick={() => updateQty(item.id, item.qty + 1)}
+                                                onClick={() =>
+                                                    updateQty({
+                                                        id: item.id,
+                                                        qty: item.qty + 1,
+                                                        color: item.selectedColor,
+                                                        size: item.selectedSize,
+                                                    })
+                                                }
                                                 style={{
                                                     background: T.sand,
                                                     border: "none",
@@ -191,7 +205,13 @@ export function CartDrawer() {
                                     </div>
                                 </div>
                                 <button
-                                    onClick={() => removeFromCart(item.id)}
+                                    onClick={() =>
+                                        removeFromCart({
+                                            id: item.id,
+                                            color: item.selectedColor,
+                                            size: item.selectedSize,
+                                        })
+                                    }
                                     style={{
                                         background: "none",
                                         border: "none",

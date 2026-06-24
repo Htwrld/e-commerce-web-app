@@ -5,15 +5,17 @@ import { Product } from "@/src/action/productController"
 
 export interface CartItem extends Product {
     qty: number
+    selectedColor: string
+    selectedSize: string
 }
 
 interface CartContextValue {
     cart: CartItem[]
     cartOpen: boolean
     setCartOpen: (open: boolean) => void
-    addToCart: (product: Product) => void
-    removeFromCart: (id: number) => void
-    updateQty: (id: number, qty: number) => void
+    addToCart: (data: { product: Product; selectedColor: string; selectedSize: string }) => void
+    removeFromCart: (data: { id: number; color: string; size: string }) => void
+    updateQty: (data: { id: number; color: string; size: string; qty: number }) => void
     cartCount: number
     cartTotal: number
     toast: string | null
@@ -26,24 +28,73 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const [cartOpen, setCartOpen] = useState(false)
     const [toast, setToast] = useState<string | null>(null)
 
-    const addToCart = useCallback((product: Product) => {
-        setCart((c) => {
-            const existing = c.find((x) => x.id === product.id)
-            return existing
-                ? c.map((x) => (x.id === product.id ? { ...x, qty: x.qty + 1 } : x))
-                : [...c, { ...product, qty: 1 }]
-        })
-        setToast(`${product.name} added to cart!`)
-        setTimeout(() => setToast(null), 2800)
-    }, [])
+    const addToCart = useCallback(
+        ({
+            product,
+            selectedColor,
+            selectedSize,
+        }: {
+            product: Product
+            selectedColor: string
+            selectedSize: string
+        }) => {
+            setCart((c) => {
+                const existing = c.find(
+                    (x) =>
+                        x.id === product.id &&
+                        x.selectedColor === selectedColor &&
+                        x.selectedSize === selectedSize
+                )
 
-    const removeFromCart = useCallback((id: number) => {
-        setCart((c) => c.filter((x) => x.id !== id))
-    }, [])
+                return existing
+                    ? c.map((x) =>
+                          x.id === product.id &&
+                          x.selectedColor === selectedColor &&
+                          x.selectedSize === selectedSize
+                              ? { ...x, qty: x.qty + 1 }
+                              : x
+                      )
+                    : [
+                          ...c,
+                          {
+                              ...product,
+                              qty: 1,
+                              selectedColor,
+                              selectedSize,
+                          },
+                      ]
+            })
 
-    const updateQty = useCallback((id: number, qty: number) => {
-        setCart((c) => c.map((x) => (x.id === id ? { ...x, qty: Math.max(1, qty) } : x)))
-    }, [])
+            setToast(`${product.name} (${selectedColor} / ${selectedSize}) added to cart!`)
+
+            setTimeout(() => setToast(null), 2800)
+        },
+        []
+    )
+
+    const removeFromCart = useCallback(
+        ({ id, color, size }: { id: number; color: string; size: string }) => {
+            setCart((c) =>
+                c.filter(
+                    (x) => !(x.id === id && x.selectedColor === color && x.selectedSize === size)
+                )
+            )
+        },
+        []
+    )
+
+    const updateQty = useCallback(
+        ({ id, color, size, qty }: { id: number; color: string; size: string; qty: number }) => {
+            setCart((c) =>
+                c.map((x) =>
+                    x.id === id && x.selectedColor === color && x.selectedSize === size
+                        ? { ...x, qty: Math.max(1, qty) }
+                        : x
+                )
+            )
+        },
+        []
+    )
 
     const cartCount = cart.reduce((a, c) => a + c.qty, 0)
     const cartTotal = cart.reduce((a, c) => {

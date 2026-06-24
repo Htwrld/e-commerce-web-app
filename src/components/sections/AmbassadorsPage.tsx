@@ -38,16 +38,16 @@ export const AmbassadorsPage = ({
             setLoading(true)
             const sent = await sendMail({
                 to: "host",
-                subject: form.name,
-                body: form.email,
+                subject: "I'd like to join your ambassadors",
+                body: `I'm ${form.name}, my Instagram handle is ${form.ig}, and I live in ${form.city}`,
                 replyTo: form.email,
                 name: form.name,
             })
             setForm({
-                name: '',
-                email: '',
-                city: '',
-                ig: ''
+                name: "",
+                email: "",
+                city: "",
+                ig: "",
             })
             setFormSent(true)
         } catch (error) {

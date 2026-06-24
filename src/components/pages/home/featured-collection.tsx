@@ -17,7 +17,7 @@ const FeaturedCollection = ({
     title: string
     description: string
     tagline: string
-    products: Product[]
+    products: Product[] 
     mobileNumber: string
 }) => {
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()

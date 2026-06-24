@@ -7,15 +7,18 @@ import { VerseChip } from "@/src/components/cards/VerseChip"
 import { WABtn } from "@/src/components/cards/WABtn"
 import { Product } from "@/src/action/productController"
 import { useCart } from "@/src/lib/cart-context"
+import { useState } from "react"
 
 interface ProductCardProps {
     product: Product
-    onAdd: (product: Product) => void
+    onAdd: (product: { product: Product; selectedColor: string; selectedSize: string }) => void
     onClick: (product: Product) => void
     mobileNumber: string
 }
 
 export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: ProductCardProps) {
+    const [selectedColor, setSelectedColor] = useState<string>(p.colors[0])
+    const [selectedSize, setSelectedSize] = useState<string>(p.sizes[0])
     const { cart, updateQty, removeFromCart } = useCart()
     const isInCart = cart.find((c) => c.id === p.id)
     return (
@@ -141,6 +144,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                         {p.colors.map((c, i) => (
                             <div
                                 key={i}
+                                onClick={() => setSelectedColor(c)}
                                 style={{
                                     width: 14,
                                     height: 14,
@@ -167,9 +171,18 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                         <button
                             onClick={() => {
                                 if (isInCart.qty === 1) {
-                                    removeFromCart(isInCart.id)
+                                    removeFromCart({
+                                        id: isInCart.id,
+                                        color: selectedColor,
+                                        size: selectedSize,
+                                    })
                                 } else {
-                                    updateQty(isInCart.id, isInCart.qty - 1)
+                                    updateQty({
+                                        id: isInCart.id,
+                                        qty: isInCart.qty - 1,
+                                        color: selectedColor,
+                                        size: selectedSize,
+                                    })
                                 }
                             }}
                             style={{
@@ -187,7 +200,14 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                         </button>
                         <span style={{ fontSize: 13, fontWeight: 700 }}>{isInCart.qty}</span>
                         <button
-                            onClick={() => updateQty(isInCart.id, isInCart.qty + 1)}
+                            onClick={() =>
+                                updateQty({
+                                    id: isInCart.id,
+                                    qty: isInCart.qty + 1,
+                                    color: selectedColor,
+                                    size: selectedSize,
+                                })
+                            }
                             style={{
                                 background: T.sand,
                                 border: "none",
@@ -206,7 +226,11 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                     <button
                         onClick={(e) => {
                             e.stopPropagation()
-                            onAdd(p)
+                            onAdd({
+                                product: p,
+                                selectedColor,
+                                selectedSize
+                            })
                         }}
                         className="btn-primary"
                         style={{

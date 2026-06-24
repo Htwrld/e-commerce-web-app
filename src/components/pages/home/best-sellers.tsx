@@ -16,7 +16,7 @@ const BestSellers = ({
     title: string
     description: string
     products: Product[]
-    mobileNumber: string
+    mobileNumber: string 
 }) => {
     const { product: detailProd, setProduct: setDetailProd } = useProductDetail()
     const { addToCart } = useCart()

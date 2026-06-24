@@ -6,15 +6,23 @@ import { Badge } from "@/src/components/cards/Badge"
 import { VerseChip } from "@/src/components/cards/VerseChip"
 import { WABtn } from "@/src/components/cards/WABtn"
 import { Product } from "@/src/action/productController"
+import { useState } from "react"
 
 interface ProductDetailModalProps {
     product: Product
     onClose: () => void
-    onAdd: (product: Product) => void
+    onAdd: (product: { product: Product; selectedColor: string; selectedSize: string }) => void
     mobileNumber: string
 }
 
-export function ProductDetailModal({ product: p, onClose, onAdd, mobileNumber }: ProductDetailModalProps) {
+export function ProductDetailModal({
+    product: p,
+    onClose,
+    onAdd,
+    mobileNumber,
+}: ProductDetailModalProps) {
+    const [selectedColor, setSelectedColor] = useState<string>(p.colors[0])
+    const [selectedSize, setSelectedSize] = useState<string>(p.sizes[0])
     return (
         <div
             style={{
@@ -157,12 +165,13 @@ export function ProductDetailModal({ product: p, onClose, onAdd, mobileNumber }:
                         {p.colors.map((c, i) => (
                             <div
                                 key={i}
+                                onClick={() => setSelectedColor(c)}
                                 style={{
                                     width: 24,
                                     height: 24,
                                     borderRadius: "50%",
                                     background: c,
-                                    border: `2px solid ${T.border}`,
+                                    border: `2px solid ${ selectedColor === c ? T.gold : T.border}`,
                                     cursor: "pointer",
                                 }}
                             />
@@ -185,9 +194,10 @@ export function ProductDetailModal({ product: p, onClose, onAdd, mobileNumber }:
                         {p.sizes.map((s) => (
                             <button
                                 key={s}
+                                onClick={() => setSelectedSize(s)}
                                 style={{
                                     background: T.sand,
-                                    border: `1px solid ${T.border}`,
+                                    border: `1px solid ${ selectedSize === s ? T.gold : T.border}`,
                                     color: T.ink,
                                     padding: "6px 12px",
                                     borderRadius: 6,
@@ -207,7 +217,11 @@ export function ProductDetailModal({ product: p, onClose, onAdd, mobileNumber }:
                         className="btn-primary"
                         style={{ flex: 1, justifyContent: "center" }}
                         onClick={() => {
-                            onAdd(p)
+                            onAdd({
+                                product: p,
+                                selectedColor,
+                                selectedSize,
+                            })
                             onClose()
                         }}
                     >

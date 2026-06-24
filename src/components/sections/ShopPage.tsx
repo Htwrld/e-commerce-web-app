@@ -16,7 +16,7 @@ export const ShopPage = ({
     pages,
 }: {
     products: Product[]
-    mobileNumber: string
+    mobileNumber: string 
     pages: number
 }) => {
     const [currProducts, setCurrProducts] = useState(products)

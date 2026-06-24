@@ -1,6 +1,7 @@
 "use client"
 
 import { T } from "@/src/lib/tokens"
+import Image from "next/image"
 import Link from "next/link"
 
 type PageContent = {
@@ -137,7 +138,7 @@ export const AboutPage = ({ pageContent }: { pageContent: PageContent }) => {
                                     lineHeight: 2,
                                     margin: 0,
                                     fontFamily: "'EB Garamond',serif",
-                                    whiteSpace: 'pre-wrap'
+                                    whiteSpace: "pre-wrap",
                                 }}
                             >
                                 {s.text}
@@ -156,7 +157,9 @@ export const AboutPage = ({ pageContent }: { pageContent: PageContent }) => {
                         marginTop: 56,
                     }}
                 >
-                    <div style={{ fontSize: 56, marginBottom: 16 }}>✝</div>
+                    <div className="mb-5 flex w-full items-center justify-center text-2xl text-[#C9923A] opacity-60">
+                        <Image src="/favicon.png" alt="" width={50} height={50} />
+                    </div>
                     <h3
                         style={{
                             fontFamily: "'Cormorant Garamond',serif",

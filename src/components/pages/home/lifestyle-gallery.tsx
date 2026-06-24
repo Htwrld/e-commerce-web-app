@@ -125,14 +125,14 @@ const LifestyleGallery = ({
                         }}
                     >
                         <a
-                            href={facebookLink ?? 'https://www.facebook.com/hashtag/htw'}
+                            href={facebookLink ?? 'https://www.facebook.com/61579532297521/'}
                             target="_blank"
                             className="flex items-center gap-2 rounded-md bg-linear-to-r from-blue-800 to-blue-700 px-4 py-2 text-white"
                         >
                             <FaFacebook style={{ fontSize: 20 }} /> Facebook
                         </a>
                         <a
-                            href={instagramLink ?? 'https://www.instagram.com/hashtag/htw'}
+                            href={instagramLink ?? 'https://www.instagram.com/hopestrendyworld/'}
                             target="_blank"
                             className="flex items-center gap-2 rounded-md bg-linear-to-r from-amber-700 to-amber-800 px-4 py-2 text-white"
                         >
