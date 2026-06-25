@@ -51,7 +51,7 @@ export const AmbassadorsPage = ({
             })
             setFormSent(true)
         } catch (error) {
-            console.log(error)
+            return
         } finally {
             setLoading(false)
         }

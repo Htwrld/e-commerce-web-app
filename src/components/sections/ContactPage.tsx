@@ -44,7 +44,7 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
             setSubject('')
             setMessage('')
         } catch (error) {
-            console.log(error)
+            return
         } finally {
             setLoading(false)
         }

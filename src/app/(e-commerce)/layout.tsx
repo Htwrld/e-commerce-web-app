@@ -12,6 +12,7 @@ const EcommerceLayout = async ({ children }: { children: React.ReactNode }) => {
     return (
         <div
             style={{
+                position: 'relative',
                 fontFamily: "'Georgia','Times New Roman',serif",
                 background: T.cream,
                 color: T.ink,

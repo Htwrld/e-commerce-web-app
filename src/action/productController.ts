@@ -33,7 +33,6 @@ export const getProducts = async (acfField?: string, page?: number) => {
         const totalPagesHeader = res.headers.get("X-WP-TotalPages")
         const data = await res.json()
         const products: Product[] = data.map((p: any) => {
-            console.log(p.acf.category)
             return {
                 id: p.id,
                 photo: p.acf.photo,

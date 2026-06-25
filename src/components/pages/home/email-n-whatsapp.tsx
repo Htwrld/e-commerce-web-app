@@ -24,7 +24,6 @@ const EmailNWhatsApp = ({
 
     const onEmailSub = async () => {
         try {
-            setSubDone(true)
             await sendMail({
                 to: "host",
                 subject: "I want to join your Email subscribers movement",
@@ -34,7 +33,7 @@ const EmailNWhatsApp = ({
             })
             setSubDone(true)
         } catch (error) {
-            console.log(error)
+            return 
         }
     }
 
@@ -48,7 +47,7 @@ const EmailNWhatsApp = ({
             })
             setWaDone(true)
         } catch (error) {
-            console.log(error)
+            return
         }
     }
 

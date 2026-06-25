@@ -8,7 +8,7 @@ import { WABtn } from "@/src/components/cards/WABtn"
 import Link from "next/link"
 
 export function CheckoutPage() {
-    const { cart, cartTotal } = useCart()
+    const { cart, cartTotal, removeFromCart } = useCart()
     const [step, setStep] = useState(1)
     const [form, setForm] = useState({ name: "", address: "", phone: "", payment: "paystack" })
 
@@ -361,7 +361,9 @@ export function CheckoutPage() {
                                             <span className="text-xs font-medium text-slate-400">
                                                 Color:{" "}
                                                 <span
-                                                    style={{ color: item.selectedColor ?? T.muted }}
+                                                    style={{
+                                                        color: item.selectedColor ?? T.muted,
+                                                    }}
                                                 >
                                                     {item.selectedColor ?? "any"}
                                                 </span>
@@ -374,8 +376,24 @@ export function CheckoutPage() {
                                             </span>
                                         </div>
                                     </div>
-                                    <div style={{ fontSize: 13, fontWeight: 700, color: T.rust }}>
-                                        ₦{item.price}
+                                    <div className="flex flex-col justify-between items-end space-y-2">
+                                        <div
+                                            style={{ fontSize: 13, fontWeight: 700, color: T.rust }}
+                                        >
+                                            ₦{item.price}
+                                        </div>
+                                        <button
+                                            className="cursor-pointer rounded-sm border border-amber-800 px-3 py-0.5 text-xs text-amber-800"
+                                            onClick={() =>
+                                                removeFromCart({
+                                                    id: item.id,
+                                                    color: item.selectedColor,
+                                                    size: item.selectedSize,
+                                                })
+                                            }
+                                        >
+                                            X
+                                        </button>
                                     </div>
                                 </div>
                             ))}

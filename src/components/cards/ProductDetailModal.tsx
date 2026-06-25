@@ -7,6 +7,7 @@ import { VerseChip } from "@/src/components/cards/VerseChip"
 import { WABtn } from "@/src/components/cards/WABtn"
 import { Product } from "@/src/action/productController"
 import { useState } from "react"
+import { useCart } from "@/src/lib/cart-context"
 
 interface ProductDetailModalProps {
     product: Product
@@ -21,8 +22,10 @@ export function ProductDetailModal({
     onAdd,
     mobileNumber,
 }: ProductDetailModalProps) {
+    const { cart, updateQty, removeFromCart } = useCart()
     const [selectedColor, setSelectedColor] = useState<string>(p.colors[0])
     const [selectedSize, setSelectedSize] = useState<string>(p.sizes[0])
+    const isInCart = cart.find((c) => c.id === p.id)
     return (
         <div
             style={{
@@ -171,7 +174,7 @@ export function ProductDetailModal({
                                     height: 24,
                                     borderRadius: "50%",
                                     background: c,
-                                    border: `2px solid ${ selectedColor === c ? T.gold : T.border}`,
+                                    border: `2px solid ${selectedColor === c ? T.gold : T.border}`,
                                     cursor: "pointer",
                                 }}
                             />
@@ -197,7 +200,7 @@ export function ProductDetailModal({
                                 onClick={() => setSelectedSize(s)}
                                 style={{
                                     background: T.sand,
-                                    border: `1px solid ${ selectedSize === s ? T.gold : T.border}`,
+                                    border: `1px solid ${selectedSize === s ? T.gold : T.border}`,
                                     color: T.ink,
                                     padding: "6px 12px",
                                     borderRadius: 6,
@@ -213,20 +216,85 @@ export function ProductDetailModal({
                 </div>
 
                 <div style={{ display: "flex", gap: 10 }}>
-                    <button
-                        className="btn-primary"
-                        style={{ flex: 1, justifyContent: "center" }}
-                        onClick={() => {
-                            onAdd({
-                                product: p,
-                                selectedColor,
-                                selectedSize,
-                            })
-                            onClose()
-                        }}
-                    >
-                        Add to Cart
-                    </button>
+                    {isInCart ? (
+                        <div
+                            style={{
+                                display: "flex",
+                                flex: 1,
+                                justifyContent: "between",
+                                alignItems: "center",
+                                gap: 8,
+                                width: "100%",
+                            }}
+                        >
+                            <button
+                                className="py-1 px-10"
+                                onClick={() => {
+                                    if (isInCart.qty === 1) {
+                                        removeFromCart({
+                                            id: isInCart.id,
+                                            color: selectedColor,
+                                            size: selectedSize,
+                                        })
+                                    } else {
+                                        updateQty({
+                                            id: isInCart.id,
+                                            qty: isInCart.qty - 1,
+                                            color: selectedColor,
+                                            size: selectedSize,
+                                        })
+                                    }
+                                }}
+                                style={{
+                                    background: T.sand,
+                                    border: "none",
+                                    borderRadius: 4,
+                                    cursor: "pointer",
+                                    fontSize: 14,
+                                    fontWeight: 700,
+                                }}
+                            >
+                                -
+                            </button>
+                            <span style={{ fontSize: 16, fontWeight: 700 }}>{isInCart.qty}</span>
+                            <button
+                                className="py-1 px-10"
+                                onClick={() =>
+                                    updateQty({
+                                        id: isInCart.id,
+                                        qty: isInCart.qty + 1,
+                                        color: selectedColor,
+                                        size: selectedSize,
+                                    })
+                                }
+                                style={{
+                                    background: T.sand,
+                                    border: "none",
+                                    borderRadius: 4,
+                                    cursor: "pointer",
+                                    fontSize: 14,
+                                    fontWeight: 700,
+                                }}
+                            >
+                                +
+                            </button>
+                        </div>
+                    ) : (
+                        <button
+                            className="btn-primary"
+                            style={{ flex: 1, justifyContent: "center" }}
+                            onClick={() => {
+                                onAdd({
+                                    product: p,
+                                    selectedColor,
+                                    selectedSize,
+                                })
+                                onClose()
+                            }}
+                        >
+                            Add to Cart
+                        </button>
+                    )}
                     <WABtn text="Order Now" product={p.name} number={mobileNumber} />
                 </div>
 
