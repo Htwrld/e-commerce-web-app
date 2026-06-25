@@ -204,21 +204,21 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
                     <Link
                         className="btn-primary"
                         style={{ fontSize: 14, padding: "14px 28px" }}
-                        href={`/shop?cat=All&gen=Male`}
+                        href={`/shop?gender=male`}
                     >
                         Shop Men
                     </Link>
                     <Link
                         className="btn-primary"
                         style={{ fontSize: 14, padding: "14px 28px", background: T.rust }}
-                        href={`/shop?cat=All&gen=Female`}
+                        href={`/shop?gender=female`}
                     >
                         Shop Women
                     </Link>
                     <Link
                         className="btn-secondary"
                         style={{ fontSize: 14, padding: "13px 26px" }}
-                        href="/collections"
+                        href="/shop?badge=new"
                     >
                         New Collection
                     </Link>

@@ -37,7 +37,7 @@ export function CheckoutPage() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-[2fr_1fr] md:gap-y-24">
-                    <div className="border rounded-2xl pt-4">
+                    <div className="rounded-2xl border pt-4">
                         {/* Steps */}
                         <div style={{ display: "flex", gap: 0, marginBottom: 36 }}>
                             {["Delivery Details", "Payment", "Confirmation"].map((s, i) => (
@@ -351,18 +351,31 @@ export function CheckoutPage() {
                                             </div>
                                         )}
                                     </div>
-                                    <div style={{ flex: 1 }}>
+                                    <div className="space-y-1.5" style={{ flex: 1 }}>
                                         <div
                                             style={{ fontSize: 13, fontWeight: 700, color: T.ink }}
                                         >
                                             {item.name}
                                         </div>
-                                        <div style={{ fontSize: 12, color: T.muted }}>
-                                            Qty: {item.qty}
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs font-medium text-slate-400">
+                                                Color:{" "}
+                                                <span
+                                                    style={{ color: item.selectedColor ?? T.muted }}
+                                                >
+                                                    {item.selectedColor ?? "any"}
+                                                </span>
+                                            </span>
+                                            <span className="text-xs font-medium text-slate-400">
+                                                Size: {item.selectedSize}
+                                            </span>
+                                            <span className="text-xs font-medium text-slate-400">
+                                                Qty: {item.qty}
+                                            </span>
                                         </div>
                                     </div>
                                     <div style={{ fontSize: 13, fontWeight: 700, color: T.rust }}>
-                                        {item.price}
+                                        ₦{item.price}
                                     </div>
                                 </div>
                             ))}
@@ -402,7 +415,7 @@ export function CheckoutPage() {
                                 >
                                     <span style={{ fontSize: 15, fontWeight: 700 }}>Total</span>
                                     <span style={{ fontSize: 16, fontWeight: 700, color: T.rust }}>
-                                        ₦{(cartTotal + 1500).toLocaleString()}
+                                        ₦{(cartTotal + (cartTotal > 0 ? 1500 : 0)).toLocaleString()}
                                     </span>
                                 </div>
                             </div>

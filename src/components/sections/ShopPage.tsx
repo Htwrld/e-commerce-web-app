@@ -16,14 +16,17 @@ export const ShopPage = ({
     pages,
 }: {
     products: Product[]
-    mobileNumber: string 
+    mobileNumber: string
     pages: number
 }) => {
     const [currProducts, setCurrProducts] = useState(products)
     const searchParams = useSearchParams()
     const cat = searchParams.get("cat")
+    const gender = searchParams.get("gender")
+    const badge = searchParams.get("badge")
     const [activeCat, setActiveCat] = useState(cat ? cat : "all")
-    const [activeGen, setActiveGen] = useState("all")
+    const [activeGen, setActiveGen] = useState(gender ? gender : "all")
+    const [activeBadge, setActiveBadge] = useState(badge ? badge : "all")
     const { addToCart } = useCart()
     const [detailProd, setDetailProd] = useState<Product | null>(null)
 
@@ -31,7 +34,12 @@ export const ShopPage = ({
         const newCats = p.categories.map((c) => (c === "polos &amp; tees" ? "polos & tees" : c))
         const isCat = newCats.includes(activeCat)
         const isGen = p.gender.toLowerCase() === activeGen || p.gender.toLowerCase() === "unisex"
-        return (activeCat === "all" || isCat) && (activeGen === "all" || isGen)
+        const isBadge = p.badge.toLowerCase() === activeBadge.toLowerCase()
+        return (
+            (activeCat === "all" || isCat) &&
+            (activeGen === "all" || isGen) &&
+            (activeBadge === "all" || isBadge)
+        )
     })
 
     const handlePageChange = async (page: number) => {
@@ -83,7 +91,10 @@ export const ShopPage = ({
                     return (
                         <button
                             key={c}
-                            onClick={() => setActiveCat(c.toLowerCase())}
+                            onClick={() => {
+                                setActiveCat(c.toLowerCase())
+                                setActiveBadge("all")
+                            }}
                             style={{
                                 background: activeCat === c.toLowerCase() ? T.rust : "none",
                                 border: `2px solid ${activeCat === c.toLowerCase() ? T.rust : T.border}`,
@@ -126,11 +137,14 @@ export const ShopPage = ({
                 {GENDERS.map((g) => (
                     <button
                         key={g}
-                        onClick={() => setActiveGen(g.toLowerCase())}
+                        onClick={() => {
+                            setActiveGen(g.toLowerCase())
+                            setActiveBadge("all")
+                        }}
                         style={{
-                            background: activeGen === g.toLowerCase() ? T.cobalt : "none",
-                            border: `2px solid ${activeGen === g.toLowerCase() ? T.cobalt : T.border}`,
-                            color: activeGen === g.toLowerCase() ? "#fff" : T.muted,
+                            background: activeGen.toLowerCase() === g.toLowerCase() ? T.cobalt : "none",
+                            border: `2px solid ${activeGen.toLowerCase() === g.toLowerCase() ? T.cobalt : T.border}`,
+                            color: activeGen.toLowerCase() === g.toLowerCase() ? T.white : T.muted,
                             padding: "7px 16px",
                             borderRadius: 20,
                             fontSize: 12,

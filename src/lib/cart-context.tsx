@@ -65,7 +65,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
                       ]
             })
 
-            setToast(`${product.name} (${selectedColor} / ${selectedSize}) added to cart!`)
+            setToast(
+                `${product.name} ${selectedColor ? selectedColor : ""} ${selectedSize ? selectedSize : ""} added to cart!`
+            )
 
             setTimeout(() => setToast(null), 2800)
         },

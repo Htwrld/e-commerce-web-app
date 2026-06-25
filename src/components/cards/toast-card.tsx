@@ -10,7 +10,7 @@ const ToastCard = () => {
             <div
                 style={{
                     position: "fixed",
-                    top: 80,
+                    bottom: 20,
                     right: 20,
                     zIndex: 1001,
                     background: T.sage,

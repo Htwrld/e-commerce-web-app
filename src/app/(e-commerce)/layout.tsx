@@ -5,6 +5,7 @@ import { Navbar } from "@/src/components/layouts/Navbar"
 import { Ticker } from "@/src/components/layouts/Ticker"
 import { Footer } from "@/src/components/layouts/Footer"
 import { getNavbarandFooter } from "@/src/action/pageController"
+import ToastCard from "@/src/components/cards/toast-card"
 
 const EcommerceLayout = async ({ children }: { children: React.ReactNode }) => {
     const footerandnavbar = await getNavbarandFooter()
@@ -33,6 +34,7 @@ const EcommerceLayout = async ({ children }: { children: React.ReactNode }) => {
                 <Ticker footerandnavbar={footerandnavbar} />
                 {children}
                 <Footer footerandnavbar={footerandnavbar} />
+                <ToastCard />
             </CartProvider>
         </div>
     )

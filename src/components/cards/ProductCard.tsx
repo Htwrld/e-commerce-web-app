@@ -196,7 +196,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                                 fontWeight: 700,
                             }}
                         >
-                            −
+                            -
                         </button>
                         <span style={{ fontSize: 13, fontWeight: 700 }}>{isInCart.qty}</span>
                         <button

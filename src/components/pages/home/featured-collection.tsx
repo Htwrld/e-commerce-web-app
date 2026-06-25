@@ -68,7 +68,7 @@ const FeaturedCollection = ({
                 ))}
             </div>
             <div style={{ textAlign: "center", marginTop: 36 }}>
-                <Link className="btn-primary" href="/shop">
+                <Link className="btn-primary" href="/shop?badge=featured">
                     Shop the Collection →
                 </Link>
             </div>

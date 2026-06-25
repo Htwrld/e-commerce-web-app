@@ -42,7 +42,7 @@ const BestSellers = ({
                         <div className="divider" />
                         <p style={{ fontSize: 14, color: T.muted, marginTop: 8 }}>{description}</p>
                     </div>
-                    <Link className="btn-outline-gold" href="/shop">
+                    <Link className="btn-outline-gold" href="/shop?badge=bestseller">
                         View All →
                     </Link>
                 </div>
