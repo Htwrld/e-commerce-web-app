@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { T } from "@/src/lib/tokens"
 import { NAV_ITEMS } from "@/src/lib/data"
 import { useCart } from "@/src/lib/cart-context"
@@ -11,8 +11,24 @@ import { NavbarandFooter } from "@/src/action/pageController"
 
 export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }) {
     const [menuOpen, setMenuOpen] = useState(false)
-    const { cartCount, setCartOpen } = useCart()
+    const { cartCount } = useCart()
     const pathname = usePathname()
+    const navRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (navRef.current) {
+            navRef.current.scrollIntoView({ behavior: "smooth" })
+        }
+
+        function onDocClick(e: MouseEvent) {
+            if (!navRef.current?.contains(e.target as Node)) {
+                setMenuOpen(false)
+            }
+        }
+        document.addEventListener("mousedown", onDocClick)
+        return () => document.removeEventListener("mousedown", onDocClick)
+    }, [])
+
     return (
         <nav
             style={{
@@ -105,6 +121,7 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                             fontSize: 20,
                             position: "relative",
                             padding: 4,
+                            color: pathname === "/checkout" ? T.rust : T.charcoal,
                         }}
                     >
                         🛒

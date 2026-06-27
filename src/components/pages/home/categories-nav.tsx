@@ -43,7 +43,7 @@ const CategoriesNav = () => {
                                     <Link
                                         key={cat}
                                         className="btn-outline-gold"
-                                        href={`/shop?cat=${cat}`}
+                                        href={`/shop?cat=${cat.replaceAll("&", "%26")}`}
                                         style={{
                                             padding: "9px 20px",
                                             borderRadius: 24,

@@ -188,8 +188,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                             style={{
                                 background: T.sand,
                                 border: "none",
-                                width: 22,
-                                height: 22,
+                                padding: "5px 15px",
                                 borderRadius: 4,
                                 cursor: "pointer",
                                 fontSize: 14,
@@ -211,8 +210,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                             style={{
                                 background: T.sand,
                                 border: "none",
-                                width: 22,
-                                height: 22,
+                                padding: "5px 15px",
                                 borderRadius: 4,
                                 cursor: "pointer",
                                 fontSize: 14,
@@ -229,7 +227,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                             onAdd({
                                 product: p,
                                 selectedColor,
-                                selectedSize
+                                selectedSize,
                             })
                         }}
                         className="btn-primary"

@@ -2,9 +2,17 @@
 
 import { useCart } from "@/src/lib/cart-context"
 import { T } from "@/src/lib/tokens"
+import { useEffect } from "react"
 
 const ToastCard = () => {
-    const { toast } = useCart()
+    const { toast, setToast } = useCart()
+
+    useEffect(() => {
+        if (toast) {
+            setTimeout(() => setToast(null), 3000)
+        }
+    }, [toast])
+
     return (
         toast && (
             <div

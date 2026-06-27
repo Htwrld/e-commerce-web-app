@@ -1,4 +1,4 @@
-'use server'
+"use server"
 
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
 
@@ -64,5 +64,28 @@ export const getProducts = async (acfField?: string, page?: number) => {
             products: [],
             pages: 1,
         }
+    }
+}
+
+export type Location = {
+    id: number
+    location: string
+    fees: number
+}
+
+export const getLocations = async () => {
+    try {
+        const req = await fetch(`${website_url}wp-json/wp/v2/locations`)
+        const res = await req.json()
+        const locations: Location[] = res.map((l: any) => {
+            return {
+                id: l.id,
+                location: l.acf.location,
+                fees: l.acf.fees ? parseInt(l.acf.fees) : 0,
+            }
+        })
+        return locations
+    } catch (err) {
+        return []
     }
 }

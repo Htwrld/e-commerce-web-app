@@ -6,6 +6,7 @@ import { Ticker } from "@/src/components/layouts/Ticker"
 import { Footer } from "@/src/components/layouts/Footer"
 import { getNavbarandFooter } from "@/src/action/pageController"
 import ToastCard from "@/src/components/cards/toast-card"
+import { FaWhatsapp } from "react-icons/fa"
 
 const EcommerceLayout = async ({ children }: { children: React.ReactNode }) => {
     const footerandnavbar = await getNavbarandFooter()
@@ -28,7 +29,7 @@ const EcommerceLayout = async ({ children }: { children: React.ReactNode }) => {
                     className="wa-float"
                     title="Chat with us"
                 >
-                    💬
+                    <FaWhatsapp className="text-white" />
                 </a>
                 <CartDrawer />
                 <Navbar footerandnavbar={footerandnavbar} />

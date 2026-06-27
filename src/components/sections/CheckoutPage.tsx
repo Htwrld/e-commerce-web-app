@@ -6,24 +6,87 @@ import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
 import { WABtn } from "@/src/components/cards/WABtn"
 import Link from "next/link"
+import { Location } from "@/src/action/productController"
+import { FaCheck, FaCopy, FaExclamationCircle } from "react-icons/fa"
+import { sendMail } from "@/src/action/mailController"
 
-export function CheckoutPage() {
-    const { cart, cartTotal, removeFromCart } = useCart()
+const CheckoutPage = ({ locations }: { locations: Location[] }) => {
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
+    const [copied, setCopied] = useState(false)
+    const [fees, setFees] = useState(locations[0].fees)
+    const { cart, cartTotal, removeFromCart, setToast } = useCart()
     const [step, setStep] = useState(1)
-    const [form, setForm] = useState({ name: "", address: "", phone: "", payment: "paystack" })
-
-    const PAYMENT_METHODS = [
-        { k: "paystack", l: "Paystack", desc: "Pay with card or bank transfer via Paystack" },
-        { k: "flutterwave", l: "Flutterwave", desc: "Pay with card, mobile money, or bank" },
-        { k: "transfer", l: "Direct Bank Transfer", desc: "Transfer directly to our account" },
-        { k: "whatsapp", l: "WhatsApp Order", desc: "Complete your order via WhatsApp chat" },
-    ]
+    const [form, setForm] = useState({
+        name: "",
+        address: "",
+        phone: "",
+        email: "",
+    })
 
     const DELIVERY_FIELDS = [
-        { k: "name", l: "Full Name", p: "Your full name", t: "text" },
-        { k: "address", l: "Delivery Address", p: "Street, City, State", t: "text" },
-        { k: "phone", l: "Phone Number", p: "+234 000 000 0000", t: "tel" },
+        {
+            k: "name",
+            l: "Full Name",
+            p: "Your full name",
+            t: "text",
+        },
+        {
+            k: "email",
+            l: "Email",
+            p: "Your email address",
+            t: "email",
+        },
+        {
+            k: "address",
+            l: "Delivery Address",
+            p: "Street, City, State",
+            t: "text",
+        },
+        {
+            k: "phone",
+            l: "Phone Number",
+            p: "+234 000 000 0000",
+            t: "tel",
+        },
     ] as const
+
+    const handleCopy = (text: string) => {
+        navigator.clipboard.writeText(text)
+        setCopied(true)
+        setToast("Copied to clipboard!")
+        setTimeout(() => setCopied(false), 2000)
+    }
+
+    const onConfirm = async () => {
+        try {
+            setLoading(true)
+            setError("")
+            const email = await sendMail({
+                to: "host",
+                subject: "Checkout Order Received",
+                body: `Order Reference: ${form.name}
+                    Delivery Address: ${form.address}
+                    Phone Number: ${form.phone}
+                    Email: ${form.email}
+                    Items: ${cart.map((c) => c.name).join(", ")}
+                `,
+            })
+            cart.forEach((c) => {
+                removeFromCart({
+                    id: c.id,
+                    color: c.selectedColor,
+                    size: c.selectedSize,
+                })
+            })
+            setFees(0)
+            setStep(3)
+        } catch (err) {
+            setError("Something went wrong! Please try again later.")
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <div>
@@ -118,6 +181,12 @@ export function CheckoutPage() {
                                 >
                                     Delivery Details
                                 </h3>
+                                {error && (
+                                    <div className="mb-5 flex items-center gap-2 rounded-md border border-amber-600 bg-red-300 p-3">
+                                        <FaExclamationCircle className="text-amber-900" />
+                                        <p className="text-sm text-amber-900">{error}</p>
+                                    </div>
+                                )}
                                 {DELIVERY_FIELDS.map((f) => (
                                     <div key={f.k} style={{ marginBottom: 16 }}>
                                         <label
@@ -151,6 +220,38 @@ export function CheckoutPage() {
                                         />
                                     </div>
                                 ))}
+                                <div className="mb-4">
+                                    <label
+                                        style={{
+                                            fontSize: 12,
+                                            color: T.gold,
+                                            fontWeight: 700,
+                                            letterSpacing: "0.07em",
+                                            display: "block",
+                                            marginBottom: 5,
+                                        }}
+                                    >
+                                        Location
+                                    </label>
+                                    <select
+                                        className="w-full rounded-md border border-[#E4D8C4] p-3 text-[#1A1612]"
+                                        onChange={(e) => setFees(Number(e.target.value))}
+                                    >
+                                        {locations.map((l) => (
+                                            <option
+                                                key={l.id}
+                                                className="mt-1 border-y px-2 py-1 text-sm text-[#1A1612]"
+                                                value={l.fees}
+                                            >
+                                                <span style={{ color: T.ink }}>{l.location}</span>
+                                                <span> - </span>
+                                                <span className="text-xs text-slate-400">
+                                                    ₦{l.fees.toLocaleString()}
+                                                </span>
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                                 <button
                                     className="btn-primary"
                                     style={{
@@ -158,7 +259,15 @@ export function CheckoutPage() {
                                         justifyContent: "center",
                                         marginTop: 8,
                                     }}
-                                    onClick={() => setStep(2)}
+                                    onClick={() => {
+                                        if (cart.length === 0) {
+                                            setToast("Please add items to cart!")
+                                            setError("Please add items to cart first!")
+                                            return
+                                        }
+
+                                        setStep(2)
+                                    }}
                                 >
                                     Continue to Payment →
                                 </button>
@@ -180,60 +289,54 @@ export function CheckoutPage() {
                                         fontFamily: "'Cormorant Garamond',serif",
                                         fontSize: 22,
                                         fontWeight: 600,
-                                        marginBottom: 20,
+                                        marginBottom: 10,
                                     }}
                                 >
-                                    Payment Method
+                                    Payment Details
                                 </h3>
-                                {PAYMENT_METHODS.map((pm) => (
-                                    <div
-                                        key={pm.k}
-                                        onClick={() => setForm((f) => ({ ...f, payment: pm.k }))}
-                                        style={{
-                                            background:
-                                                form.payment === pm.k ? `${T.gold}14` : T.warm,
-                                            border: `2px solid ${form.payment === pm.k ? T.gold : T.border}`,
-                                            borderRadius: 10,
-                                            padding: "14px 16px",
-                                            marginBottom: 10,
-                                            cursor: "pointer",
-                                            transition: "all .2s",
-                                        }}
-                                    >
-                                        <div
-                                            style={{ fontSize: 14, fontWeight: 700, color: T.ink }}
-                                        >
-                                            {pm.l}
-                                        </div>
-                                        <div style={{ fontSize: 12, color: T.muted, marginTop: 2 }}>
-                                            {pm.desc}
-                                        </div>
-                                    </div>
-                                ))}
-                                <p
-                                    style={{
-                                        fontSize: 12,
-                                        color: T.sage,
-                                        marginTop: 14,
-                                        fontWeight: 600,
-                                    }}
-                                >
-                                    🔒 Secure checkout · Your payment details are encrypted
+                                <p className="rounded-md border border-teal-200 p-3 text-sm text-slate-500">
+                                    After making payment, kindly send your payment receipt or
+                                    screenshot along with your Order Reference to our official
+                                    WhatsApp account for verification and order confirmation.
                                 </p>
-                                <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
+                                <div className="my-2.5 flex flex-col items-center justify-center gap-3 rounded-md border border-neutral-200 bg-white pb-6 text-center">
+                                    <Image
+                                        className="h-32 w-32"
+                                        src={"/images/unnamed.webp"}
+                                        height={200}
+                                        width={200}
+                                        alt=""
+                                    />
+                                    <h2>Business Transfer Number</h2>
+                                    <span className="flex items-center gap-2 font-mono text-xl font-black text-teal-500">
+                                        <span>6564330275</span>
+                                        {copied ? (
+                                            <FaCheck className="text-teal-400" />
+                                        ) : (
+                                            <FaCopy
+                                                className="cursor-pointer hover:text-teal-400"
+                                                onClick={() => handleCopy("6564330275")}
+                                            />
+                                        )}
+                                    </span>
+                                    <p className="text-sm text-neutral-400 uppercase">
+                                        Amaeyak brown akanem
+                                    </p>
+                                </div>
+                                <div className="w-full items-center justify-between space-y-2.5 md:flex md:gap-2.5 md:space-y-0">
                                     <button
-                                        className="btn-secondary"
+                                        className="btn-secondary w-full"
                                         style={{ flex: 1 }}
                                         onClick={() => setStep(1)}
                                     >
                                         ← Back
                                     </button>
                                     <button
-                                        className="btn-primary"
+                                        className="btn-primary w-full text-nowrap"
                                         style={{ flex: 2, justifyContent: "center" }}
-                                        onClick={() => setStep(3)}
+                                        onClick={onConfirm}
                                     >
-                                        Place Order →
+                                        Confirm Payment →
                                     </button>
                                 </div>
                             </div>
@@ -242,6 +345,7 @@ export function CheckoutPage() {
                         {/* Step 3: Confirmation */}
                         {step === 3 && (
                             <div
+                                className="flex flex-col items-center justify-center rounded-md border border-neutral-200 bg-white pb-6 text-center"
                                 style={{
                                     textAlign: "center",
                                     padding: "52px 28px",
@@ -273,9 +377,14 @@ export function CheckoutPage() {
                                     Thank you for your order! We&rsquo;ll confirm via WhatsApp and
                                     send tracking details within 24 hours.
                                 </p>
-                                <WABtn text="Track Order on WhatsApp" />
-                                <div style={{ marginTop: 20 }}>
-                                    <Link className="btn-outline-gold" href="/">
+                                <div className="w-fit">
+                                    <WABtn
+                                        text="Track Order on WhatsApp"
+                                        message="Hi HTW! I'd like to track my order"
+                                    />
+                                </div>
+                                <div className="mt-5 w-full">
+                                    <Link className="btn-outline-gold w-full" href="/">
                                         Continue Shopping →
                                     </Link>
                                 </div>
@@ -376,11 +485,11 @@ export function CheckoutPage() {
                                             </span>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col justify-between items-end space-y-2">
+                                    <div className="flex flex-col items-end justify-between space-y-2">
                                         <div
                                             style={{ fontSize: 13, fontWeight: 700, color: T.rust }}
                                         >
-                                            ₦{item.price}
+                                            ₦{Number(item.price).toLocaleString()}
                                         </div>
                                         <button
                                             className="cursor-pointer rounded-sm border border-amber-800 px-3 py-0.5 text-xs text-amber-800"
@@ -419,7 +528,7 @@ export function CheckoutPage() {
                                 >
                                     <span style={{ fontSize: 13, color: T.muted }}>Delivery</span>
                                     <span style={{ fontSize: 13, fontWeight: 600, color: T.sage }}>
-                                        {cartTotal > 0 ? "₦1,500" : "—"}
+                                        ₦{fees.toLocaleString()}
                                     </span>
                                 </div>
                                 <div
@@ -433,7 +542,7 @@ export function CheckoutPage() {
                                 >
                                     <span style={{ fontSize: 15, fontWeight: 700 }}>Total</span>
                                     <span style={{ fontSize: 16, fontWeight: 700, color: T.rust }}>
-                                        ₦{(cartTotal + (cartTotal > 0 ? 1500 : 0)).toLocaleString()}
+                                        ₦{(cartTotal + fees).toLocaleString()}
                                     </span>
                                 </div>
                             </div>
@@ -444,3 +553,5 @@ export function CheckoutPage() {
         </div>
     )
 }
+
+export { CheckoutPage }
