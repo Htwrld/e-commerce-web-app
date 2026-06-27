@@ -9,6 +9,7 @@ import Link from "next/link"
 import { Location } from "@/src/action/productController"
 import { FaCheck, FaCopy, FaExclamationCircle } from "react-icons/fa"
 import { sendMail } from "@/src/action/mailController"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
 const CheckoutPage = ({ locations }: { locations: Location[] }) => {
     const [loading, setLoading] = useState(false)
@@ -233,24 +234,31 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                     >
                                         Location
                                     </label>
-                                    <select
-                                        className="w-full rounded-md border border-[#E4D8C4] p-3 text-[#1A1612]"
-                                        onChange={(e) => setFees(Number(e.target.value))}
+                                    <Select
+                                        defaultValue={locations[0].id.toString()}
+                                        onValueChange={(e) => {
+                                            const l = locations.find((l) => l.id === Number(e))
+                                            setFees(l?.fees ?? 0)
+                                        }}
                                     >
-                                        {locations.map((l) => (
-                                            <option
-                                                key={l.id}
-                                                className="mt-1 border-y px-2 py-1 text-sm text-[#1A1612]"
-                                                value={l.fees}
-                                            >
-                                                <span style={{ color: T.ink }}>{l.location}</span>
-                                                <span> - </span>
-                                                <span className="text-xs text-slate-400">
-                                                    ₦{l.fees.toLocaleString()}
-                                                </span>
-                                            </option>
-                                        ))}
-                                    </select>
+                                        <SelectTrigger className="w-full rounded-md border border-[#E4D8C4] p-4 text-[#1A1612]">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {locations.map((l) => (
+                                                <SelectItem key={l.id} value={l.id.toString()}>
+                                                    <span className="flex items-center gap-2">
+                                                        <span className="text-sm font-medium text-neutral-400">
+                                                            ₦{l.fees.toLocaleString()}
+                                                        </span>
+                                                        <span className="text-sm font-medium text-neutral-400">
+                                                            {l.location}
+                                                        </span>
+                                                    </span>
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </div>
                                 <button
                                     className="btn-primary"
