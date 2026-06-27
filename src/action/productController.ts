@@ -75,7 +75,7 @@ export type Location = {
 
 export const getLocations = async () => {
     try {
-        const req = await fetch(`${website_url}wp-json/wp/v2/locations`)
+        const req = await fetch(`${website_url}wp-json/wp/v2/locations?per_page=40`)
         const res = await req.json()
         const locations: Location[] = res.map((l: any) => {
             return {
