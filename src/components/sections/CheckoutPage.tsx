@@ -9,6 +9,7 @@ import Link from "next/link"
 import { Location } from "@/src/action/productController"
 import { FaCheck, FaCopy, FaExclamationCircle } from "react-icons/fa"
 import { sendMail } from "@/src/action/mailController"
+import { orderNotificationTemplate, orderConfirmationTemplate } from "@/src/lib/email-templates"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
 const CheckoutPage = ({ locations }: { locations: Location[] }) => {
@@ -16,6 +17,7 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
     const [error, setError] = useState("")
     const [copied, setCopied] = useState(false)
     const [fees, setFees] = useState(locations[0].fees)
+    const [locationName, setLocationName] = useState(locations[0].location)
     const { cart, cartTotal, removeFromCart, setToast } = useCart()
     const [step, setStep] = useState(1)
     const [form, setForm] = useState({
@@ -63,16 +65,38 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
         try {
             setLoading(true)
             setError("")
-            const email = await sendMail({
-                to: "host",
-                subject: "Checkout Order Received",
-                body: `Order Reference: ${form.name}
-                    Delivery Address: ${form.address}
-                    Phone Number: ${form.phone}
-                    Email: ${form.email}
-                    Items: ${cart.map((c) => c.name).join(", ")}
-                `,
-            })
+
+            const orderData = {
+                customerName: form.name,
+                customerEmail: form.email,
+                customerPhone: form.phone,
+                customerAddress: form.address,
+                location: locationName,
+                items: cart.map((c) => ({
+                    name: c.name,
+                    qty: c.qty,
+                    selectedColor: c.selectedColor,
+                    selectedSize: c.selectedSize,
+                    price: c.price,
+                })),
+                subtotal: cartTotal,
+                deliveryFee: fees,
+                total: cartTotal + fees,
+            }
+
+            await Promise.all([
+                sendMail({
+                    to: "host",
+                    subject: `New Order from ${form.name}`,
+                    html: orderNotificationTemplate(orderData),
+                }),
+                sendMail({
+                    to: form.email,
+                    subject: "Your HTW Order is Confirmed!",
+                    html: orderConfirmationTemplate(orderData),
+                }),
+            ])
+
             cart.forEach((c) => {
                 removeFromCart({
                     id: c.id,
@@ -239,6 +263,7 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                         onValueChange={(e) => {
                                             const l = locations.find((l) => l.id === Number(e))
                                             setFees(l?.fees ?? 0)
+                                            setLocationName(l?.location ?? "")
                                         }}
                                     >
                                         <SelectTrigger className="w-full rounded-md border border-[#E4D8C4] p-4 text-[#1A1612]">

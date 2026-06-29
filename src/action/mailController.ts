@@ -8,11 +8,13 @@ export const sendMail = async ({
     to,
     subject,
     body,
+    html,
     replyTo,
 }: {
     to: string
     subject: string
-    body: string
+    body?: string
+    html?: string
     name?: string
     replyTo?: string
 }) => {
@@ -33,7 +35,7 @@ export const sendMail = async ({
         to: to === "host" ? process.env.NODEMAILER_USER : to,
         replyTo: replyTo === "host" ? process.env.NODEMAILER_USER : replyTo,
         subject: `${subject} ${name ? "from " + name : ""}`,
-        text: `${body} `,
+        ...(html ? { html, text: body ?? "" } : { text: body ?? "" }),
     }
 
     const sent = await transporter.sendMail(mailOptions)

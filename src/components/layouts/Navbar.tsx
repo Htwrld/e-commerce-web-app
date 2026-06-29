@@ -184,6 +184,7 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
             {/* Mobile menu */}
             {menuOpen && (
                 <div
+                    ref={navRef}
                     style={{
                         background: T.white,
                         borderTop: `1px solid ${T.border}`,

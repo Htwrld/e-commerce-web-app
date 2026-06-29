@@ -4,6 +4,7 @@ import { ChangeEvent, useState } from "react"
 import { T } from "@/src/lib/tokens"
 import { WABtn } from "@/src/components/cards/WABtn"
 import { sendMail } from "@/src/action/mailController"
+import { contactFormTemplate } from "@/src/lib/email-templates"
 import { FaSpinner } from "react-icons/fa"
 
 type PageContent = {
@@ -32,11 +33,11 @@ export const ContactPage = ({ pageContent }: { pageContent: PageContent }) => {
         try {
             setLoading(true)
             const sent = await sendMail({
-                to: 'host',
+                to: "host",
                 subject,
-                body: message,
-                replyTo: 'host',
-                name
+                name,
+                replyTo: email,
+                html: contactFormTemplate({ senderName: name, senderEmail: email, subject, message }),
             })
             setSent(true)
             setName('')
