@@ -39,10 +39,12 @@ const CategoriesNav = () => {
                                     ["joggers", "👟"],
                                     ["polos & tees", "👔"],
                                     ["2-piece sets", "👗"],
+                                    ['family collections', '👪'],
+                                    ['ankara', '🎽'],
                                 ].map(([cat, ico]) => (
                                     <Link
                                         key={cat}
-                                        className="btn-outline-gold"
+                                        className="btn-outline-gold capitalize"
                                         href={`/shop?cat=${cat.replaceAll("&", "%26")}`}
                                         style={{
                                             padding: "9px 20px",

@@ -223,7 +223,7 @@ export const PRODUCTS: Product[] = [
     },
 ]
 
-export const CATS = ["All", "Sweatshirts", "Hoodies", "Joggers", "Polos & Tees", "2-Piece Sets"]
+export const CATS = ["All", "Sweatshirts", "Hoodies", "Joggers", "Polos & Tees", "2-Piece Sets", "Family Collections", "Ankara"]
 export const GENDERS = ["All", "Male", "Female", "Unisex"]
 
 export interface Ambassador {
