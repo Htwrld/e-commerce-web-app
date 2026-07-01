@@ -54,6 +54,7 @@ export const getProducts = async (acfField?: string, page?: number) => {
                 size_guide: p.acf.size_guide,
             }
         })
+        console.log(products)
 
         return {
             products,

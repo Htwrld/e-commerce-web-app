@@ -33,8 +33,8 @@ export const ShopPage = ({
     const filtered = currProducts.filter((p) => {
         const newCats = p.categories.map((c) => (c === "polos &amp; tees" ? "polos & tees" : c))
         const isCat = newCats.includes(activeCat)
-        const isGen = p.gender.toLowerCase() === activeGen || p.gender.toLowerCase() === "unisex"
-        const isBadge = p.badge.toLowerCase() === activeBadge.toLowerCase()
+        const isGen = p.gender.toLowerCase().includes(activeGen) || p.gender.toLowerCase() === "unisex"
+        const isBadge = p.badge.toLowerCase().includes(activeBadge.toLowerCase())
         return (
             (activeCat === "all" || isCat) &&
             (activeGen === "all" || isGen) &&
