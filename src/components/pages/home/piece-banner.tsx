@@ -40,10 +40,10 @@ const PieceBanner = ({ title, description }: { title: string; description: strin
                         flexWrap: "wrap",
                     }}
                 >
-                    <Link className="btn-primary" href="/shop?gender=female&cat=2-piece%20sets">
+                    <Link className="btn-primary" href="/shop?gender=female&cat=2-piece-sets">
                         Shop Women&rsquo;s Sets
                     </Link>
-                    <Link className="btn-secondary" href="/shop?gender=male&cat=2-piece%20sets">
+                    <Link className="btn-secondary" href="/shop?gender=male&cat=2-piece-sets">
                         Shop Men&rsquo;s Sets
                     </Link>
                 </div>
