@@ -2,13 +2,14 @@
 
 import { useState } from "react"
 import { T } from "@/src/lib/tokens"
-import { CATS, GENDERS, PRODUCTS } from "@/src/lib/data"
+import { CATS, GENDERS } from "@/src/lib/data"
 import { useCart } from "@/src/lib/cart-context"
 import { ProductCard } from "@/src/components/cards/ProductCard"
 import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal"
-import { getProducts, Product } from "@/src/action/productController"
+import { Product } from "@/src/action/productController"
 import { useSearchParams } from "next/navigation"
 import Pagination from "../cards/pagination"
+import Link from "next/link"
 
 export const ShopPage = ({
     products,
@@ -19,33 +20,13 @@ export const ShopPage = ({
     mobileNumber: string
     pages: number
 }) => {
-    const [currProducts, setCurrProducts] = useState(products)
     const searchParams = useSearchParams()
-    const cat = searchParams.get("cat")
-    const gender = searchParams.get("gender")
-    const badge = searchParams.get("badge")
-    const [activeCat, setActiveCat] = useState(cat ? cat : "all")
-    const [activeGen, setActiveGen] = useState(gender ? gender : "all")
-    const [activeBadge, setActiveBadge] = useState(badge ? badge : "all")
+    const activeCat = searchParams.get("cat") ?? "all"
+    const activeGen = searchParams.get("gender") ?? "all"
+    const activeBadge = searchParams.get("badge") ?? "all"
+    const activePage = parseInt(searchParams.get("page") ?? "1")
     const { addToCart } = useCart()
     const [detailProd, setDetailProd] = useState<Product | null>(null)
-
-    const filtered = currProducts.filter((p) => {
-        const newCats = p.categories.map((c) => (c === "polos &amp; tees" ? "polos & tees" : c))
-        const isCat = newCats.includes(activeCat)
-        const isGen = p.gender.toLowerCase().includes(activeGen) || p.gender.toLowerCase() === "unisex"
-        const isBadge = p.badge.toLowerCase().includes(activeBadge.toLowerCase())
-        return (
-            (activeCat === "all" || isCat) &&
-            (activeGen === "all" || isGen) &&
-            (activeBadge === "all" || isBadge)
-        )
-    })
-
-    const handlePageChange = async (page: number) => {
-        const { products, pages } = await getProducts(undefined, page)
-        setCurrProducts(products)
-    }
 
     return (
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "44px 28px" }}>
@@ -89,16 +70,13 @@ export const ShopPage = ({
                 </span>
                 {CATS.map((c) => {
                     return (
-                        <button
-                            key={c}
-                            onClick={() => {
-                                setActiveCat(c.toLowerCase())
-                                setActiveBadge("all")
-                            }}
+                        <Link
+                            key={c.slug}
+                            href={c.slug === "all" ? `/shop` : `/shop?cat=${c.slug}`}
                             style={{
-                                background: activeCat === c.toLowerCase() ? T.rust : "none",
-                                border: `2px solid ${activeCat === c.toLowerCase() ? T.rust : T.border}`,
-                                color: activeCat === c.toLowerCase() ? "#fff" : T.muted,
+                                background: activeCat === c.slug ? T.rust : "none",
+                                border: `2px solid ${activeCat === c.slug ? T.rust : T.border}`,
+                                color: activeCat === c.slug ? "#fff" : T.muted,
                                 padding: "8px 20px",
                                 borderRadius: 24,
                                 fontSize: 13,
@@ -108,8 +86,8 @@ export const ShopPage = ({
                                 transition: "all .2s",
                             }}
                         >
-                            {c}
-                        </button>
+                            {c.name}
+                        </Link>
                     )
                 })}
             </div>
@@ -135,16 +113,16 @@ export const ShopPage = ({
                     Gender:
                 </span>
                 {GENDERS.map((g) => (
-                    <button
+                    <Link
                         key={g}
-                        onClick={() => {
-                            setActiveGen(g.toLowerCase())
-                            setActiveBadge("all")
-                        }}
+                        href={
+                            g.toLowerCase() === "all" ? `/shop` : `/shop?gender=${g.toLowerCase()}`
+                        }
                         style={{
-                            background: activeGen.toLowerCase() === g.toLowerCase() ? T.cobalt : "none",
-                            border: `2px solid ${activeGen.toLowerCase() === g.toLowerCase() ? T.cobalt : T.border}`,
-                            color: activeGen.toLowerCase() === g.toLowerCase() ? T.white : T.muted,
+                            background:
+                                activeGen?.toLowerCase() === g.toLowerCase() ? T.cobalt : "none",
+                            border: `2px solid ${activeGen?.toLowerCase() === g.toLowerCase() ? T.cobalt : T.border}`,
+                            color: activeGen?.toLowerCase() === g.toLowerCase() ? T.white : T.muted,
                             padding: "7px 16px",
                             borderRadius: 20,
                             fontSize: 12,
@@ -154,11 +132,11 @@ export const ShopPage = ({
                         }}
                     >
                         {g}
-                    </button>
+                    </Link>
                 ))}
             </div>
 
-            {filtered.length === 0 ? (
+            {products.length === 0 ? (
                 <div
                     style={{
                         textAlign: "center",
@@ -178,7 +156,7 @@ export const ShopPage = ({
                         gap: 18,
                     }}
                 >
-                    {filtered.map((p) => (
+                    {products.map((p) => (
                         <ProductCard
                             key={p.id}
                             product={p}
@@ -190,7 +168,13 @@ export const ShopPage = ({
                 </div>
             )}
             <div className="mt-8">
-                <Pagination pages={pages} handlePageChange={handlePageChange} />
+                <Pagination
+                    pages={pages}
+                    activePage={activePage}
+                    activeBadge={activeBadge}
+                    activeCat={activeCat}
+                    activeGen={activeGen}
+                />
             </div>
         </div>
     )

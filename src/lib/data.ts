@@ -223,7 +223,49 @@ export const PRODUCTS: Product[] = [
     },
 ]
 
-export const CATS = ["All", "Sweatshirts", "Hoodies", "Joggers", "Polos & Tees", "2-Piece Sets", "Family Collections", "Ankara"]
+export const CATS = [
+    {
+        name: "All",
+        slug: "all",
+        icon:  "🧥"
+    },
+    {
+        name: "Sweatshirts",
+        slug: "sweatshirts",
+        icon: "🧥"
+    },
+    {
+        name: "Hoodies",
+        slug: "hoodies",
+        icon: "🫙"
+    },
+    {
+        name: "Joggers",
+        slug: "joggers",
+        icon: "👟"
+    },
+    {
+        name: "Polos & Tees",
+        slug: "polos-tees",
+        icon: "👔"
+    },
+    {
+        name: "2-Piece Sets",
+        slug: "2-piece-sets",
+        icon: "👗"
+    },
+    {
+        name: "Family Collections",
+        slug: "family-collections",
+        icon: "👪"
+    },
+    {
+        name: "Ankara",
+        slug: "ankara",
+        icon: "🎽"
+    },
+]
+
 export const GENDERS = ["All", "Male", "Female", "Unisex"]
 
 export interface Ambassador {

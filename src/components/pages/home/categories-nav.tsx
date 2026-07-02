@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { T } from "@/src/lib/tokens"
+import { CATS } from "@/src/lib/data"
 
 const CategoriesNav = () => {
     return (
@@ -33,19 +34,11 @@ const CategoriesNav = () => {
                                     justifyContent: "center",
                                 }}
                             >
-                                {[
-                                    ["sweatshirts", "🧥"],
-                                    ["hoodies", "🫙"],
-                                    ["joggers", "👟"],
-                                    ["polos & tees", "👔"],
-                                    ["2-piece sets", "👗"],
-                                    ['family collections', '👪'],
-                                    ['ankara', '🎽'],
-                                ].map(([cat, ico]) => (
+                                {CATS.map(({name, slug, icon}) => (
                                     <Link
-                                        key={cat}
+                                        key={slug}
                                         className="btn-outline-gold capitalize"
-                                        href={`/shop?cat=${cat.replaceAll("&", "%26")}`}
+                                        href={`/shop?cat=${slug}`}
                                         style={{
                                             padding: "9px 20px",
                                             borderRadius: 24,
@@ -55,7 +48,7 @@ const CategoriesNav = () => {
                                             gap: 6,
                                         }}
                                     >
-                                        {ico} {cat}
+                                        {icon} {name}
                                     </Link>
                                 ))}
                             </div>

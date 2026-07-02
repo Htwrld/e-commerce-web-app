@@ -23,8 +23,12 @@ import "@icon/dashicons/dashicons.css"
 
 const MainPage = async () => {
     const homepage = await getPageHomePage()
-    const { products:bestSellers } = await getProducts("Bestseller")
-    const { products:featured } = await getProducts("Featured")
+    const { products:bestSellers } = await getProducts({
+        badge: "bestseller",
+    })
+    const { products:featured } = await getProducts({
+        badge: "featured",
+    })
     const hashtags = await getHashtags()
     const styles = await getStyles()
     const ambassadors = await getAmbassadors()

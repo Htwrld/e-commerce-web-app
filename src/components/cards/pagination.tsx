@@ -1,15 +1,22 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 const Pagination = ({
     pages,
-    handlePageChange,
+    activePage,
+    activeBadge,
+    activeCat,
+    activeGen,
 }: {
     pages: number
-    handlePageChange: (page: number) => Promise<void>
+    activePage: number
+    activeBadge: string
+    activeCat: string
+    activeGen: string
 }) => {
-    const [activePage, setActivePage] = useState(1)
+    const router = useRouter()
     const pageNumbers = []
     for (let i = 1; i <= pages; i++) {
         pageNumbers.push(i)
@@ -18,8 +25,12 @@ const Pagination = ({
     const handlePageClick = async (pageNumber: number) => {
         if (pageNumber === 0) return
         if (pageNumber > pages) return
-        await handlePageChange(pageNumber)
-        setActivePage(pageNumber)
+        let endpoint = '?'
+        if (activeBadge !== "all") endpoint += `&badge=${activeBadge}`
+        if (activeCat !== "all") endpoint += `&cat=${activeCat}`
+        if (activeGen !== "all") endpoint += `&gender=${activeGen}`
+        endpoint += `&page=${pageNumber}`
+        router.push(endpoint)
     }
 
     return (
