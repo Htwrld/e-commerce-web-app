@@ -218,7 +218,7 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
                     <Link
                         className="btn-secondary"
                         style={{ fontSize: 14, padding: "13px 26px" }}
-                        href="/shop?badge=new"
+                        href="/shop?badge=new collection"
                     >
                         New Collection
                     </Link>
