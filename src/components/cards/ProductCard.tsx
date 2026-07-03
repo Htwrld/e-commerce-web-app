@@ -136,7 +136,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                             ₦{parseFloat(p.price).toFixed(2)}
                         </span>
                         <span style={{ fontSize: 12, color: "#BBB" }}>
-                            {parseFloat(p.usd_price).toFixed(2)}
+                            ${parseFloat(p.usd_price).toFixed(2)}
                         </span>
                     </div>
                     <div style={{ marginBottom: 12 }}>

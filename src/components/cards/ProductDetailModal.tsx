@@ -137,7 +137,7 @@ export function ProductDetailModal({
                         {parseFloat(p.price).toFixed(2)}
                     </span>
                     <span style={{ fontSize: 14, color: T.muted }}>
-                        {parseFloat(p.usd_price).toFixed(2)}
+                        ${parseFloat(p.usd_price).toFixed(2)}
                     </span>
                 </div>
 
