@@ -133,9 +133,11 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                         }}
                     >
                         <span style={{ fontSize: 18, color: T.rust, fontWeight: 700 }}>
-                            ₦{p.price}
+                            ₦{parseFloat(p.price).toFixed(2)}
                         </span>
-                        <span style={{ fontSize: 12, color: "#BBB" }}>{p.price}</span>
+                        <span style={{ fontSize: 12, color: "#BBB" }}>
+                            {parseFloat(p.usd_price).toFixed(2)}
+                        </span>
                     </div>
                     <div style={{ marginBottom: 12 }}>
                         <VerseChip verse={p.bible_verse} verseText={p.bible_verse_content} />

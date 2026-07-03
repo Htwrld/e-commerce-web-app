@@ -133,8 +133,12 @@ export function ProductDetailModal({
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-                    <span style={{ fontSize: 22, color: T.rust, fontWeight: 700 }}>{p.price}</span>
-                    <span style={{ fontSize: 14, color: T.muted }}>{p.price}</span>
+                    <span style={{ fontSize: 22, color: T.rust, fontWeight: 700 }}>
+                        {parseFloat(p.price).toFixed(2)}
+                    </span>
+                    <span style={{ fontSize: 14, color: T.muted }}>
+                        {parseFloat(p.usd_price).toFixed(2)}
+                    </span>
                 </div>
 
                 <p
@@ -228,7 +232,7 @@ export function ProductDetailModal({
                             }}
                         >
                             <button
-                                className="py-1 px-10"
+                                className="px-10 py-1"
                                 onClick={() => {
                                     if (isInCart.qty === 1) {
                                         removeFromCart({
@@ -258,7 +262,7 @@ export function ProductDetailModal({
                             </button>
                             <span style={{ fontSize: 16, fontWeight: 700 }}>{isInCart.qty}</span>
                             <button
-                                className="py-1 px-10"
+                                className="px-10 py-1"
                                 onClick={() =>
                                     updateQty({
                                         id: isInCart.id,
@@ -354,8 +358,8 @@ export function ProductDetailModal({
                         to size &nbsp;·&nbsp; ✓ Secure packaging
                     </div>
                     <div style={{ marginTop: 6, fontSize: 12, color: T.muted }}>
-                        📏 Size guide: XS (6–8) · S (8–10) · M (10–12) · L (12–14) · XL (14–16) ·
-                        XXL (16–18)
+                        📏 Size guide: XS (6-8) · S (8-10) · M (10-12) · L (12-14) · XL (14-16) ·
+                        XXL (16-18)
                     </div>
                 </div>
             </div>

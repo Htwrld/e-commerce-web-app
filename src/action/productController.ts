@@ -10,6 +10,7 @@ export type Product = {
     name: string
     description: string
     price: string
+    usd_price: string
     quotes: string
     bible_verse: string
     bible_verse_content: string
@@ -103,7 +104,8 @@ export const getProducts = async ({
                 gender: p.acf.gender,
                 name: p.acf.name,
                 description: p.acf.description,
-                price: p.acf.price !== "" ? p.acf.price : "100",
+                price: p.acf.price !== "" ? p.acf.price : "0",
+                usd_price: p.acf.usd_price !== "" ? p.acf.usd_price : "0",
                 quotes: p.acf.quotes,
                 bible_verse: p.acf.bible_verse,
                 bible_verse_content: p.acf.bible_verse_content,
