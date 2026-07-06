@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -22,49 +23,46 @@ const Pagination = ({
         pageNumbers.push(i)
     }
 
-    const handlePageClick = async (pageNumber: number) => {
-        if (pageNumber === 0) return
-        if (pageNumber > pages) return
-        let endpoint = '?'
+    const getLink = async (pageNumber: number) => {
+        if (pageNumber === 0) return null
+        if (pageNumber > pages) return null
+        let endpoint = "?"
         if (activeBadge !== "all") endpoint += `&badge=${activeBadge}`
         if (activeCat !== "all") endpoint += `&cat=${activeCat}`
         if (activeGen !== "all") endpoint += `&gender=${activeGen}`
         endpoint += `&page=${pageNumber}`
-        router.push(endpoint)
+        return endpoint
     }
 
     return (
         pages > 1 && (
             <div className="flex w-full justify-center gap-12">
                 {activePage > 1 && (
-                    <button
+                    <Link
                         className="cursor-pointer rounded-sm rounded-s-full border border-gray-100 bg-white px-12 py-2 font-medium text-black transition-all duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:bg-gray-300"
-                        disabled={activePage === 1}
-                        onClick={() => handlePageClick(activePage - 1)}
+                        href={`/shop${getLink(activePage - 1)}`}
                     >
                         Prev
-                    </button>
+                    </Link>
                 )}
                 <div className="flex items-center gap-4">
                     {pageNumbers.map((pageNumber) => (
-                        <button
+                        <Link
                             key={pageNumber}
                             className="cursor-pointer rounded-full border border-gray-100 bg-white px-4 py-2 font-medium text-black transition-all duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:bg-gray-300"
-                            disabled={pageNumber === activePage}
-                            onClick={() => handlePageClick(pageNumber)}
+                            href={`/shop${getLink(pageNumber)}`}
                         >
                             {pageNumber}
-                        </button>
+                        </Link>
                     ))}
                 </div>
                 {activePage < pages && (
-                    <button
+                    <Link
                         className="cursor-pointer rounded-sm rounded-e-full border border-gray-100 bg-white px-12 py-2 font-medium text-black transition-all duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:bg-gray-300"
-                        disabled={activePage === pages}
-                        onClick={() => handlePageClick(activePage + 1)}
+                        href={`/shop${getLink(activePage + 1)}`}
                     >
                         Next
-                    </button>
+                    </Link>
                 )}
             </div>
         )

@@ -72,7 +72,11 @@ export const ShopPage = ({
                     return (
                         <Link
                             key={c.slug}
-                            href={c.slug === "all" ? `/shop` : `/shop?cat=${c.slug}`}
+                            href={
+                                c.slug === "all"
+                                    ? `/shop`
+                                    : `/shop?cat=${c.slug}${activeGen ? `&gender=${activeGen}` : ""}${activeBadge ? `&badge=${activeBadge}` : ""}`
+                            }
                             style={{
                                 background: activeCat === c.slug ? T.rust : "none",
                                 border: `2px solid ${activeCat === c.slug ? T.rust : T.border}`,
@@ -116,7 +120,9 @@ export const ShopPage = ({
                     <Link
                         key={g}
                         href={
-                            g.toLowerCase() === "all" ? `/shop` : `/shop?gender=${g.toLowerCase()}`
+                            g.toLowerCase() === "all"
+                                ? `/shop`
+                                : `/shop?gender=${g.toLowerCase()}${activeCat ? `&cat=${activeCat}` : ""}${activeBadge ? `&badge=${activeBadge}` : ""}`
                         }
                         style={{
                             background:
