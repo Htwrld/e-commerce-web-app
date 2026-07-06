@@ -23,7 +23,7 @@ const Pagination = ({
         pageNumbers.push(i)
     }
 
-    let endpoint = "?"
+    let endpoint = ""
     if (activeBadge && activeBadge !== "all") endpoint += `&badge=${activeBadge}`
     if (activeCat && activeCat !== "all") endpoint += `&cat=${activeCat}`
     if (activeGen && activeGen !== "all") endpoint += `&gender=${activeGen}`
@@ -34,7 +34,7 @@ const Pagination = ({
                 {activePage > 1 && (
                     <Link
                         className="cursor-pointer rounded-sm rounded-s-full border border-gray-100 bg-white px-12 py-2 font-medium text-black transition-all duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:bg-gray-300"
-                        href={`/shop${endpoint}&page=${activePage - 1}`}
+                        href={`/shop?page=${activePage - 1}${endpoint}`}
                     >
                         Prev
                     </Link>
@@ -44,7 +44,7 @@ const Pagination = ({
                         <Link
                             key={pageNumber}
                             className={`flex cursor-pointer items-center justify-center rounded-full border border-gray-100 ${pageNumber === activePage ? "bg-amber-800 text-white" : "bg-white text-black"} px-4 py-2 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:bg-gray-300`}
-                            href={`/shop${endpoint}&page=${pageNumber}`}
+                            href={`/shop?page=${pageNumber}${endpoint}`}
                         >
                             {pageNumber}
                         </Link>
@@ -53,7 +53,7 @@ const Pagination = ({
                 {activePage < pages && (
                     <Link
                         className="cursor-pointer rounded-sm rounded-e-full border border-gray-100 bg-white px-12 py-2 font-medium text-black transition-all duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:bg-gray-300"
-                        href={`/shop${endpoint}&page=${activePage + 1}`}
+                        href={`/shop?page=${activePage + 1}${endpoint}`}
                     >
                         Next
                     </Link>
