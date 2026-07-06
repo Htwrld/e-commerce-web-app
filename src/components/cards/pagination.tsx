@@ -23,16 +23,10 @@ const Pagination = ({
         pageNumbers.push(i)
     }
 
-    const getLink = async (pageNumber: number) => {
-        if (pageNumber === 0) return null
-        if (pageNumber > pages) return null
-        let endpoint = "?"
-        if (activeBadge !== "all") endpoint += `&badge=${activeBadge}`
-        if (activeCat !== "all") endpoint += `&cat=${activeCat}`
-        if (activeGen !== "all") endpoint += `&gender=${activeGen}`
-        endpoint += `&page=${pageNumber}`
-        return endpoint
-    }
+    let endpoint = "?"
+    if (activeBadge !== "all") endpoint += `&badge=${activeBadge}`
+    if (activeCat !== "all") endpoint += `&cat=${activeCat}`
+    if (activeGen !== "all") endpoint += `&gender=${activeGen}`
 
     return (
         pages > 1 && (
@@ -40,7 +34,7 @@ const Pagination = ({
                 {activePage > 1 && (
                     <Link
                         className="cursor-pointer rounded-sm rounded-s-full border border-gray-100 bg-white px-12 py-2 font-medium text-black transition-all duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:bg-gray-300"
-                        href={`/shop${getLink(activePage - 1)}`}
+                        href={`/shop${endpoint}&page=${activePage - 1}`}
                     >
                         Prev
                     </Link>
@@ -50,7 +44,7 @@ const Pagination = ({
                         <Link
                             key={pageNumber}
                             className="cursor-pointer rounded-full border border-gray-100 bg-white px-4 py-2 font-medium text-black transition-all duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:bg-gray-300"
-                            href={`/shop${getLink(pageNumber)}`}
+                            href={`/shop${endpoint}&page=${pageNumber}`}
                         >
                             {pageNumber}
                         </Link>
@@ -59,7 +53,7 @@ const Pagination = ({
                 {activePage < pages && (
                     <Link
                         className="cursor-pointer rounded-sm rounded-e-full border border-gray-100 bg-white px-12 py-2 font-medium text-black transition-all duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:bg-gray-300"
-                        href={`/shop${getLink(activePage + 1)}`}
+                        href={`/shop${endpoint}&page=${activePage + 1}`}
                     >
                         Next
                     </Link>
