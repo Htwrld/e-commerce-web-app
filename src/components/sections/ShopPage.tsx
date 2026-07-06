@@ -75,7 +75,7 @@ export const ShopPage = ({
                             href={
                                 c.slug === "all"
                                     ? `/shop`
-                                    : `/shop?cat=${c.slug}${activeGen ? `&gender=${activeGen}` : ""}${activeBadge ? `&badge=${activeBadge}` : ""}`
+                                    : `/shop?cat=${c.slug}${activeGen && activeGen !== "all" ? `&gender=${activeGen}` : ""}${activeBadge && activeBadge !== "all" ? `&badge=${activeBadge}` : ""}`
                             }
                             style={{
                                 background: activeCat === c.slug ? T.rust : "none",
@@ -122,7 +122,7 @@ export const ShopPage = ({
                         href={
                             g.toLowerCase() === "all"
                                 ? `/shop`
-                                : `/shop?gender=${g.toLowerCase()}${activeCat ? `&cat=${activeCat}` : ""}${activeBadge ? `&badge=${activeBadge}` : ""}`
+                                : `/shop?gender=${g.toLowerCase()}${activeCat && activeCat !== "all" ? `&cat=${activeCat}` : ""}${activeBadge && activeBadge !== "all" ? `&badge=${activeBadge}` : ""}`
                         }
                         style={{
                             background:
