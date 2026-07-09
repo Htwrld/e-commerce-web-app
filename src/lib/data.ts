@@ -264,6 +264,11 @@ export const CATS = [
         slug: "ankara",
         icon: "🎽"
     },
+    {
+        name: "Kids",
+        slug: "kids",
+        icon: "👶"
+    }
 ]
 
 export const GENDERS = ["All", "Male", "Female", "Unisex"]
