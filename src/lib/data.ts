@@ -245,6 +245,11 @@ export const CATS = [
         icon: "👟"
     },
     {
+        name: "Hoodies & Joggers",
+        slug: 'hoodies-joggers',
+        icon: "🫙"
+    },
+    {
         name: "Polos & Tees",
         slug: "polos-tees",
         icon: "👔"

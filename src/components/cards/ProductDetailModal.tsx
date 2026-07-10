@@ -8,6 +8,7 @@ import { WABtn } from "@/src/components/cards/WABtn"
 import { Product } from "@/src/action/productController"
 import { useState } from "react"
 import { useCart } from "@/src/lib/cart-context"
+import { reduceWords } from "@/src/lib/utils"
 
 interface ProductDetailModalProps {
     product: Product
@@ -129,7 +130,7 @@ export function ProductDetailModal({
                 <div
                     style={{ fontSize: 14, color: T.muted, fontStyle: "italic", marginBottom: 12 }}
                 >
-                    {p.description}
+                    <p>{reduceWords(p.description, 0)}</p>
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>

@@ -8,6 +8,7 @@ import { WABtn } from "@/src/components/cards/WABtn"
 import { Product } from "@/src/action/productController"
 import { useCart } from "@/src/lib/cart-context"
 import { useState } from "react"
+import { reduceWords } from "@/src/lib/utils"
 
 interface ProductCardProps {
     product: Product
@@ -111,18 +112,18 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                             fontStyle: "italic",
                         }}
                     >
-                        {p.description.replaceAll("\n", " ")}
+                        {reduceWords(p.description, 20)}
                     </div>
                     <p
                         style={{
-                            fontSize: 12,
+                            fontSize: 8,
                             color: T.muted,
                             lineHeight: 1.6,
                             margin: "0 0 10px",
                             fontStyle: "italic",
                         }}
                     >
-                        {p.quotes}
+                        {p.quotes.length > 0 && `"${p.quotes}"`}
                     </p>
                     <div
                         style={{
