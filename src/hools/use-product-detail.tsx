@@ -15,6 +15,7 @@ const productDetailContext = createContext<ProductDetailContext>({
     setProduct: () => {},
 })
 
+
 export const ProductDetailProvider = ({
     children,
     mobileNumber,
@@ -24,12 +25,13 @@ export const ProductDetailProvider = ({
 }) => { 
     const [product, setProduct] = useState<Product | null>(null)
     const { addToCart } = useCart()
-
+    const open = product !== null
     return (
         <productDetailContext.Provider value={{ product, setProduct }}>
             {product && (
                 <ProductDetailModal
                     product={product}
+                    open
                     onClose={() => setProduct(null)}
                     onAdd={addToCart}
                     mobileNumber={mobileNumber}

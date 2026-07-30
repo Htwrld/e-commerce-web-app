@@ -9,11 +9,12 @@ import { Product } from "@/src/action/productController"
 import { useCart } from "@/src/lib/cart-context"
 import { useState } from "react"
 import { reduceWords } from "@/src/lib/utils"
+import Link from "next/link"
 
 interface ProductCardProps {
     product: Product
     onAdd: (product: { product: Product; selectedColor: string; selectedSize: string }) => void
-    onClick: (product: Product) => void
+    onClick?: (product: Product) => void
     mobileNumber: string
 }
 
@@ -33,7 +34,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                 cursor: "pointer",
             }}
         >
-            <div className="" onClick={() => onClick(p)}>
+            <Link className="" href={`/shop?productId=${p.id}`}>
                 {/* Image area */}
                 <div style={{ height: 220, position: "relative", overflow: "hidden" }}>
                     {p.photo ? (
@@ -159,7 +160,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                         ))}
                     </div>
                 </div>
-            </div>
+            </Link>
             <div className="px-4 pb-4" style={{ display: "flex", gap: 8 }}>
                 {isInCart ? (
                     <div

@@ -13,6 +13,7 @@ const HTWContactApp = async ({
     const gender = params.gender as string
     const badge = params.badge as string
     const page = params.page as string
+    const productId = parseInt(params.productId as string ?? '1')
     const { products, pages } = await getProducts({
         badge: badge ? badge : undefined,
         category: cat ? cat : undefined,
@@ -27,6 +28,7 @@ const HTWContactApp = async ({
                     products={products}
                     mobileNumber={navbarandfooter.site_mobile_number}
                     pages={pages}
+                    productId={productId}
                 />
             </Suspense>
         </main>

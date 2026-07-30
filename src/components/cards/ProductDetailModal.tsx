@@ -9,20 +9,25 @@ import { Product } from "@/src/action/productController"
 import { useState } from "react"
 import { useCart } from "@/src/lib/cart-context"
 import { reduceWords } from "@/src/lib/utils"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 interface ProductDetailModalProps {
     product: Product
-    onClose: () => void
+    onClose: (b: boolean) => void
+    open: boolean
     onAdd: (product: { product: Product; selectedColor: string; selectedSize: string }) => void
     mobileNumber: string
 }
 
 export function ProductDetailModal({
     product: p,
+    open,
     onClose,
     onAdd,
     mobileNumber,
 }: ProductDetailModalProps) {
+    const router = useRouter()
     const { cart, updateQty, removeFromCart } = useCart()
     const [selectedColor, setSelectedColor] = useState<string>(p.colors[0])
     const [selectedSize, setSelectedSize] = useState<string>(p.sizes[0])
@@ -39,9 +44,13 @@ export function ProductDetailModal({
                 padding: 20,
             }}
         >
-            <div
-                onClick={onClose}
-                style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)" }}
+            <Link
+               href="/shop"
+                style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: "rgba(0,0,0,0.5)",
+                }}
             />
             <div
                 style={{
@@ -57,10 +66,13 @@ export function ProductDetailModal({
                     position: "relative",
                 }}
             >
-                <button
-                    onClick={onClose}
+                <Link
+                    href="/shop"
                     style={{
                         position: "absolute",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         top: 16,
                         right: 16,
                         background: T.sand,
@@ -69,13 +81,14 @@ export function ProductDetailModal({
                         width: 32,
                         height: 32,
                         fontSize: 16,
+                        padding: 10,
                         cursor: "pointer",
                         color: T.muted,
                         zIndex: 2,
                     }}
                 >
                     ✕
-                </button>
+                </Link>
 
                 <div
                     style={{
@@ -128,12 +141,23 @@ export function ProductDetailModal({
                     {p.name}
                 </h2>
                 <div
-                    style={{ fontSize: 14, color: T.muted, fontStyle: "italic", marginBottom: 12 }}
+                    style={{
+                        fontSize: 14,
+                        color: T.muted,
+                        fontStyle: "italic",
+                        marginBottom: 12,
+                    }}
                 >
                     <p>{reduceWords(p.description, 0)}</p>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: 14,
+                    }}
+                >
                     <span style={{ fontSize: 22, color: T.rust, fontWeight: 700 }}>
                         {parseFloat(p.price).toFixed(2)}
                     </span>
@@ -294,7 +318,7 @@ export function ProductDetailModal({
                                     selectedColor,
                                     selectedSize,
                                 })
-                                onClose()
+                                router.push('/shop')
                             }}
                         >
                             Add to Cart

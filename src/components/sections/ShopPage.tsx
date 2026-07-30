@@ -15,25 +15,30 @@ export const ShopPage = ({
     products,
     mobileNumber,
     pages,
+    productId,
 }: {
     products: Product[]
     mobileNumber: string
     pages: number
+    productId: number
 }) => {
+    
     const searchParams = useSearchParams()
     const activeCat = searchParams.get("cat") ?? "all"
     const activeGen = searchParams.get("gender") ?? "all"
     const activeBadge = searchParams.get("badge") ?? "all"
     const activePage = parseInt(searchParams.get("page") ?? "1")
+    const product = products.find((p) => p.id === productId)
+    const [open, setOpen] = useState(product ? true : false)
     const { addToCart } = useCart()
-    const [detailProd, setDetailProd] = useState<Product | null>(null)
 
     return (
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "44px 28px" }}>
-            {detailProd && (
+            {product && (
                 <ProductDetailModal
-                    product={detailProd}
-                    onClose={() => setDetailProd(null)}
+                    product={product}
+                    open={open}
+                    onClose={setOpen}
                     onAdd={addToCart}
                     mobileNumber={mobileNumber}
                 />
@@ -167,7 +172,6 @@ export const ShopPage = ({
                             key={p.id}
                             product={p}
                             onAdd={addToCart}
-                            onClick={setDetailProd}
                             mobileNumber={mobileNumber}
                         />
                     ))}
