@@ -14,8 +14,8 @@ import Link from "next/link"
 
 interface ProductDetailModalProps {
     product: Product
-    onClose: (b: boolean) => void
-    open: boolean
+    onClose?: (b: boolean) => void
+    open?: boolean
     onAdd: (product: { product: Product; selectedColor: string; selectedSize: string }) => void
     mobileNumber: string
 }
