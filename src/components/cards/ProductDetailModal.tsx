@@ -57,7 +57,7 @@ export function ProductDetailModal({
                     background: T.white,
                     borderRadius: 16,
                     padding: 28,
-                    maxWidth: 580,
+                    maxWidth: 720,
                     width: "100%",
                     zIndex: 1,
                     animation: "slideUp .3s ease",
@@ -92,7 +92,7 @@ export function ProductDetailModal({
 
                 <div
                     style={{
-                        height: 260,
+                        minHeight: 300,
                         borderRadius: 10,
                         overflow: "hidden",
                         marginBottom: 20,
@@ -101,6 +101,7 @@ export function ProductDetailModal({
                 >
                     {p.photo ? (
                         <Image
+                            className="static!"
                             src={p.photo}
                             alt={p.name}
                             fill

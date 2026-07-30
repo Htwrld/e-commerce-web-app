@@ -41,9 +41,8 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                         <Image
                             src={p.photo}
                             alt={p.name}
-                            height={700}
-                            width={500}
-                            className="h-full w-full object-cover object-center"
+                            className="h-full w-full object-cover object-center static!"
+                            fill
                             onError={(e) =>
                                 ((e.currentTarget as HTMLImageElement).style.display = "none")
                             }
