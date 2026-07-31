@@ -11,6 +11,7 @@ import { useCart } from "@/src/lib/cart-context"
 import { reduceWords } from "@/src/lib/utils"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { useHistory } from "@/src/context/HistoryContext"
 
 interface ProductDetailModalProps {
     product: Product
@@ -18,7 +19,6 @@ interface ProductDetailModalProps {
     open?: boolean
     onAdd: (product: { product: Product; selectedColor: string; selectedSize: string }) => void
     mobileNumber: string
-    backHref?: string
 }
 
 export function ProductDetailModal({
@@ -27,13 +27,17 @@ export function ProductDetailModal({
     onClose,
     onAdd,
     mobileNumber,
-    backHref,
 }: ProductDetailModalProps) {
     const router = useRouter()
+    const { history } = useHistory()
     const { cart, updateQty, removeFromCart } = useCart()
     const [selectedColor, setSelectedColor] = useState<string>(p.colors[0])
     const [selectedSize, setSelectedSize] = useState<string>(p.sizes[0])
     const isInCart = cart.find((c) => c.id === p.id)
+    // history[history.length - 1] is the current page, so >1 entries means
+    // the visit before this one happened on our own site
+    const cameFromOurSite = history.length > 1
+    const goBack = () => (cameFromOurSite ? router.back() : router.push("/"))
     return (
         <div
             style={{
@@ -47,7 +51,7 @@ export function ProductDetailModal({
             }}
         >
             <div
-                onClick={() => (backHref ? router.back() : router.push("/"))}
+                onClick={goBack}
                 style={{
                     position: "absolute",
                     inset: 0,
@@ -77,7 +81,7 @@ export function ProductDetailModal({
                     }}
                 >
                     <div
-                        onClick={() => (backHref ? router.back() : router.push("/"))}
+                        onClick={goBack}
                         style={{
                             position: "absolute",
                             display: "flex",
@@ -331,8 +335,7 @@ export function ProductDetailModal({
                                         selectedColor,
                                         selectedSize,
                                     })
-                                    if(!backHref) return router.back()
-                                    router.push('/')
+                                    goBack()
                                 }}
                             >
                                 Add to Cart
