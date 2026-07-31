@@ -18,6 +18,7 @@ interface ProductDetailModalProps {
     open?: boolean
     onAdd: (product: { product: Product; selectedColor: string; selectedSize: string }) => void
     mobileNumber: string
+    backHref?: string
 }
 
 export function ProductDetailModal({
@@ -26,6 +27,7 @@ export function ProductDetailModal({
     onClose,
     onAdd,
     mobileNumber,
+    backHref,
 }: ProductDetailModalProps) {
     const router = useRouter()
     const { cart, updateQty, removeFromCart } = useCart()
@@ -44,21 +46,23 @@ export function ProductDetailModal({
                 padding: 20,
             }}
         >
-            <Link
-                href="/shop"
+            <div
+                onClick={() => (backHref ? router.back() : router.push("/"))}
                 style={{
                     position: "absolute",
                     inset: 0,
                     background: "rgba(0,0,0,0.5)",
                 }}
             />
-            <div style={{
-                background: T.white,
-                borderRadius: 16,
-                overflow: "hidden",
-                zIndex: 2,
-                padding: 8
-            }}>
+            <div
+                style={{
+                    background: T.white,
+                    borderRadius: 16,
+                    overflow: "hidden",
+                    zIndex: 2,
+                    padding: 8,
+                }}
+            >
                 <div
                     style={{
                         borderRadius: 16,
@@ -72,8 +76,8 @@ export function ProductDetailModal({
                         position: "relative",
                     }}
                 >
-                    <Link
-                        href="/shop"
+                    <div
+                        onClick={() => (backHref ? router.back() : router.push("/"))}
                         style={{
                             position: "absolute",
                             display: "flex",
@@ -94,7 +98,7 @@ export function ProductDetailModal({
                         }}
                     >
                         ✕
-                    </Link>
+                    </div>
 
                     <div
                         style={{
@@ -327,7 +331,8 @@ export function ProductDetailModal({
                                         selectedColor,
                                         selectedSize,
                                     })
-                                    router.push("/shop")
+                                    if(!backHref) return router.back()
+                                    router.push('/')
                                 }}
                             >
                                 Add to Cart

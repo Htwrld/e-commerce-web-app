@@ -16,13 +16,15 @@ interface ProductCardProps {
     onAdd: (product: { product: Product; selectedColor: string; selectedSize: string }) => void
     onClick?: (product: Product) => void
     mobileNumber: string
+    backHref?: string
 }
 
-export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: ProductCardProps) {
+export function ProductCard({ product: p, onAdd, onClick, mobileNumber, backHref }: ProductCardProps) {
     const [selectedColor, setSelectedColor] = useState<string>(p.colors[0])
     const [selectedSize, setSelectedSize] = useState<string>(p.sizes[0])
     const { cart, updateQty, removeFromCart } = useCart()
     const isInCart = cart.find((c) => c.id === p.id)
+    const href = `/shop/${p.id}`
     return (
         <div
             className="card"
@@ -34,7 +36,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber }: Produc
                 cursor: "pointer",
             }}
         >
-            <Link className="" href={`/shop?productId=${p.id}`}>
+            <Link className="" href={href}>
                 {/* Image area */}
                 <div style={{ height: 220, position: "relative", overflow: "hidden" }}>
                     {p.photo ? (

@@ -1,11 +1,9 @@
 "use client"
 
-import { useState } from "react"
 import { T } from "@/src/lib/tokens"
 import { CATS, GENDERS } from "@/src/lib/data"
 import { useCart } from "@/src/lib/cart-context"
 import { ProductCard } from "@/src/components/cards/ProductCard"
-import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal"
 import { Product } from "@/src/action/productController"
 import { useSearchParams } from "next/navigation"
 import Pagination from "../cards/pagination"
@@ -15,35 +13,22 @@ export const ShopPage = ({
     products,
     mobileNumber,
     pages,
-    productId,
 }: {
     products: Product[]
     mobileNumber: string
     pages: number
-    productId: number
 }) => {
-    
     const searchParams = useSearchParams()
     const activeCat = searchParams.get("cat") ?? "all"
     const activeGen = searchParams.get("gender") ?? "all"
     const activeBadge = searchParams.get("badge") ?? "all"
     const activePage = parseInt(searchParams.get("page") ?? "1")
-    const product = products.find((p) => p.id === productId)
-    const [open, setOpen] = useState(product ? true : false)
     const { addToCart } = useCart()
+    const query = searchParams.toString()
+    const backHref = `/shop${query ? `?${query}` : ""}`
 
     return (
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "44px 28px" }}>
-            {product && (
-                <ProductDetailModal
-                    product={product}
-                    open={open}
-                    onClose={setOpen}
-                    onAdd={addToCart}
-                    mobileNumber={mobileNumber}
-                />
-            )}
-
             <div style={{ marginBottom: 32 }}>
                 <p className="section-label">Shop</p>
                 <h1 className="section-title" style={{ fontSize: "clamp(30px,5vw,50px)" }}>
@@ -173,6 +158,7 @@ export const ShopPage = ({
                             product={p}
                             onAdd={addToCart}
                             mobileNumber={mobileNumber}
+                            backHref={backHref}
                         />
                     ))}
                 </div>

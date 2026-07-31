@@ -131,6 +131,38 @@ export const getProducts = async ({
     }
 }
 
+export const getProductById = async (id: number): Promise<Product | null> => {
+    try {
+        const endpoint = `${website_url}wp-json/wp/v2/product/${id}?acf_format=standard`
+        const res = await fetch(endpoint)
+        if (!res.ok) return null
+        const p = await res.json()
+        return {
+            id: p.id,
+            photo: p.acf.photo ? p.acf.photo : "",
+            badge: p.acf.badge ? p.acf.badge : "",
+            categories: p.acf.category ? p.acf.category.map((c: any) => c.name) : [],
+            gender: p.acf.gender ? p.acf.gender : "",
+            name: p.acf.name ? p.acf.name : "",
+            description: p.acf.description ? p.acf.description : "",
+            price: p.acf.price !== "" ? p.acf.price : "0",
+            usd_price: p.acf.usd_price !== "" ? p.acf.usd_price : "0",
+            quotes: p.acf.quotes ? p.acf.quotes : "",
+            bible_verse: p.acf.bible_verse ? p.acf.bible_verse : "",
+            bible_verse_content: p.acf.bible_verse_content ? p.acf.bible_verse_content : "",
+            colors: p.acf.colors ? p.acf.colors.map((c: any) => c.name) : [],
+            sizes: p.acf.sizes ? p.acf.sizes.map((s: any) => s.name) : [],
+            fabric: p.acf.fabric ? p.acf.fabric : "",
+            fit: p.acf.fit ? p.acf.fit : "",
+            care: p.acf.care ? p.acf.care : "",
+            delivery: p.acf.delivery ? p.acf.delivery : "",
+            size_guide: p.acf.size_guide ? p.acf.size_guide : "",
+        }
+    } catch (error) {
+        return null
+    }
+}
+
 export type Location = {
     id: number
     location: string

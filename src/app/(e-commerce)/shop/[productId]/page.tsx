@@ -1,39 +1,32 @@
-'use client'
+import { getNavbarandFooter } from "@/src/action/pageController"
+import { getProductById, getProducts } from "@/src/action/productController"
+import { SingleProductView } from "@/src/components/sections/SingleProductView"
+import { notFound } from "next/navigation"
 
-import { Product } from "@/src/action/productController"
-import { ProductDetailModal } from "@/src/components/cards/ProductDetailModal"
-import { useEffect, useState } from "react"
+const SingleProductPage = async ({
+    params,
+    searchParams,
+}: {
+    params: Promise<{ productId: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) => {
+    const { productId } = await params
+    const { from } = await searchParams
+    const product = await getProductById(parseInt(productId))
 
-const SingleProductPage = ({ productId }: { productId: string }) => {
-    const [product, setProduct] = useState<Product | null>(null)
-    const [loading, setLoading] = useState<boolean>(true)
+    if (!product) return notFound()
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-            setLoading(true)
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/wp-json/wp/v2/product/${productId}?acf_format=standard`
-            )
-            const data = await res.json()
-            setProduct(data)
-            setLoading(false)
-        }
-        fetchProduct()
-    }, [productId])
-
-    if (loading) return <div>Loading...</div>
-
-    if (!product) return <div>Product not found</div>
+    const [navbarandfooter, { products }] = await Promise.all([
+        getNavbarandFooter(),
+        getProducts({}),
+    ])
 
     return (
-        <div>
-            <ProductDetailModal
-                product={product}
-                onAdd={() => console.log("Adding to cart")}
-                mobileNumber={'3232232'}
-            />
-            SingleProductPage
-        </div>
+        <SingleProductView
+            product={product}
+            products={products}
+            mobileNumber={navbarandfooter.site_mobile_number}
+        />
     )
 }
 
