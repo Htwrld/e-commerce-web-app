@@ -137,12 +137,30 @@ export const ShopPage = ({
                     style={{
                         textAlign: "center",
                         padding: "80px 0",
-                        fontFamily: "'Cormorant Garamond',serif",
-                        fontSize: 22,
-                        color: T.muted,
                     }}
                 >
-                    No products match this filter.
+                    <div
+                        style={{
+                            fontFamily: "'Georgia',serif",
+                            fontSize: 20,
+                            letterSpacing: 2,
+                            color: T.ink,
+                            marginBottom: 12,
+                        }}
+                    >
+                        SOLD OUT. MORE TO COME.
+                    </div>
+                    <div
+                        style={{
+                            fontFamily: "'Cormorant Garamond',serif",
+                            fontSize: 18,
+                            color: T.muted,
+                            maxWidth: 420,
+                            margin: "0 auto",
+                        }}
+                    >
+                        You missed this drop, but there's more on the way. Stay connected for our next collection.
+                    </div>
                 </div>
             ) : (
                 <div
