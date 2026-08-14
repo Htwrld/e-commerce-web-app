@@ -85,39 +85,62 @@ export const getProducts = async ({
     page?: number
 }) => {
     try {
+        const per_page = 12
+        const mapProduct = (p: any): Product => ({
+            id: p.id,
+            photo: p.acf.photo ? p.acf.photo : "",
+            badge: p.acf.badge ? p.acf.badge : "",
+            categories: p.acf.category ? p.acf.category.map((c: any) => c.name) : [],
+            gender: p.acf.gender ? p.acf.gender : "",
+            name: p.acf.name ? p.acf.name : "",
+            description: p.acf.description ? p.acf.description : "",
+            price: p.acf.price !== "" ? p.acf.price : "0",
+            usd_price: p.acf.usd_price !== "" ? p.acf.usd_price : "0",
+            quotes: p.acf.quotes ? p.acf.quotes : "",
+            bible_verse: p.acf.bible_verse ? p.acf.bible_verse : "",
+            bible_verse_content: p.acf.bible_verse_content ? p.acf.bible_verse_content : "",
+            colors: p.acf.colors ? p.acf.colors.map((c: any) => c.name) : [],
+            sizes: p.acf.sizes ? p.acf.sizes.map((s: any) => s.name) : [],
+            fabric: p.acf.fabric ? p.acf.fabric : "",
+            fit: p.acf.fit ? p.acf.fit : "",
+            care: p.acf.care ? p.acf.care : "",
+            delivery: p.acf.delivery ? p.acf.delivery : "",
+            size_guide: p.acf.size_guide ? p.acf.size_guide : "",
+        })
+
         let endpoint = `${website_url}wp-json/wp/v2/product?acf_format=standard`
         if (badge) endpoint += `&badge=${badge}`
         if (category) endpoint += `&cat=${category}`
-        if (gender) endpoint += `&gender=${gender}`
-        endpoint += `&per_page=12`
+
+        if (gender) {
+            // Unisex items should also appear under "male" and "female", so pull the
+            // full matching set here and let the gender/unisex match happen in JS
+            // instead of relying on WordPress's exact-match `gender` query param.
+            const res = await fetch(`${endpoint}&per_page=100`)
+            const data = await res.json()
+            const g = gender.toLowerCase()
+            const products: Product[] = data
+                .map(mapProduct)
+                .filter((p: Product) => {
+                    const pg = p.gender.toLowerCase()
+                    return pg === g || pg === "unisex"
+                })
+
+            const pages = Math.max(1, Math.ceil(products.length / per_page))
+            const currentPage = page && page > 0 ? page : 1
+            return {
+                products: products.slice((currentPage - 1) * per_page, currentPage * per_page),
+                pages,
+            }
+        }
+
+        endpoint += `&per_page=${per_page}`
         if (page) endpoint += `&page=${page}`
-        
+
         const res = await fetch(endpoint)
         const totalPagesHeader = res.headers.get("X-WP-TotalPages")
         const data = await res.json()
-        const products: Product[] = data.map((p: any) => {
-            return {
-                id: p.id,
-                photo: p.acf.photo ? p.acf.photo : "",
-                badge: p.acf.badge ? p.acf.badge : "",
-                categories: p.acf.category ? p.acf.category.map((c: any) => c.name) : [],
-                gender: p.acf.gender ? p.acf.gender : "",
-                name: p.acf.name ? p.acf.name : "",
-                description: p.acf.description ? p.acf.description : "",
-                price: p.acf.price !== "" ? p.acf.price : "0",
-                usd_price: p.acf.usd_price !== "" ? p.acf.usd_price : "0",
-                quotes: p.acf.quotes ? p.acf.quotes : "",
-                bible_verse: p.acf.bible_verse ? p.acf.bible_verse : "",
-                bible_verse_content: p.acf.bible_verse_content ? p.acf.bible_verse_content : "",
-                colors: p.acf.colors ? p.acf.colors.map((c: any) => c.name) : [],
-                sizes: p.acf.sizes ? p.acf.sizes.map((s: any) => s.name) : [],
-                fabric: p.acf.fabric ? p.acf.fabric : "",
-                fit: p.acf.fit ? p.acf.fit : "",
-                care: p.acf.care ? p.acf.care : "",
-                delivery: p.acf.delivery ? p.acf.delivery : "",
-                size_guide: p.acf.size_guide ? p.acf.size_guide : "",
-            }
-        })
+        const products: Product[] = data.map(mapProduct)
 
         return {
             products,
