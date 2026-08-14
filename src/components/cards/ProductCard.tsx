@@ -65,19 +65,24 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber, backHref
                     )}
                     <div className="absolute top-0 z-10 flex w-full items-center justify-between p-3">
                         <Badge text={p.badge.toUpperCase()} color={T.gold} />
-                        <div
-                            style={{
-                                background: "rgba(255,255,255,0.9)",
-                                color: T.muted,
-                                borderRadius: 5,
-                                padding: "2px 10px",
-                                fontSize: 10,
-                                fontFamily: "monospace",
-                                fontWeight: 700,
-                            }}
-                        >
-                            {p.gender.toUpperCase()}
-                        </div>
+                        {!(
+                            p.gender.toLowerCase() === "unisex" &&
+                            p.categories.some((c) => c.toLowerCase() === "ankara")
+                        ) && (
+                            <div
+                                style={{
+                                    background: "rgba(255,255,255,0.9)",
+                                    color: T.muted,
+                                    borderRadius: 5,
+                                    padding: "2px 10px",
+                                    fontSize: 10,
+                                    fontFamily: "monospace",
+                                    fontWeight: 700,
+                                }}
+                            >
+                                {p.gender.toUpperCase()}
+                            </div>
+                        )}
                     </div>
                 </div>
 

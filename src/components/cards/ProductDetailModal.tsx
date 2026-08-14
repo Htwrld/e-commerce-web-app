@@ -139,9 +139,14 @@ export function ProductDetailModal({
 
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                         <Badge text={p.badge} />
-                        <span style={{ fontSize: 11, color: T.muted, fontFamily: "monospace" }}>
-                            {p.gender.toUpperCase()}
-                        </span>
+                        {!(
+                            p.gender.toLowerCase() === "unisex" &&
+                            p.categories.some((c) => c.toLowerCase() === "ankara")
+                        ) && (
+                            <span style={{ fontSize: 11, color: T.muted, fontFamily: "monospace" }}>
+                                {p.gender.toUpperCase()}
+                            </span>
+                        )}
                     </div>
 
                     <h2
