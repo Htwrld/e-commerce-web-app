@@ -106,7 +106,13 @@ export const ShopPage = ({
                 >
                     Gender:
                 </span>
-                {GENDERS.map((g) => (
+                {GENDERS.filter(
+                    (g) =>
+                        !(
+                            g.toLowerCase() === "unisex" &&
+                            activeCat?.toLowerCase() === "ankara"
+                        )
+                ).map((g) => (
                     <Link
                         key={g}
                         href={
