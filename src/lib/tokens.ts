@@ -11,7 +11,7 @@ export const T = {
   cobaltLt: "#C4D8F0",
   ink:      "#1A1612",
   charcoal: "#2E2A25",
-  warm:     "#F7F0H6",
+  warm:     "#F7F0E6",
   cream:    "#FDF8F2",
   sand:     "#EFE4B0",
   white:    "#FFFFF9",
