@@ -22,7 +22,7 @@ export const SingleArticleView = ({
 
     return (
         <main>
-            <div style={{ maxWidth: 780, margin: "0 auto", padding: "44px 28px" }}>
+            <div style={{ maxWidth: 1160, margin: "0 auto", padding: "44px 28px" }}>
                 <Link
                     href="/articles"
                     style={{

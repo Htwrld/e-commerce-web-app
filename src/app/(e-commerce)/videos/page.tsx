@@ -2,7 +2,7 @@ import { getVideos } from "@/src/action/videoController"
 import { VideosPage } from "@/src/components/sections/VideosPage"
 import { Suspense } from "react"
 
-export const metadata = { title: "Videos" }
+export const metadata = { title: "Videos - HTW — Hope's Trendy World" }
 
 const VideosRoute = async ({
     searchParams,

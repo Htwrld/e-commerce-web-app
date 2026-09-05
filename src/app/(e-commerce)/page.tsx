@@ -21,6 +21,8 @@ import { getAmbassadors } from "@/src/action/ambassadorController"
 import { getTestimonials } from "@/src/action/testimonialController"
 import "@icon/dashicons/dashicons.css"
 
+export const metadata = { title: "Home - HTW — Hope's Trendy World" }
+
 const MainPage = async () => {
     const homepage = await getPageHomePage()
     const { products:bestSellers } = await getProducts({

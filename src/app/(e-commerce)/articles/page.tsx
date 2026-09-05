@@ -2,7 +2,7 @@ import { getArticles } from "@/src/action/articleController"
 import { ArticlesPage } from "@/src/components/sections/ArticlesPage"
 import { Suspense } from "react"
 
-export const metadata = { title: "Blog" }
+export const metadata = { title: "Articles - HTW — Hope's Trendy World" }
 
 const ArticlesRoute = async ({
     searchParams,
