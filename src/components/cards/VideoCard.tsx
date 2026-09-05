@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { T } from "@/src/lib/tokens"
 import { Video } from "@/src/action/videoController"
+import { LiveBadge } from "@/src/components/cards/LiveBadge"
 
 export function VideoCard({ video }: { video: Video }) {
     const date = video.date
@@ -79,22 +80,8 @@ export function VideoCard({ video }: { video: Video }) {
                             ▶
                         </div>
                     </div>
-                    {video.duration && (
-                        <div
-                            style={{
-                                position: "absolute",
-                                bottom: 8,
-                                right: 8,
-                                background: "rgba(26,22,18,0.85)",
-                                color: "#fff",
-                                fontSize: 10,
-                                fontWeight: 700,
-                                padding: "3px 6px",
-                                borderRadius: 4,
-                            }}
-                        >
-                            {video.duration}
-                        </div>
+                    {video.isLive && (
+                        <LiveBadge style={{ position: "absolute", top: 10, left: 10 }} />
                     )}
                 </div>
                 <div className="px-4 pt-4 pb-5">
@@ -110,23 +97,7 @@ export function VideoCard({ video }: { video: Video }) {
                     >
                         {video.title}
                     </h3>
-                    {video.description && (
-                        <p
-                            style={{
-                                fontSize: 13,
-                                color: T.muted,
-                                lineHeight: 1.6,
-                                margin: "0 0 12px",
-                            }}
-                        >
-                            {video.description}
-                        </p>
-                    )}
-                    <div style={{ fontSize: 11, color: T.muted }}>
-                        {date}
-                        {date && video.views && " · "}
-                        {video.views && `${video.views} views`}
-                    </div>
+                    <div style={{ fontSize: 11, color: T.muted }}>{date}</div>
                 </div>
             </div>
         </Link>

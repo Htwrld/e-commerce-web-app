@@ -5,6 +5,7 @@ import Link from "next/link"
 import { T } from "@/src/lib/tokens"
 import { Video } from "@/src/action/videoController"
 import { VideoCard } from "@/src/components/cards/VideoCard"
+import { LiveBadge } from "@/src/components/cards/LiveBadge"
 import { useSearchParams } from "next/navigation"
 
 export const VideosPage = ({ videos, pages }: { videos: Video[]; pages: number }) => {
@@ -116,21 +117,23 @@ export const VideosPage = ({ videos, pages }: { videos: Video[]; pages: number }
                                     </div>
                                 </div>
                                 <div style={{ position: "relative", padding: "32px 36px", maxWidth: 480 }}>
-                                    <div
-                                        style={{
-                                            display: "inline-block",
-                                            fontSize: 10,
-                                            color: T.ink,
-                                            background: T.gold,
-                                            letterSpacing: "0.12em",
-                                            textTransform: "uppercase",
-                                            fontWeight: 700,
-                                            padding: "5px 10px",
-                                            borderRadius: 5,
-                                            marginBottom: 14,
-                                        }}
-                                    >
-                                        Featured Video
+                                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                                        <div
+                                            style={{
+                                                display: "inline-block",
+                                                fontSize: 10,
+                                                color: T.ink,
+                                                background: T.gold,
+                                                letterSpacing: "0.12em",
+                                                textTransform: "uppercase",
+                                                fontWeight: 700,
+                                                padding: "5px 10px",
+                                                borderRadius: 5,
+                                            }}
+                                        >
+                                            Featured Video
+                                        </div>
+                                        {featured.isLive && <LiveBadge />}
                                     </div>
                                     <h2
                                         style={{
@@ -139,40 +142,17 @@ export const VideosPage = ({ videos, pages }: { videos: Video[]; pages: number }
                                             fontWeight: 600,
                                             color: "#fff",
                                             lineHeight: 1.2,
-                                            margin: "0 0 12px",
+                                            margin: "0 0 18px",
                                         }}
                                     >
                                         {featured.title}
                                     </h2>
-                                    {featured.description && (
-                                        <p
-                                            style={{
-                                                fontSize: 14,
-                                                color: "rgba(255,255,255,0.85)",
-                                                lineHeight: 1.6,
-                                                margin: "0 0 18px",
-                                            }}
-                                        >
-                                            {featured.description}
-                                        </p>
-                                    )}
                                     <span
                                         className="btn-primary"
                                         style={{ display: "inline-flex" }}
                                     >
-                                        ▶ Watch Now
+                                        ▶ {featured.isLive ? "Watch Live" : "Watch Now"}
                                     </span>
-                                    {featured.duration && (
-                                        <span
-                                            style={{
-                                                marginLeft: 14,
-                                                fontSize: 13,
-                                                color: "rgba(255,255,255,0.8)",
-                                            }}
-                                        >
-                                            {featured.duration}
-                                        </span>
-                                    )}
                                 </div>
                             </div>
                         </Link>

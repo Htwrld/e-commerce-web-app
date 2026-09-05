@@ -3,6 +3,7 @@ export const WP_TAGS = {
     ambassadorsPage: "wp-ambassadors-page",
     ourStoryPage: "wp-our-story-page",
     contactPage: "wp-contact-page",
+    fashionPage: "wp-fashion-page",
     navbarFooter: "wp-navbar-footer",
     products: "wp-products",
     locations: "wp-locations",
@@ -33,4 +34,5 @@ export const WP_TAG_BY_PAGE_ID: Record<number, WpTag> = {
     319: WP_TAGS.ourStoryPage,
     321: WP_TAGS.contactPage,
     482: WP_TAGS.navbarFooter,
+    895: WP_TAGS.fashionPage,
 }

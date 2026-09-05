@@ -1,6 +1,7 @@
 "use server"
 
 import { WP_TAGS } from "../lib/wpTags"
+import { getYouTubeThumbnail } from "../lib/video"
 
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
 const REVALIDATE_SECONDS = 300
@@ -10,27 +11,39 @@ export type Video = {
     id: number
     slug: string
     title: string
-    description: string
+    content: string
+    youtubeLink: string
+    isLive: boolean
     thumbnail: string
-    videoUrl: string
-    duration: string
-    views: string
-    category: string
     date: string
 }
 
-const mapVideo = (v: any): Video => ({
-    id: v.id,
-    slug: v.slug ?? String(v.id),
-    title: v.acf?.title ?? "",
-    description: v.acf?.description ?? "",
-    thumbnail: v.acf?.thumbnail ?? "",
-    videoUrl: v.acf?.video_url ?? "",
-    duration: v.acf?.duration ?? "",
-    views: v.acf?.views ?? "",
-    category: v.acf?.category ?? "",
-    date: v.date ?? "",
-})
+const stripHtml = (html: string) => html.replace(/<[^>]*>/g, "").trim()
+
+const isLiveValue = (value: unknown) => {
+    const v = String(value ?? "").trim().toLowerCase()
+    return v === "yes" || v === "true" || v === "1" || v === "live"
+}
+
+const mapVideo = (v: any): Video => {
+    const youtubeLink = v.acf?.youtube_link ?? ""
+    return {
+        id: v.id,
+        slug: v.slug ?? String(v.id),
+        title: v.title?.rendered ? stripHtml(v.title.rendered) : "",
+        content: v.content?.rendered ?? "",
+        youtubeLink,
+        isLive: isLiveValue(v.acf?.is_live),
+        thumbnail: v.acf?.video_thumbnail || getYouTubeThumbnail(youtubeLink),
+        date: v.date ?? "",
+    }
+}
+
+// Live videos surface first so the featured slot on the videos page always
+// picks one up when available, without disturbing the newest-first order
+// WordPress already returns otherwise.
+const withLiveFirst = (videos: Video[]) =>
+    [...videos].sort((a, b) => Number(b.isLive) - Number(a.isLive))
 
 export const getVideos = async ({ page }: { page?: number } = {}) => {
     try {
@@ -45,7 +58,7 @@ export const getVideos = async ({ page }: { page?: number } = {}) => {
 
         const totalPagesHeader = res.headers.get("X-WP-TotalPages")
         const data = await res.json()
-        const videos: Video[] = data.map(mapVideo)
+        const videos: Video[] = withLiveFirst(data.map(mapVideo))
 
         return {
             videos,

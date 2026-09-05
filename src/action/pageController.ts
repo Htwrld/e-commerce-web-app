@@ -443,6 +443,54 @@ export const getContactPage = async () => {
     }
 }
 
+export type FaithItem = {
+    title: string
+    description: string
+}
+
+export type FashionPageContent = {
+    magazine_cover_image: string
+    magazine_title: string
+    magazine_short_description: string
+    magazine_download_url: string
+    author_profile_image: string
+    faithItems: FaithItem[]
+}
+
+export const getFashionPage = async () => {
+    try {
+        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/895?acf_format=standard`, {
+            signal: AbortSignal.timeout(8000),
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.fashionPage] },
+        })
+        const data = await res.json()
+
+        return {
+            magazine_cover_image: data.acf.magazine_cover_image || "",
+            magazine_title: data.acf.magazine_title,
+            magazine_short_description: data.acf.magazine_short_description,
+            magazine_download_url: data.acf.magazine_download_url,
+            author_profile_image: data.acf.author_profile_image || "",
+            faithItems: [
+                {
+                    title: data.acf.faith_item_1_title,
+                    description: data.acf.faith_item_1_description,
+                },
+                {
+                    title: data.acf.faith_item_2_title,
+                    description: data.acf.faith_item_2_description,
+                },
+                {
+                    title: data.acf.faith_item_3_title,
+                    description: data.acf.faith_item_3_description,
+                },
+            ],
+        }
+    } catch (e) {
+        return {} as FashionPageContent
+    }
+}
+
 export type NavbarandFooter = {
     site_title: string
     site_description: string

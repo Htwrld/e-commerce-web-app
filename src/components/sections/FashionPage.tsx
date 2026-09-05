@@ -5,6 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { T } from "@/src/lib/tokens"
 import { sendMail } from "@/src/action/mailController"
+import type { FashionPageContent } from "@/src/action/pageController"
+import type { Article } from "@/src/action/articleController"
 import {
     FaBookOpen,
     FaHeart,
@@ -16,7 +18,7 @@ import {
     FaTiktok,
 } from "react-icons/fa"
 
-const FEATURED_STORIES = [
+const FEATURED_STORIES_FALLBACK = [
     {
         tag: "STYLE GUIDE",
         title: "5 Ways to Style Ankara for Every Occasion",
@@ -85,7 +87,7 @@ const EDITIONS = [
     { q: "Q1 2027", issue: "Issue 04", title: "The Celebration Issue", eta: "Coming Mar 2027" },
 ]
 
-const WHY_CARDS = [
+const WHY_CARDS_FALLBACK = [
     {
         icon: <FaHeart />,
         title: "Faith-Centered",
@@ -103,7 +105,31 @@ const WHY_CARDS = [
     },
 ]
 
-export const FashionPage = () => {
+const WHY_ICONS = [<FaHeart key="heart" />, <FaTshirt key="tshirt" />, <FaUsers key="users" />]
+
+export const FashionPage = ({
+    pageContent,
+    articles,
+}: {
+    pageContent?: FashionPageContent
+    articles?: Article[]
+}) => {
+    const magazineCoverImage = pageContent?.magazine_cover_image || "/images/hoodie_lifestyle.png"
+    const magazineTitle = pageContent?.magazine_title || "Style with Purpose. Live with Faith."
+    const magazineShortDescription =
+        pageContent?.magazine_short_description ||
+        "HTW Fashion is a quarterly digital magazine that celebrates faith-inspired fashion, creativity, and stories that empower you to live bold and dress with meaning."
+    const magazineDownloadUrl = pageContent?.magazine_download_url
+    const authorProfileImage = pageContent?.author_profile_image || "/images/tee_she.jpg"
+    const whyCards =
+        pageContent?.faithItems?.some((f) => f.title || f.description)
+            ? pageContent.faithItems.map((f, i) => ({
+                  icon: WHY_ICONS[i],
+                  title: f.title || WHY_CARDS_FALLBACK[i]?.title || "",
+                  desc: f.description || WHY_CARDS_FALLBACK[i]?.desc || "",
+              }))
+            : WHY_CARDS_FALLBACK
+    const featuredStories = articles && articles.length > 0 ? articles.slice(0, 4) : null
     const [tab, setTab] = useState<"email" | "whatsapp">("email")
     const [email, setEmail] = useState("")
     const [wa, setWa] = useState("")
@@ -165,96 +191,11 @@ export const FashionPage = () => {
                         }}
                     >
                         <Image
-                            src="/images/hoodie_lifestyle.png"
+                            src={magazineCoverImage}
                             alt="HTW Fashion Magazine, Volume 1, Issue 1"
                             fill
-                            style={{ objectFit: "cover", opacity: 0.75 }}
+                            style={{ objectFit: "cover" }}
                         />
-                        <div
-                            style={{
-                                position: "absolute",
-                                inset: 0,
-                                background:
-                                    "linear-gradient(180deg,rgba(26,22,18,0.55) 0%,rgba(26,22,18,0.1) 30%,rgba(26,22,18,0.15) 60%,rgba(26,22,18,0.75) 100%)",
-                                padding: 24,
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                                <div>
-                                    <div
-                                        style={{
-                                            fontFamily: "'Cormorant Garamond',serif",
-                                            fontSize: 30,
-                                            fontWeight: 700,
-                                            color: "#fff",
-                                            lineHeight: 1,
-                                        }}
-                                    >
-                                        HTW
-                                    </div>
-                                    <div
-                                        style={{
-                                            fontSize: 10,
-                                            letterSpacing: "0.3em",
-                                            color: "#fff",
-                                            opacity: 0.85,
-                                            marginTop: 2,
-                                        }}
-                                    >
-                                        FASHION
-                                    </div>
-                                </div>
-                                <div style={{ textAlign: "right", fontSize: 9, color: "#fff", opacity: 0.8, letterSpacing: "0.08em" }}>
-                                    VOL 01 | ISSUE 01
-                                </div>
-                            </div>
-                            <div>
-                                <div
-                                    style={{
-                                        fontFamily: "'Cormorant Garamond',serif",
-                                        fontSize: 20,
-                                        color: "#fff",
-                                        fontWeight: 600,
-                                        marginBottom: 4,
-                                    }}
-                                >
-                                    Bold Faith. Timeless Style.
-                                </div>
-                                <div style={{ fontSize: 11, color: "#fff", opacity: 0.75, marginBottom: 18 }}>
-                                    Ankara Reimagined — modern silhouettes, heritage prints.
-                                </div>
-                                <div
-                                    style={{
-                                        fontFamily: "'Cormorant Garamond',serif",
-                                        fontSize: 27,
-                                        fontWeight: 700,
-                                        color: "#fff",
-                                        lineHeight: 1.08,
-                                        textTransform: "uppercase",
-                                    }}
-                                >
-                                    Rooted In Faith.
-                                    <br />
-                                    Styled For Greatness.
-                                </div>
-                                <div
-                                    style={{
-                                        marginTop: 16,
-                                        paddingTop: 12,
-                                        borderTop: "1px solid rgba(255,255,255,0.25)",
-                                        fontSize: 9,
-                                        letterSpacing: "0.25em",
-                                        color: "#fff",
-                                        opacity: 0.7,
-                                    }}
-                                >
-                                    FASHION &nbsp;·&nbsp; FAITH &nbsp;·&nbsp; PURPOSE
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     {/* Hero copy */}
@@ -264,9 +205,7 @@ export const FashionPage = () => {
                             className="section-title"
                             style={{ fontSize: "clamp(34px,5vw,54px)", marginBottom: 20 }}
                         >
-                            Style with Purpose.
-                            <br />
-                            Live with Faith.
+                            {magazineTitle}
                         </h1>
                         <p
                             style={{
@@ -278,17 +217,19 @@ export const FashionPage = () => {
                                 marginBottom: 28,
                             }}
                         >
-                            HTW Fashion is a quarterly digital magazine that celebrates
-                            faith-inspired fashion, creativity, and stories that empower you to
-                            live bold and dress with meaning.
+                            {magazineShortDescription}
                         </p>
-                        <Link
-                            className="btn-primary"
-                            style={{ fontSize: 14, padding: "14px 30px" }}
-                            href="#featured-stories"
-                        >
-                            <FaBookOpen /> Read Now
-                        </Link>
+                        <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+                            <Link
+                                className="btn-primary"
+                                style={{ fontSize: 14, padding: "14px 30px" }}
+                                href={magazineDownloadUrl || "#featured-stories"}
+                                target={magazineDownloadUrl ? "_blank" : undefined}
+                                rel={magazineDownloadUrl ? "noopener noreferrer" : undefined}
+                            >
+                                <FaBookOpen /> Read Now
+                            </Link>
+                        </div>
                         <p style={{ fontSize: 12, color: T.muted, marginTop: 18, letterSpacing: "0.04em" }}>
                             Vol 01 &nbsp;|&nbsp; Issue 01
                         </p>
@@ -318,7 +259,7 @@ export const FashionPage = () => {
                         }}
                     >
                         <Image
-                            src="/images/tee_she.jpg"
+                            src={authorProfileImage}
                             alt="Blessing E., Editor-in-Chief"
                             fill
                             style={{ objectFit: "cover" }}
@@ -360,7 +301,7 @@ export const FashionPage = () => {
                         </div>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-                        {WHY_CARDS.map((c) => (
+                        {whyCards.map((c) => (
                             <div key={c.title} style={{ display: "flex", gap: 14, maxWidth: 260 }}>
                                 <div
                                     style={{
@@ -414,58 +355,116 @@ export const FashionPage = () => {
                             marginBottom: 40,
                         }}
                     >
-                        {FEATURED_STORIES.map((s) => (
-                            <div
-                                key={s.title}
-                                className="card"
-                                style={{
-                                    background: T.white,
-                                    border: `1px solid ${T.border}`,
-                                    borderRadius: 12,
-                                    overflow: "hidden",
-                                }}
-                            >
-                                <div style={{ position: "relative", aspectRatio: "4/3" }}>
-                                    <Image src={s.img} alt={s.title} fill style={{ objectFit: "cover" }} />
-                                    <div
-                                        style={{
-                                            position: "absolute",
-                                            left: 12,
-                                            bottom: 12,
-                                            background: T.rust,
-                                            color: "#fff",
-                                            fontSize: 9,
-                                            fontWeight: 700,
-                                            letterSpacing: "0.08em",
-                                            padding: "4px 10px",
-                                            borderRadius: 4,
-                                        }}
-                                    >
-                                        {s.tag}
+                        {(featuredStories ?? FEATURED_STORIES_FALLBACK).map((s) =>
+                            "slug" in s ? (
+                                <Link
+                                    key={s.id}
+                                    href={`/articles/${s.slug}`}
+                                    className="card"
+                                    style={{
+                                        display: "block",
+                                        textDecoration: "none",
+                                        background: T.white,
+                                        border: `1px solid ${T.border}`,
+                                        borderRadius: 12,
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    <div style={{ position: "relative", aspectRatio: "4/3", background: T.warm }}>
+                                        {s.image && (
+                                            <Image src={s.image} alt={s.title} fill style={{ objectFit: "cover" }} />
+                                        )}
+                                        {s.categories[0] && (
+                                            <div
+                                                style={{
+                                                    position: "absolute",
+                                                    left: 12,
+                                                    bottom: 12,
+                                                    background: T.rust,
+                                                    color: "#fff",
+                                                    fontSize: 9,
+                                                    fontWeight: 700,
+                                                    letterSpacing: "0.08em",
+                                                    textTransform: "uppercase",
+                                                    padding: "4px 10px",
+                                                    borderRadius: 4,
+                                                }}
+                                            >
+                                                {s.categories[0]}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div style={{ padding: "18px 18px 22px" }}>
+                                        <h3
+                                            style={{
+                                                fontFamily: "'Cormorant Garamond',serif",
+                                                fontSize: 19,
+                                                fontWeight: 600,
+                                                color: T.ink,
+                                                margin: "0 0 8px",
+                                                lineHeight: 1.3,
+                                            }}
+                                        >
+                                            {s.title}
+                                        </h3>
+                                        <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, margin: 0 }}>
+                                            {s.excerpt}
+                                        </p>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <div
+                                    key={s.title}
+                                    className="card"
+                                    style={{
+                                        background: T.white,
+                                        border: `1px solid ${T.border}`,
+                                        borderRadius: 12,
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    <div style={{ position: "relative", aspectRatio: "4/3" }}>
+                                        <Image src={s.img} alt={s.title} fill style={{ objectFit: "cover" }} />
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                left: 12,
+                                                bottom: 12,
+                                                background: T.rust,
+                                                color: "#fff",
+                                                fontSize: 9,
+                                                fontWeight: 700,
+                                                letterSpacing: "0.08em",
+                                                padding: "4px 10px",
+                                                borderRadius: 4,
+                                            }}
+                                        >
+                                            {s.tag}
+                                        </div>
+                                    </div>
+                                    <div style={{ padding: "18px 18px 22px" }}>
+                                        <h3
+                                            style={{
+                                                fontFamily: "'Cormorant Garamond',serif",
+                                                fontSize: 19,
+                                                fontWeight: 600,
+                                                color: T.ink,
+                                                margin: "0 0 8px",
+                                                lineHeight: 1.3,
+                                            }}
+                                        >
+                                            {s.title}
+                                        </h3>
+                                        <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, margin: 0 }}>
+                                            {s.desc}
+                                        </p>
                                     </div>
                                 </div>
-                                <div style={{ padding: "18px 18px 22px" }}>
-                                    <h3
-                                        style={{
-                                            fontFamily: "'Cormorant Garamond',serif",
-                                            fontSize: 19,
-                                            fontWeight: 600,
-                                            color: T.ink,
-                                            margin: "0 0 8px",
-                                            lineHeight: 1.3,
-                                        }}
-                                    >
-                                        {s.title}
-                                    </h3>
-                                    <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, margin: 0 }}>
-                                        {s.desc}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
+                            )
+                        )}
                     </div>
                     <div style={{ textAlign: "center" }}>
-                        <Link className="btn-outline-gold" href="/shop">
+                        <Link className="btn-outline-gold" href="/articles">
                             Explore All Articles →
                         </Link>
                     </div>
@@ -473,7 +472,7 @@ export const FashionPage = () => {
             </section>
 
             {/* Fashion & styling / Interviews / Ambassadors */}
-            <section style={{ padding: "72px 28px", background: T.cream }}>
+            {/* <section style={{ padding: "72px 28px", background: T.cream }}>
                 <div
                     style={{
                         maxWidth: 1160,
@@ -601,7 +600,7 @@ export const FashionPage = () => {
                         </Link>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
             {/* Forthcoming editions + stay connected */}
             <section style={{ padding: "72px 28px", background: T.warm }}>

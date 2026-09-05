@@ -3,6 +3,7 @@ import Link from "next/link"
 import { T } from "@/src/lib/tokens"
 import { Video } from "@/src/action/videoController"
 import { VideoCard } from "@/src/components/cards/VideoCard"
+import { LiveBadge } from "@/src/components/cards/LiveBadge"
 import { getEmbedUrl, isDirectVideoFile } from "@/src/lib/video"
 
 export const SingleVideoView = ({ video, videos }: { video: Video; videos: Video[] }) => {
@@ -14,12 +15,12 @@ export const SingleVideoView = ({ video, videos }: { video: Video; videos: Video
           })
         : ""
     const related = videos.filter((v) => v.id !== video.id).slice(0, 3)
-    const embedUrl = getEmbedUrl(video.videoUrl)
-    const isDirectFile = !embedUrl && isDirectVideoFile(video.videoUrl)
+    const embedUrl = getEmbedUrl(video.youtubeLink)
+    const isDirectFile = !embedUrl && isDirectVideoFile(video.youtubeLink)
 
     return (
         <main>
-            <div style={{ maxWidth: 900, margin: "0 auto", padding: "44px 28px" }}>
+            <div style={{ maxWidth: 1160, margin: "0 auto", padding: "44px 28px" }}>
                 <Link
                     href="/videos"
                     style={{
@@ -35,18 +36,9 @@ export const SingleVideoView = ({ video, videos }: { video: Video; videos: Video
                 </Link>
 
                 <div style={{ margin: "20px 0" }}>
-                    {video.category && (
-                        <div
-                            style={{
-                                fontSize: 10,
-                                color: T.gold,
-                                letterSpacing: "0.1em",
-                                textTransform: "uppercase",
-                                fontWeight: 700,
-                                marginBottom: 10,
-                            }}
-                        >
-                            {video.category}
+                    {video.isLive && (
+                        <div style={{ marginBottom: 10 }}>
+                            <LiveBadge />
                         </div>
                     )}
                     <h1
@@ -55,12 +47,7 @@ export const SingleVideoView = ({ video, videos }: { video: Video; videos: Video
                     >
                         {video.title}
                     </h1>
-                    <div style={{ fontSize: 13, color: T.muted }}>
-                        {date}
-                        {date && video.views && " · "}
-                        {video.views && `${video.views} views`}
-                        {video.duration && ` · ${video.duration}`}
-                    </div>
+                    {date && <div style={{ fontSize: 13, color: T.muted }}>{date}</div>}
                 </div>
 
                 <div
@@ -84,7 +71,7 @@ export const SingleVideoView = ({ video, videos }: { video: Video; videos: Video
                         />
                     ) : isDirectFile ? (
                         <video
-                            src={video.videoUrl}
+                            src={video.youtubeLink}
                             poster={video.thumbnail || undefined}
                             controls
                             style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
@@ -116,17 +103,17 @@ export const SingleVideoView = ({ video, videos }: { video: Video; videos: Video
                     )}
                 </div>
 
-                {video.description && (
-                    <p
+                {video.content && (
+                    <div
+                        className="article-content"
                         style={{
                             fontFamily: "'Cormorant Garamond',serif",
                             fontSize: 19,
                             lineHeight: 1.8,
                             color: T.charcoal,
                         }}
-                    >
-                        {video.description}
-                    </p>
+                        dangerouslySetInnerHTML={{ __html: video.content }}
+                    />
                 )}
             </div>
 
