@@ -1,6 +1,8 @@
 import { T } from "@/src/lib/tokens"
+import { WP_TAGS } from "@/src/lib/wpTags"
 
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
+const REVALIDATE_SECONDS = 300
 
 export type Style = {
     id: number
@@ -13,7 +15,9 @@ export type Style = {
 
 export const getStyles = async () => {
     try {
-        const res = await fetch(`${website_url}wp-json/wp/v2/style?acf_format=standard`)
+        const res = await fetch(`${website_url}wp-json/wp/v2/style?acf_format=standard`, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.styles] },
+        })
         const data = await res.json()
   
         const styles: Style[] = data.map((p: any) => {

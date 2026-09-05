@@ -1,6 +1,9 @@
 "use server"
 
 import { T } from "../lib/tokens"
+import { WP_TAGS } from "../lib/wpTags"
+
+const REVALIDATE_SECONDS = 300
 
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
 
@@ -80,9 +83,56 @@ export type PageHome = {
     ourDifferences: OurDifferences
 }
 
+const EMPTY_HOME_PAGE: PageHome = {
+    heroSection: [],
+    trustBar: [],
+    ourMission: {
+        mission_title: "",
+        mission_tagline: "",
+        mission_description: "",
+        happy_customers: "",
+        in_store: "",
+        seasonal_drops: "",
+    },
+    faqs: [],
+    otherTitles: {
+        trending_now_title: "",
+        trending_now_description: "",
+        styled_by_community_title: "",
+        styled_by_community_description: "",
+        styled_by_community_hashtag: "",
+        styled_by_community_facebook_link: "",
+        styled_by_community_instagram_link: "",
+        featured_collection_title: "",
+        featured_collection_description: "",
+        featured_collection_tagline: "",
+        shop_the_look_title: "",
+        shop_the_look_description: "",
+        call_to_action_title: "",
+        call_to_action_description: "",
+        call_to_action_button_title: "",
+        social_proof_title: "",
+        community_post_hashtag: "",
+        representing_the_kingdom_title: "",
+        representing_the_kingdom_tagline: "",
+        stay_connected_title: "",
+        stay_in_the_loop_title: "",
+        stay_in_the_loop_description: "",
+        get_launched_title: "",
+        get_launched_description: "",
+    },
+    ourDifferences: {
+        our_difference_title: "",
+        contents: [],
+    },
+}
+
 export const getPageHomePage: () => Promise<PageHome> = async () => {
     try {
-        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/24?acf_format=standard`)
+        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/24?acf_format=standard`, {
+            signal: AbortSignal.timeout(8000),
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.homepage] },
+        })
         const data = await res.json()
         
         const heroSection = [
@@ -237,8 +287,8 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             ourDifferences,
         }
     } catch (e) {
-        
-        return {} as PageHome
+        console.error("getPageHomePage failed:", e)
+        return EMPTY_HOME_PAGE
     }
 }
 
@@ -259,7 +309,9 @@ export type AmbassadorsPage = {
 
 export const getAmbassadorsPage = async () => {
     try {
-        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/315`)
+        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/315`, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.ambassadorsPage] },
+        })
         const data = await res.json()
 
         const ambassadorsStrip = [
@@ -329,7 +381,9 @@ export type OurStoryPage = {
 
 export const getOurStoryPage = async () => {
     try {
-        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/319`)
+        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/319`, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.ourStoryPage] },
+        })
         const data = await res.json()
 
         return {
@@ -366,7 +420,9 @@ export type ContactPage = {
 
 export const getContactPage = async () => {
     try {
-        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/321`)
+        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/321`, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.contactPage] },
+        })
         const data = await res.json()
 
         return {
@@ -399,7 +455,9 @@ export type NavbarandFooter = {
 
 export const getNavbarandFooter = async () => {
     try {
-        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/482`)
+        const res = await fetch(`${website_url}/wp-json/wp/v2/pages/482`, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.navbarFooter] },
+        })
         const data = await res.json()
 
         return {

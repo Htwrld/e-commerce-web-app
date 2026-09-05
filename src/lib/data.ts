@@ -377,7 +377,9 @@ export const WHY_HTW = [
 export const NAV_ITEMS = [
     { id: "/", label: "Home" },
     { id: "/shop", label: "Shop" },
-    // { id: "/fashion", label: "Fashion" },
+    { id: "/fashion", label: "Fashion" },
+    { id: "/articles", label: "Articles" },
+    { id: "/videos", label: "Videos" },
     { id: "/ambassadors", label: "Ambassadors" },
     { id: "/about", label: "Our Story" },
     { id: "/contact", label: "Contact" },

@@ -16,8 +16,8 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [copied, setCopied] = useState(false)
-    const [fees, setFees] = useState(locations[0].fees)
-    const [locationName, setLocationName] = useState(locations[0].location)
+    const [fees, setFees] = useState(locations[0]?.fees ?? 0)
+    const [locationName, setLocationName] = useState(locations[0]?.location ?? "")
     const { cart, cartTotal, removeFromCart, setToast } = useCart()
     const [step, setStep] = useState(1)
     const [form, setForm] = useState({
@@ -259,7 +259,7 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                         Location
                                     </label>
                                     <Select
-                                        defaultValue={locations[0].id.toString()}
+                                        defaultValue={locations[0]?.id.toString()}
                                         onValueChange={(e) => {
                                             const l = locations.find((l) => l.id === Number(e))
                                             setFees(l?.fees ?? 0)

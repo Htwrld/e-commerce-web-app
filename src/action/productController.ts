@@ -1,6 +1,9 @@
 "use server"
 
+import { WP_TAGS } from "../lib/wpTags"
+
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
+const REVALIDATE_SECONDS = 300
 
 export type Product = {
     id: number
@@ -35,7 +38,9 @@ export const getProductsByCategoryGenderBadge = async (
         if (gender) endpoint += `&gender=${gender}`
         if (badge) endpoint += `&badge=${badge}`
         endpoint += `&order=desc&per_page=36`
-        const res = await fetch(endpoint)
+        const res = await fetch(endpoint, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.products] },
+        })
         const totalPagesHeader = res.headers.get("X-WP-TotalPages")
         const data = await res.json()
         const products: Product[] = data.map((p: any) => {
@@ -116,7 +121,9 @@ export const getProducts = async ({
             // Unisex items should also appear under "male" and "female", so pull the
             // full matching set here and let the gender/unisex match happen in JS
             // instead of relying on WordPress's exact-match `gender` query param.
-            const res = await fetch(`${endpoint}&per_page=100`)
+            const res = await fetch(`${endpoint}&per_page=100`, {
+                next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.products] },
+            })
             const data = await res.json()
             const g = gender.toLowerCase()
             const products: Product[] = data
@@ -137,7 +144,9 @@ export const getProducts = async ({
         endpoint += `&per_page=${per_page}`
         if (page) endpoint += `&page=${page}`
 
-        const res = await fetch(endpoint)
+        const res = await fetch(endpoint, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.products] },
+        })
         const totalPagesHeader = res.headers.get("X-WP-TotalPages")
         const data = await res.json()
         const products: Product[] = data.map(mapProduct)
@@ -157,7 +166,9 @@ export const getProducts = async ({
 export const getProductById = async (id: number): Promise<Product | null> => {
     try {
         const endpoint = `${website_url}wp-json/wp/v2/product/${id}?acf_format=standard`
-        const res = await fetch(endpoint)
+        const res = await fetch(endpoint, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.products] },
+        })
         if (!res.ok) return null
         const p = await res.json()
         return {
@@ -194,7 +205,9 @@ export type Location = {
 
 export const getLocations = async () => {
     try {
-        const req = await fetch(`${website_url}wp-json/wp/v2/locations?per_page=40`)
+        const req = await fetch(`${website_url}wp-json/wp/v2/locations?per_page=40`, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.locations] },
+        })
         const res = await req.json()
         const locations: Location[] = res.map((l: any) => {
             return {
