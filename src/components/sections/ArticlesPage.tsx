@@ -66,11 +66,8 @@ export const ArticlesPage = ({ articles, pages }: { articles: Article[]; pages: 
                 <>
                     {featured && (
                         <div
-                            className="card"
+                            className="card featured-post-card"
                             style={{
-                                display: "grid",
-                                gridTemplateColumns: "1fr 1fr",
-                                gap: 0,
                                 background: T.white,
                                 border: `1px solid ${T.border}`,
                                 borderRadius: 16,
@@ -79,8 +76,8 @@ export const ArticlesPage = ({ articles, pages }: { articles: Article[]; pages: 
                             }}
                         >
                             <div
+                                className="featured-post-body"
                                 style={{
-                                    padding: "40px 36px",
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "center",
@@ -133,7 +130,10 @@ export const ArticlesPage = ({ articles, pages }: { articles: Article[]; pages: 
                                     {featured.readTime} min read
                                 </div>
                             </div>
-                            <div style={{ position: "relative", minHeight: 320, background: T.warm }}>
+                            <div
+                                className="featured-post-media"
+                                style={{ position: "relative", background: T.warm }}
+                            >
                                 {featured.image ? (
                                     <Image
                                         src={featured.image}

@@ -63,6 +63,7 @@ export const VideosPage = ({ videos, pages }: { videos: Video[]; pages: number }
                             style={{ textDecoration: "none" }}
                         >
                             <div
+                                className="featured-video-card"
                                 style={{
                                     position: "relative",
                                     borderRadius: 16,
@@ -79,11 +80,12 @@ export const VideosPage = ({ videos, pages }: { videos: Video[]; pages: number }
                                         src={featured.thumbnail}
                                         alt={featured.title}
                                         fill
-                                        className="h-full w-full object-cover object-center static!"
+                                        className="featured-video-img h-full w-full object-cover object-center static!"
                                         style={{ opacity: 0.8 }}
                                     />
                                 )}
                                 <div
+                                    className="featured-video-scrim"
                                     style={{
                                         position: "absolute",
                                         inset: 0,
@@ -92,6 +94,7 @@ export const VideosPage = ({ videos, pages }: { videos: Video[]; pages: number }
                                     }}
                                 />
                                 <div
+                                    className="featured-video-play"
                                     style={{
                                         position: "absolute",
                                         inset: 0,
@@ -116,26 +119,33 @@ export const VideosPage = ({ videos, pages }: { videos: Video[]; pages: number }
                                         ▶
                                     </div>
                                 </div>
-                                <div style={{ position: "relative", padding: "32px 36px", maxWidth: 480 }}>
+                                <div
+                                    className="featured-video-body"
+                                    style={{ position: "relative", padding: "32px 36px", maxWidth: 480 }}
+                                >
                                     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-                                        <div
-                                            style={{
-                                                display: "inline-block",
-                                                fontSize: 10,
-                                                color: T.ink,
-                                                background: T.gold,
-                                                letterSpacing: "0.12em",
-                                                textTransform: "uppercase",
-                                                fontWeight: 700,
-                                                padding: "5px 10px",
-                                                borderRadius: 5,
-                                            }}
-                                        >
-                                            Featured Video
-                                        </div>
-                                        {featured.isLive && <LiveBadge />}
+                                        {featured.isLive ? (
+                                            <LiveBadge />
+                                        ) : (
+                                            <div
+                                                style={{
+                                                    display: "inline-block",
+                                                    fontSize: 10,
+                                                    color: T.ink,
+                                                    background: T.gold,
+                                                    letterSpacing: "0.12em",
+                                                    textTransform: "uppercase",
+                                                    fontWeight: 700,
+                                                    padding: "5px 10px",
+                                                    borderRadius: 5,
+                                                }}
+                                            >
+                                                Featured Video
+                                            </div>
+                                        )}
                                     </div>
                                     <h2
+                                        className="featured-video-title"
                                         style={{
                                             fontFamily: "'Cormorant Garamond',serif",
                                             fontSize: "clamp(24px,3vw,32px)",
@@ -273,7 +283,13 @@ export const VideosPage = ({ videos, pages }: { videos: Video[]; pages: number }
                         </div>
                     </div>
                 </div>
-                <a href="#" className="btn-primary" style={{ textDecoration: "none" }}>
+                <a
+                    href="https://youtube.com/@hopestrendyworld?si=mn0q9LB-MnTHNJ3y"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary"
+                    style={{ textDecoration: "none" }}
+                >
                     ▶ Subscribe on YouTube
                 </a>
             </div>
