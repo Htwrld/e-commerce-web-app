@@ -18,6 +18,7 @@ export type Article = {
     author: string
     categories: string[]
     readTime: number
+    views: number
 }
 
 const stripHtml = (html: string) => html.replace(/<[^>]*>/g, "").trim()
@@ -41,11 +42,12 @@ const mapArticle = (p: any): Article => ({
     author: p._embedded?.author?.[0]?.name ?? "",
     categories: p._embedded?.["wp:term"]?.[0]?.map((t: any) => t.name) ?? [],
     readTime: readTimeFor(p.content?.rendered ?? ""),
+    views: p.acf?.view_count ? Number(p.acf.view_count) : 0,
 })
 
 export const getArticles = async ({ page }: { page?: number } = {}) => {
     try {
-        let endpoint = `${website_url}wp-json/wp/v2/posts?_embed&per_page=${PER_PAGE}`
+        let endpoint = `${website_url}wp-json/wp/v2/posts?_embed&acf_format=standard&per_page=${PER_PAGE}`
         if (page) endpoint += `&page=${page}`
 
         const res = await fetch(endpoint, {
@@ -69,7 +71,7 @@ export const getArticles = async ({ page }: { page?: number } = {}) => {
 
 export const getArticleBySlug = async (slug: string): Promise<Article | null> => {
     try {
-        const endpoint = `${website_url}wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`
+        const endpoint = `${website_url}wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed&acf_format=standard`
         const res = await fetch(endpoint, {
             signal: AbortSignal.timeout(8000),
             next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.articles] },

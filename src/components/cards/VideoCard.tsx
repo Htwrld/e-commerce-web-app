@@ -3,6 +3,7 @@ import Link from "next/link"
 import { T } from "@/src/lib/tokens"
 import { Video } from "@/src/action/videoController"
 import { LiveBadge } from "@/src/components/cards/LiveBadge"
+import { formatViewCount } from "@/src/lib/utils"
 
 export function VideoCard({ video }: { video: Video }) {
     const date = video.date
@@ -97,7 +98,11 @@ export function VideoCard({ video }: { video: Video }) {
                     >
                         {video.title}
                     </h3>
-                    <div style={{ fontSize: 11, color: T.muted }}>{date}</div>
+                    <div style={{ fontSize: 11, color: T.muted }}>
+                        {date}
+                        {date && " · "}
+                        {formatViewCount(video.views)} views
+                    </div>
                 </div>
             </div>
         </Link>

@@ -4,7 +4,6 @@ import Image from "next/image"
 import { T } from "@/src/lib/tokens"
 import { Badge } from "@/src/components/cards/Badge"
 import { VerseChip } from "@/src/components/cards/VerseChip"
-import { WABtn } from "@/src/components/cards/WABtn"
 import { Product } from "@/src/action/productController"
 import { useState } from "react"
 import { useCart } from "@/src/lib/cart-context"
@@ -346,7 +345,6 @@ export function ProductDetailModal({
                                 Add to Cart
                             </button>
                         )}
-                        <WABtn text="Order Now" product={p.name} number={mobileNumber} />
                     </div>
 
                     <div

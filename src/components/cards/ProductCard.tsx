@@ -4,7 +4,6 @@ import Image from "next/image"
 import { T } from "@/src/lib/tokens"
 import { Badge } from "@/src/components/cards/Badge"
 import { VerseChip } from "@/src/components/cards/VerseChip"
-import { WABtn } from "@/src/components/cards/WABtn"
 import { Product } from "@/src/action/productController"
 import { useCart } from "@/src/lib/cart-context"
 import { useState } from "react"
@@ -34,6 +33,10 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber, backHref
                 borderRadius: 14,
                 overflow: "hidden",
                 cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                height: "100%",
             }}
         >
             <Link className="" href={href}>
@@ -251,7 +254,6 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber, backHref
                         Add to Cart
                     </button>
                 )}
-                <WABtn text="Order" product={p.name} number={mobileNumber} />
             </div>
         </div>
     )

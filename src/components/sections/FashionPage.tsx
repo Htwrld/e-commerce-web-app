@@ -6,7 +6,6 @@ import Link from "next/link"
 import { T } from "@/src/lib/tokens"
 import { sendMail } from "@/src/action/mailController"
 import type { FashionPageContent } from "@/src/action/pageController"
-import type { Article } from "@/src/action/articleController"
 import {
     FaBookOpen,
     FaHeart,
@@ -17,33 +16,6 @@ import {
     FaInstagram,
     FaTiktok,
 } from "react-icons/fa"
-
-const FEATURED_STORIES_FALLBACK = [
-    {
-        tag: "STYLE GUIDE",
-        title: "5 Ways to Style Ankara for Every Occasion",
-        desc: "Versatile looks that take you from work to worship and everywhere in between.",
-        img: "/images/hoodie_lifestyle.png",
-    },
-    {
-        tag: "WARDROBE",
-        title: "Building a Faith-Fueled Wardrobe",
-        desc: "Essential pieces that blend modesty, elegance and everyday confidence.",
-        img: "/images/polo_twopiece.jpg",
-    },
-    {
-        tag: "BEHIND THE SCENES",
-        title: "Crafted with Purpose",
-        desc: "Go behind the seams and see how our pieces are designed with care, prayer, and precision.",
-        img: "/images/tee_she.jpg",
-    },
-    {
-        tag: "TREND SPOTLIGHT",
-        title: "This Season's Must-Have Prints",
-        desc: "The prints, colors and silhouettes making a statement this season.",
-        img: "/images/polo_twopiece.jpg",
-    },
-]
 
 const FASHION_STYLING = [
     {
@@ -109,17 +81,14 @@ const WHY_ICONS = [<FaHeart key="heart" />, <FaTshirt key="tshirt" />, <FaUsers 
 
 export const FashionPage = ({
     pageContent,
-    articles,
 }: {
     pageContent?: FashionPageContent
-    articles?: Article[]
 }) => {
     const magazineCoverImage = pageContent?.magazine_cover_image || "/images/hoodie_lifestyle.png"
     const magazineTitle = pageContent?.magazine_title || "Style with Purpose. Live with Faith."
     const magazineShortDescription =
         pageContent?.magazine_short_description ||
         "HTW Fashion is a quarterly digital magazine that celebrates faith-inspired fashion, creativity, and stories that empower you to live bold and dress with meaning."
-    const magazineDownloadUrl = pageContent?.magazine_download_url
     const authorProfileImage = pageContent?.author_profile_image || "/images/tee_she.jpg"
     const whyCards =
         pageContent?.faithItems?.some((f) => f.title || f.description)
@@ -129,7 +98,6 @@ export const FashionPage = ({
                   desc: f.description || WHY_CARDS_FALLBACK[i]?.desc || "",
               }))
             : WHY_CARDS_FALLBACK
-    const featuredStories = articles && articles.length > 0 ? articles.slice(0, 4) : null
     const [tab, setTab] = useState<"email" | "whatsapp">("email")
     const [email, setEmail] = useState("")
     const [wa, setWa] = useState("")
@@ -223,9 +191,7 @@ export const FashionPage = ({
                             <Link
                                 className="btn-primary"
                                 style={{ fontSize: 14, padding: "14px 30px" }}
-                                href={magazineDownloadUrl || "#featured-stories"}
-                                target={magazineDownloadUrl ? "_blank" : undefined}
-                                rel={magazineDownloadUrl ? "noopener noreferrer" : undefined}
+                                href="/fashion/magazine"
                             >
                                 <FaBookOpen /> Read Now
                             </Link>
@@ -337,136 +303,6 @@ export const FashionPage = ({
                                 </div>
                             </div>
                         ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Featured stories */}
-            <section id="featured-stories" style={{ padding: "72px 28px", background: T.warm }}>
-                <div style={{ maxWidth: 1160, margin: "0 auto" }}>
-                    <p className="section-label">FEATURED STORIES</p>
-                    <div className="divider" />
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))",
-                            gap: 20,
-                            marginTop: 32,
-                            marginBottom: 40,
-                        }}
-                    >
-                        {(featuredStories ?? FEATURED_STORIES_FALLBACK).map((s) =>
-                            "slug" in s ? (
-                                <Link
-                                    key={s.id}
-                                    href={`/articles/${s.slug}`}
-                                    className="card"
-                                    style={{
-                                        display: "block",
-                                        textDecoration: "none",
-                                        background: T.white,
-                                        border: `1px solid ${T.border}`,
-                                        borderRadius: 12,
-                                        overflow: "hidden",
-                                    }}
-                                >
-                                    <div style={{ position: "relative", aspectRatio: "4/3", background: T.warm }}>
-                                        {s.image && (
-                                            <Image src={s.image} alt={s.title} fill style={{ objectFit: "cover" }} />
-                                        )}
-                                        {s.categories[0] && (
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    left: 12,
-                                                    bottom: 12,
-                                                    background: T.rust,
-                                                    color: "#fff",
-                                                    fontSize: 9,
-                                                    fontWeight: 700,
-                                                    letterSpacing: "0.08em",
-                                                    textTransform: "uppercase",
-                                                    padding: "4px 10px",
-                                                    borderRadius: 4,
-                                                }}
-                                            >
-                                                {s.categories[0]}
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div style={{ padding: "18px 18px 22px" }}>
-                                        <h3
-                                            style={{
-                                                fontFamily: "'Cormorant Garamond',serif",
-                                                fontSize: 19,
-                                                fontWeight: 600,
-                                                color: T.ink,
-                                                margin: "0 0 8px",
-                                                lineHeight: 1.3,
-                                            }}
-                                        >
-                                            {s.title}
-                                        </h3>
-                                        <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, margin: 0 }}>
-                                            {s.excerpt}
-                                        </p>
-                                    </div>
-                                </Link>
-                            ) : (
-                                <div
-                                    key={s.title}
-                                    className="card"
-                                    style={{
-                                        background: T.white,
-                                        border: `1px solid ${T.border}`,
-                                        borderRadius: 12,
-                                        overflow: "hidden",
-                                    }}
-                                >
-                                    <div style={{ position: "relative", aspectRatio: "4/3" }}>
-                                        <Image src={s.img} alt={s.title} fill style={{ objectFit: "cover" }} />
-                                        <div
-                                            style={{
-                                                position: "absolute",
-                                                left: 12,
-                                                bottom: 12,
-                                                background: T.rust,
-                                                color: "#fff",
-                                                fontSize: 9,
-                                                fontWeight: 700,
-                                                letterSpacing: "0.08em",
-                                                padding: "4px 10px",
-                                                borderRadius: 4,
-                                            }}
-                                        >
-                                            {s.tag}
-                                        </div>
-                                    </div>
-                                    <div style={{ padding: "18px 18px 22px" }}>
-                                        <h3
-                                            style={{
-                                                fontFamily: "'Cormorant Garamond',serif",
-                                                fontSize: 19,
-                                                fontWeight: 600,
-                                                color: T.ink,
-                                                margin: "0 0 8px",
-                                                lineHeight: 1.3,
-                                            }}
-                                        >
-                                            {s.title}
-                                        </h3>
-                                        <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, margin: 0 }}>
-                                            {s.desc}
-                                        </p>
-                                    </div>
-                                </div>
-                            )
-                        )}
-                    </div>
-                    <div style={{ textAlign: "center" }}>
-                        <Link className="btn-outline-gold" href="/articles">
-                            Explore All Articles →
-                        </Link>
                     </div>
                 </div>
             </section>

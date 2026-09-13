@@ -16,6 +16,7 @@ export type Video = {
     isLive: boolean
     thumbnail: string
     date: string
+    views: number
 }
 
 const stripHtml = (html: string) => html.replace(/<[^>]*>/g, "").trim()
@@ -36,6 +37,7 @@ const mapVideo = (v: any): Video => {
         isLive: isLiveValue(v.acf?.is_live),
         thumbnail: v.acf?.video_thumbnail || getYouTubeThumbnail(youtubeLink),
         date: v.date ?? "",
+        views: v.acf?.view_count ? Number(v.acf.view_count) : 0,
     }
 }
 

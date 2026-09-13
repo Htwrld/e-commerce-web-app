@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { T } from "@/src/lib/tokens"
 import { Article } from "@/src/action/articleController"
+import { formatViewCount } from "@/src/lib/utils"
 
 export function ArticleCard({ article }: { article: Article }) {
     const date = article.date
@@ -92,6 +93,8 @@ export function ArticleCard({ article }: { article: Article }) {
                         {date}
                         {date && " · "}
                         {article.readTime} min read
+                        {" · "}
+                        {formatViewCount(article.views)} views
                     </div>
                 </div>
             </div>

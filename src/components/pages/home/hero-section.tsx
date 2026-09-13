@@ -4,13 +4,9 @@ import Image from "next/image"
 import { T } from "@/src/lib/tokens"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { FaTruck, FaShieldAlt, FaWhatsapp } from "react-icons/fa"
 
-const HERO_BGS = [
-    "linear-gradient(135deg,#FDF0DC 0%,#F5D898 50%,#EFE4D0 100%)",
-    "linear-gradient(135deg,#DCF0E6 0%,#A8D8BC 50%,#C8E6D6 100%)",
-    "linear-gradient(135deg,#F5E0DC 0%,#F5B8A8 50%,#EDD4CC 100%)",
-]
-const HERO_ACCENTS = [T.gold, T.sage, T.rust]
+const HERO_ACCENTS = [T.rust, T.sage, T.gold]
 
 type HeroSectionProps = {
     hero_badge: string
@@ -23,227 +19,318 @@ type HeroSectionProps = {
 
 const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
     const [heroIdx, setHeroIdx] = useState(0)
+    const slideCount = heroSection.length
 
     useEffect(() => {
-        const t = setInterval(() => setHeroIdx((i) => (i + 1) % 3), 5000)
+        if (slideCount < 2) return
+        const t = setInterval(() => setHeroIdx((i) => (i + 1) % slideCount), 5000)
         return () => clearInterval(t)
-    }, [])
+    }, [slideCount])
 
-    const accent = HERO_ACCENTS[heroIdx]
+    if (!slideCount) return null
+
+    const accent = HERO_ACCENTS[heroIdx % HERO_ACCENTS.length]
     const activeSection = heroSection[heroIdx]
+    const image = activeSection.hero_lifestyle_image || "/images/hoodie_lifestyle.png"
+
+    const headlineLines = activeSection.hero_headline
+        .split(".")
+        .map((s) => s.trim())
+        .filter(Boolean)
 
     return (
         <section
             style={{
-                minHeight: "92vh",
-                background: HERO_BGS[heroIdx],
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-                padding: "80px 24px 100px",
+                background: T.cream,
                 position: "relative",
                 overflow: "hidden",
-                transition: "background 1.4s ease",
+                padding: "56px 24px 64px",
             }}
         >
-            {/* Background decorations */}
             <div
                 style={{
-                    position: "absolute",
-                    top: -120,
-                    right: -120,
-                    width: 480,
-                    height: 480,
-                    borderRadius: "50%",
-                    background: accent + "15",
-                    pointerEvents: "none",
-                }}
-            />
-            <div
-                style={{
-                    position: "absolute",
-                    bottom: -80,
-                    left: -80,
-                    width: 320,
-                    height: 320,
-                    borderRadius: "50%",
-                    background: accent + "10",
-                    pointerEvents: "none",
-                }}
-            />
-            <div
-                style={{
-                    position: "absolute",
-                    top: "12%",
-                    left: "5%",
-                    fontSize: 80,
-                    opacity: 0.04,
-                    pointerEvents: "none",
-                    color: T.charcoal,
-                }}
-            >
-                ✝
-            </div>
-            <div
-                style={{
-                    position: "absolute",
-                    bottom: "14%",
-                    right: "6%",
-                    fontSize: 60,
-                    opacity: 0.04,
-                    pointerEvents: "none",
-                    color: T.charcoal,
-                }}
-            >
-                ✝
-            </div>
-
-            {/* Lifestyle image strip */}
-            <div
-                style={{
-                    position: "absolute",
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    width: "30%",
+                    maxWidth: 1280,
+                    margin: "0 auto",
                     display: "flex",
-                    flexDirection: "column",
-                    opacity: 0.18,
-                    pointerEvents: "none",
-                    overflow: "hidden",
+                    alignItems: "center",
+                    gap: 48,
+                    flexWrap: "wrap-reverse",
                 }}
             >
-                {heroSection.map((hero, i) => (
+                {/* Text column */}
+                <div
+                    key={heroIdx}
+                    style={{
+                        flex: "1 1 460px",
+                        textAlign: "left",
+                        animation: "slideUp .9s ease",
+                    }}
+                >
                     <div
-                        key={hero.hero_headline + i}
                         style={{
-                            flex: 1,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            marginBottom: 22,
+                        }}
+                    >
+                        <span style={{ width: 28, height: 1, background: accent }} />
+                        <span
+                            style={{
+                                display: "inline-block",
+                                background: accent + "1A",
+                                color: accent,
+                                borderRadius: 20,
+                                padding: "5px 16px",
+                                fontSize: 11,
+                                letterSpacing: "0.14em",
+                                fontFamily: "monospace",
+                                fontWeight: 700,
+                                textTransform: "uppercase",
+                            }}
+                        >
+                            {activeSection.hero_badge}
+                        </span>
+                        <span style={{ width: 28, height: 1, background: accent }} />
+                    </div>
+
+                    <h1
+                        style={{
+                            fontFamily: "'Cormorant Garamond',serif",
+                            fontSize: "clamp(44px,6vw,72px)",
+                            fontWeight: 700,
+                            margin: "0 0 16px",
+                            lineHeight: 1.02,
+                            letterSpacing: "-0.02em",
+                        }}
+                    >
+                        {headlineLines.length > 1 ? (
+                            headlineLines.map((line, i) => (
+                                <span
+                                    key={i}
+                                    style={{
+                                        display: "block",
+                                        color: i === 0 ? T.ink : accent,
+                                    }}
+                                >
+                                    {line}
+                                    {i < headlineLines.length - 1 ? "." : ""}
+                                </span>
+                            ))
+                        ) : (
+                            <span style={{ color: T.ink }}>{activeSection.hero_headline}</span>
+                        )}
+                    </h1>
+
+                    <p
+                        style={{
+                            fontFamily: "'EB Garamond',serif",
+                            fontSize: "clamp(16px,2vw,20px)",
+                            color: T.charcoal,
+                            margin: "0 0 20px",
+                            fontStyle: "italic",
+                            lineHeight: 1.6,
+                            maxWidth: 480,
+                        }}
+                    >
+                        {activeSection.hero_subheadline}
+                    </p>
+
+                    <div
+                        style={{
+                            display: "flex",
+                            gap: 12,
+                            flexWrap: "wrap",
+                            marginBottom: 28,
+                        }}
+                    >
+                        <Link
+                            className="btn-primary"
+                            style={{ fontSize: 14, padding: "14px 28px", background: T.rust }}
+                            href={`/shop?gender=male`}
+                        >
+                            Shop Men →
+                        </Link>
+                        <Link
+                            className="btn-primary"
+                            style={{ fontSize: 14, padding: "14px 28px", background: T.ink }}
+                            href={`/shop?gender=female`}
+                        >
+                            Shop Women →
+                        </Link>
+                        <Link
+                            className="btn-secondary"
+                            style={{ fontSize: 14, padding: "13px 26px" }}
+                            href="/shop?badge=new collection"
+                        >
+                            New Collection
+                        </Link>
+                    </div>
+
+                    <div
+                        style={{
+                            display: "flex",
+                            gap: 18,
+                            flexWrap: "wrap",
+                            fontSize: 12.5,
+                            color: T.muted,
+                        }}
+                    >
+                        <span style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                            <FaTruck /> Free delivery in Lagos
+                        </span>
+                        <span
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 7,
+                                borderLeft: `1px solid ${T.border}`,
+                                paddingLeft: 18,
+                            }}
+                        >
+                            <FaShieldAlt /> Ships nationwide
+                        </span>
+                        <span
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 7,
+                                borderLeft: `1px solid ${T.border}`,
+                                paddingLeft: 18,
+                            }}
+                        >
+                            <FaWhatsapp /> WhatsApp orders welcome
+                        </span>
+                    </div>
+                </div>
+
+                {/* Image column */}
+                <div
+                    style={{
+                        flex: "1 1 480px",
+                        position: "relative",
+                        height: "clamp(380px,52vw,620px)",
+                        maxWidth: 680,
+                        marginLeft: "auto",
+                    }}
+                >
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: "-8%",
+                            right: "-10%",
+                            width: "60%",
+                            height: "42%",
+                            background: accent,
+                            opacity: 0.12,
+                            borderRadius: "40% 60% 55% 45%/50% 45% 55% 50%",
+                            pointerEvents: "none",
+                        }}
+                    />
+
+                    <div
+                        key={heroIdx}
+                        style={{
+                            position: "absolute",
+                            inset: 0,
+                            right: "18%",
+                            borderRadius: 18,
                             overflow: "hidden",
-                            position: "relative",
+                            boxShadow: "0 24px 48px rgba(26,22,18,.18)",
+                            animation: "slideUp 1s ease",
                         }}
                     >
                         <Image
-                            src={hero.hero_lifestyle_image ?? "/images/hoodie_lifestyle.png"}
-                            alt=""
+                            src={image}
+                            alt={activeSection.hero_headline}
                             fill
+                            priority
                             style={{ objectFit: "cover", objectPosition: "center top" }}
                         />
                     </div>
-                ))}
-            </div>
 
-            {/* Content */}
-            <div
-                style={{
-                    position: "relative",
-                    zIndex: 2,
-                    maxWidth: 720,
-                    animation: "slideUp .9s ease",
-                }}
-            >
-                <div
-                    style={{
-                        display: "inline-block",
-                        background: accent,
-                        color: "#fff",
-                        borderRadius: 20,
-                        padding: "5px 20px",
-                        fontSize: 11,
-                        letterSpacing: "0.2em",
-                        fontFamily: "monospace",
-                        fontWeight: 700,
-                        marginBottom: 22,
-                    }}
-                >
-                    ✝ {activeSection.hero_badge}
-                </div>
-                <h1
-                    style={{
-                        fontFamily: "'Cormorant Garamond',serif",
-                        fontSize: "clamp(52px,12vw,100px)",
-                        fontWeight: 700,
-                        margin: "0 0 16px",
-                        lineHeight: 0.92,
-                        color: T.ink,
-                        letterSpacing: "-0.025em",
-                    }}
-                >
-                    {activeSection.hero_headline}
-                </h1>
-                <p
-                    style={{
-                        fontFamily: "'EB Garamond',serif",
-                        fontSize: "clamp(16px,2.5vw,21px)",
-                        color: T.charcoal,
-                        margin: "0 0 10px",
-                        fontStyle: "italic",
-                        lineHeight: 1.6,
-                        maxWidth: 560,
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                    }}
-                >
-                    {activeSection.hero_subheadline}
-                </p>
-                <p
-                    style={{
-                        fontSize: 13,
-                        color: T.muted,
-                        marginBottom: 36,
-                        letterSpacing: "0.04em",
-                    }}
-                >
-                    {activeSection.hero_tagline}
-                </p>
-
-                <div
-                    style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}
-                >
-                    <Link
-                        className="btn-primary"
-                        style={{ fontSize: 14, padding: "14px 28px" }}
-                        href={`/shop?gender=male`}
-                    >
-                        Shop Men
-                    </Link>
-                    <Link
-                        className="btn-primary"
-                        style={{ fontSize: 14, padding: "14px 28px", background: T.rust }}
-                        href={`/shop?gender=female`}
-                    >
-                        Shop Women
-                    </Link>
-                    <Link
-                        className="btn-secondary"
-                        style={{ fontSize: 14, padding: "13px 26px" }}
-                        href="/shop?badge=new collection"
-                    >
-                        New Collection
-                    </Link>
-                </div>
-                <p style={{ fontSize: 12, color: T.muted, marginTop: 16 }}>
-                    Free delivery in Lagos &nbsp;·&nbsp; Ships nationwide &nbsp;·&nbsp; WhatsApp
-                    orders welcome
-                </p>
-            </div>
-
-            {/* Hero dots */}
-            <div style={{ position: "absolute", bottom: 28, display: "flex", gap: 8 }}>
-                {[0, 1, 2].map((i) => (
                     <div
-                        key={i}
                         style={{
-                            width: i === heroIdx ? 32 : 8,
-                            height: 8,
-                            borderRadius: 4,
-                            background: i === heroIdx ? accent : "#CCC",
-                            transition: "all .45s",
+                            position: "absolute",
+                            top: "4%",
+                            right: 0,
+                            width: "46%",
+                            height: "44%",
+                            borderRadius: 12,
+                            overflow: "hidden",
+                            border: "4px solid " + T.white,
+                            boxShadow: "0 16px 32px rgba(26,22,18,.2)",
+                            transform: "rotate(3deg)",
                         }}
-                    />
-                ))}
+                    >
+                        <Image
+                            src={image}
+                            alt=""
+                            fill
+                            style={{ objectFit: "cover", objectPosition: "center 20%" }}
+                        />
+                    </div>
+
+                    <div
+                        style={{
+                            position: "absolute",
+                            bottom: "6%",
+                            right: 0,
+                            width: "40%",
+                            fontFamily: "'Cormorant Garamond',serif",
+                            fontStyle: "italic",
+                            fontSize: 22,
+                            lineHeight: 1.15,
+                            color: T.ink,
+                            transform: "rotate(-2deg)",
+                        }}
+                    >
+                        Faith
+                        <br />
+                        Fashion
+                        <br />
+                        Community
+                        <span
+                            style={{
+                                display: "block",
+                                width: 60,
+                                height: 3,
+                                background: accent,
+                                marginTop: 6,
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
+
+            {/* Slide dots */}
+            {slideCount > 1 && (
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        gap: 8,
+                        marginTop: 40,
+                    }}
+                >
+                    {heroSection.map((_, i) => (
+                        <button
+                            key={i}
+                            aria-label={`Show slide ${i + 1}`}
+                            onClick={() => setHeroIdx(i)}
+                            style={{
+                                width: i === heroIdx ? 32 : 8,
+                                height: 8,
+                                borderRadius: 4,
+                                border: "none",
+                                cursor: "pointer",
+                                background: i === heroIdx ? accent : "#CCC",
+                                transition: "all .45s",
+                            }}
+                        />
+                    ))}
+                </div>
+            )}
         </section>
     )
 }
