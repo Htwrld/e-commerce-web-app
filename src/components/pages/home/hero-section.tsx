@@ -15,6 +15,10 @@ type HeroSectionProps = {
     hero_tagline: string
     hero_background_color: string
     hero_lifestyle_image: string
+    hero_button_1_text: string
+    hero_button_1_link: string
+    hero_button_2_text: string
+    hero_button_2_link: string
 }
 
 const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
@@ -139,32 +143,29 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
                     <div
                         style={{
                             display: "flex",
-                            gap: 12,
+                            gap: 24,
                             flexWrap: "wrap",
                             marginBottom: 28,
                         }}
                     >
-                        <Link
-                            className="btn-primary"
-                            style={{ fontSize: 14, padding: "14px 28px", background: T.rust }}
-                            href={`/shop?gender=male`}
-                        >
-                            Shop Men →
-                        </Link>
-                        <Link
-                            className="btn-primary"
-                            style={{ fontSize: 14, padding: "14px 28px", background: T.ink }}
-                            href={`/shop?gender=female`}
-                        >
-                            Shop Women →
-                        </Link>
-                        <Link
-                            className="btn-secondary"
-                            style={{ fontSize: 14, padding: "13px 26px" }}
-                            href="/shop?badge=new collection"
-                        >
-                            New Collection
-                        </Link>
+                        {activeSection.hero_button_1_text && activeSection.hero_button_1_link && (
+                            <Link
+                                className="btn-primary"
+                                style={{ fontSize: 14, padding: "14px 28px", background: T.rust }}
+                                href={activeSection.hero_button_1_link}
+                            >
+                                {activeSection.hero_button_1_text}
+                            </Link>
+                        )}
+                        {activeSection.hero_button_2_text && activeSection.hero_button_2_link && (
+                            <Link
+                                className="btn-primary"
+                                style={{ fontSize: 14, padding: "14px 28px", background: T.ink }}
+                                href={activeSection.hero_button_2_link}
+                            >
+                                {activeSection.hero_button_2_text}
+                            </Link>
+                        )}
                     </div>
 
                     <div

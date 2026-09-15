@@ -14,6 +14,10 @@ export type HeroSection = {
     hero_tagline: string
     hero_background_color: string
     hero_lifestyle_image: string
+    hero_button_1_text: string
+    hero_button_1_link: string
+    hero_button_2_text: string
+    hero_button_2_link: string
 }
 
 export type TrustBar = {
@@ -143,6 +147,10 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
                 hero_tagline: data.acf.hero_tagline_1,
                 hero_background_color: data.acf.hero_background_color_1,
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_1,
+                hero_button_1_text: data.acf.hero_cta_button_label_1,
+                hero_button_1_link: data.acf.hero_cta_button_url_1,
+                hero_button_2_text: data.acf.hero_cta_button_label_4,
+                hero_button_2_link: data.acf.hero_cta_button_url_4,
             },
             {
                 hero_badge: data.acf.hero_badge_2,
@@ -151,6 +159,10 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
                 hero_tagline: data.acf.hero_tagline_2,
                 hero_background_color: data.acf.hero_background_color_2,
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_2,
+                hero_button_1_text: data.acf.hero_cta_button_label_2,
+                hero_button_1_link: data.acf.hero_cta_button_url_2,
+                hero_button_2_text: data.acf.hero_cta_button_label_4,
+                hero_button_2_link: data.acf.hero_cta_button_url_4,
             },
             {
                 hero_badge: data.acf.hero_badge_3,
@@ -159,6 +171,10 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
                 hero_tagline: data.acf.hero_tagline_3,
                 hero_background_color: data.acf.hero_background_color_3,
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_3,
+                hero_button_1_text: data.acf.hero_cta_button_label_3,
+                hero_button_1_link: data.acf.hero_cta_button_url_3,
+                hero_button_2_text: data.acf.hero_cta_button_label_4,
+                hero_button_2_link: data.acf.hero_cta_button_url_4,
             },
         ]
 
