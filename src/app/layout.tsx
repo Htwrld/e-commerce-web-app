@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import NextTopLoader from "nextjs-toploader"
 import { HistoryProvider } from "@/src/context/HistoryContext"
+import UnderConstruction from "@/src/components/layouts/UnderConstruction"
 
 export const metadata: Metadata = {
     title: "HTW — Hope's Trendy World",
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
         "Faith-inspired fashion for bold living. Scripture in every stitch, purpose in every piece.",
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+    children: _children,
+}: {
+    children: React.ReactNode
+}) {
     return (
         <html lang="en">
             <head>
@@ -26,7 +31,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </head>
             <body>
                 <NextTopLoader height={1} color="#C9923A" />
-                <HistoryProvider>{children}</HistoryProvider>
+                <HistoryProvider>
+                    <UnderConstruction />
+                </HistoryProvider>
             </body>
         </html>
     )
