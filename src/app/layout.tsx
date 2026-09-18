@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-    children: _children,
+    children,
 }: {
     children: React.ReactNode
 }) {
@@ -32,7 +32,7 @@ export default function RootLayout({
             <body>
                 <NextTopLoader height={1} color="#C9923A" />
                 <HistoryProvider>
-                    <UnderConstruction />
+                    {children}
                 </HistoryProvider>
             </body>
         </html>
