@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { T } from "@/src/lib/tokens"
 import { Article } from "@/src/action/articleController"
-import { formatViewCount } from "@/src/lib/utils"
+import { formatViewCount, reduceWords } from "@/src/lib/utils"
 
 export function ArticleCard({ article }: { article: Article }) {
     const date = article.date
@@ -87,7 +87,7 @@ export function ArticleCard({ article }: { article: Article }) {
                             margin: "0 0 12px",
                         }}
                     >
-                        {article.excerpt}
+                        {reduceWords(article.excerpt, 20)}
                     </p>
                     <div style={{ fontSize: 11, color: T.muted }}>
                         {date}
