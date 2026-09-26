@@ -4,6 +4,8 @@ import { T } from "@/src/lib/tokens"
 import { WABtn } from "@/src/components/cards/WABtn"
 import { NavbarandFooter } from "@/src/action/pageController"
 import Link from "next/link"
+import { FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa"
+import { FaXTwitter } from "react-icons/fa6"
 
 export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }) {
     return (
@@ -64,12 +66,18 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                             &ldquo;{footerandnavbar.footer_quotes}&rdquo;
                         </div>
                         <div style={{ display: "flex", gap: 14 }}>
-                            {["📘", "📸", "▶️", "🎵"].map((s) => (
+                            {[
+                                { label: "Facebook", Icon: FaFacebook },
+                                { label: "LinkedIn", Icon: FaLinkedin },
+                                { label: "X", Icon: FaXTwitter },
+                                { label: "Instagram", Icon: FaInstagram },
+                            ].map(({ label, Icon }) => (
                                 <span
-                                    key={s}
+                                    key={label}
+                                    aria-label={label}
                                     style={{ fontSize: 20, cursor: "pointer", opacity: 0.65 }}
                                 >
-                                    {s}
+                                    <Icon />
                                 </span>
                             ))}
                         </div>

@@ -13,13 +13,14 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
     const [menuOpen, setMenuOpen] = useState(false)
     const { cartCount } = useCart()
     const pathname = usePathname()
-    const navRef = useRef<HTMLDivElement>(null)
+    const navRef = useRef<HTMLElement>(null)
+
+    // Close the mobile menu after navigating
+    useEffect(() => {
+        setMenuOpen(false)
+    }, [pathname])
 
     useEffect(() => {
-        if (navRef.current) {
-            navRef.current.scrollIntoView({ behavior: "smooth" })
-        }
-
         function onDocClick(e: MouseEvent) {
             if (!navRef.current?.contains(e.target as Node)) {
                 setMenuOpen(false)
@@ -31,6 +32,7 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
 
     return (
         <nav
+            ref={navRef}
             style={{
                 position: "sticky",
                 top: 0,
@@ -150,6 +152,8 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                     <button
                         className="bg-none md:hidden!"
                         onClick={() => setMenuOpen((o) => !o)}
+                        aria-label={menuOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={menuOpen}
                         style={{
                             background: "none",
                             border: `1.5px solid ${T.border}`,
@@ -184,7 +188,6 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
             {/* Mobile menu */}
             {menuOpen && (
                 <div
-                    ref={navRef}
                     style={{
                         background: T.white,
                         borderTop: `1px solid ${T.border}`,
@@ -196,6 +199,7 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                         <Link
                             key={n.id}
                             href={n.id}
+                            onClick={() => setMenuOpen(false)}
                             style={{
                                 padding: "14px 24px",
                                 fontSize: 16,
