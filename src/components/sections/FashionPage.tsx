@@ -248,7 +248,7 @@ export const FashionPage = ({
                             <Link
                                 className="btn-primary"
                                 style={{ fontSize: 14, padding: "14px 30px" }}
-                                href="/fashion/magazine"
+                                href="/publishing/magazine"
                             >
                                 <FaBookOpen /> Read Now
                             </Link>
