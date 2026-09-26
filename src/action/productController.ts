@@ -27,6 +27,31 @@ export type Product = {
     size_guide: string
 }
 
+// WooCommerce owns the price (the bridge plugin exposes it as `shop_price`);
+// everything else is still ACF. The ACF price is only a fallback for products
+// not yet migrated with `wp htw migrate-products`.
+const mapProduct = (p: any): Product => ({
+    id: p.id,
+    photo: p.acf.photo ? p.acf.photo : "",
+    badge: p.acf.badge ? p.acf.badge : "",
+    categories: p.acf.category ? p.acf.category.map((c: any) => c.name) : [],
+    gender: p.acf.gender ? p.acf.gender : "",
+    name: p.acf.name ? p.acf.name : "",
+    description: p.acf.description ? p.acf.description : "",
+    price: p.shop_price ? p.shop_price : p.acf.price ? p.acf.price : "0",
+    usd_price: p.acf.usd_price ? p.acf.usd_price : "0",
+    quotes: p.acf.quotes ? p.acf.quotes : "",
+    bible_verse: p.acf.bible_verse ? p.acf.bible_verse : "",
+    bible_verse_content: p.acf.bible_verse_content ? p.acf.bible_verse_content : "",
+    colors: p.acf.colors ? p.acf.colors.map((c: any) => c.name) : [],
+    sizes: p.acf.sizes ? p.acf.sizes.map((s: any) => s.name) : [],
+    fabric: p.acf.fabric ? p.acf.fabric : "",
+    fit: p.acf.fit ? p.acf.fit : "",
+    care: p.acf.care ? p.acf.care : "",
+    delivery: p.acf.delivery ? p.acf.delivery : "",
+    size_guide: p.acf.size_guide ? p.acf.size_guide : "",
+})
+
 export const getProductsByCategoryGenderBadge = async (
     category: string,
     gender: string,
@@ -43,29 +68,7 @@ export const getProductsByCategoryGenderBadge = async (
         })
         const totalPagesHeader = res.headers.get("X-WP-TotalPages")
         const data = await res.json()
-        const products: Product[] = data.map((p: any) => {
-            return {
-                id: p.id,
-                photo: p.acf.photo,
-                badge: p.acf.badge,
-                categories: p.acf.category ? p.acf.category.map((c: any) => c.name) : [],
-                gender: p.acf.gender,
-                name: p.acf.name,
-                description: p.acf.description,
-                price: p.acf.price !== "" ? p.acf.price : "100",
-                quotes: p.acf.quotes,
-                bible_verse: p.acf.bible_verse,
-                bible_verse_content: p.acf.bible_verse_content,
-                colors: p.acf.colors ? p.acf.colors.map((c: any) => c.name) : [],
-                sizes: p.acf.sizes ? p.acf.sizes.map((s: any) => s.name) : [],
-                fabric: p.acf.fabric,
-                fit: p.acf.fit,
-                care: p.acf.care,
-                delivery: p.acf.delivery,
-                size_guide: p.acf.size_guide,
-            }
-        })
-        console.log(products)
+        const products: Product[] = data.map(mapProduct)
         return {
             products,
             pages: totalPagesHeader ? parseInt(totalPagesHeader) : 1,
@@ -91,27 +94,6 @@ export const getProducts = async ({
 }) => {
     try {
         const per_page = 12
-        const mapProduct = (p: any): Product => ({
-            id: p.id,
-            photo: p.acf.photo ? p.acf.photo : "",
-            badge: p.acf.badge ? p.acf.badge : "",
-            categories: p.acf.category ? p.acf.category.map((c: any) => c.name) : [],
-            gender: p.acf.gender ? p.acf.gender : "",
-            name: p.acf.name ? p.acf.name : "",
-            description: p.acf.description ? p.acf.description : "",
-            price: p.acf.price !== "" ? p.acf.price : "0",
-            usd_price: p.acf.usd_price !== "" ? p.acf.usd_price : "0",
-            quotes: p.acf.quotes ? p.acf.quotes : "",
-            bible_verse: p.acf.bible_verse ? p.acf.bible_verse : "",
-            bible_verse_content: p.acf.bible_verse_content ? p.acf.bible_verse_content : "",
-            colors: p.acf.colors ? p.acf.colors.map((c: any) => c.name) : [],
-            sizes: p.acf.sizes ? p.acf.sizes.map((s: any) => s.name) : [],
-            fabric: p.acf.fabric ? p.acf.fabric : "",
-            fit: p.acf.fit ? p.acf.fit : "",
-            care: p.acf.care ? p.acf.care : "",
-            delivery: p.acf.delivery ? p.acf.delivery : "",
-            size_guide: p.acf.size_guide ? p.acf.size_guide : "",
-        })
 
         let endpoint = `${website_url}wp-json/wp/v2/product?acf_format=standard`
         if (badge) endpoint += `&badge=${badge}`
@@ -170,28 +152,7 @@ export const getProductById = async (id: number): Promise<Product | null> => {
             next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.products] },
         })
         if (!res.ok) return null
-        const p = await res.json()
-        return {
-            id: p.id,
-            photo: p.acf.photo ? p.acf.photo : "",
-            badge: p.acf.badge ? p.acf.badge : "",
-            categories: p.acf.category ? p.acf.category.map((c: any) => c.name) : [],
-            gender: p.acf.gender ? p.acf.gender : "",
-            name: p.acf.name ? p.acf.name : "",
-            description: p.acf.description ? p.acf.description : "",
-            price: p.acf.price !== "" ? p.acf.price : "0",
-            usd_price: p.acf.usd_price !== "" ? p.acf.usd_price : "0",
-            quotes: p.acf.quotes ? p.acf.quotes : "",
-            bible_verse: p.acf.bible_verse ? p.acf.bible_verse : "",
-            bible_verse_content: p.acf.bible_verse_content ? p.acf.bible_verse_content : "",
-            colors: p.acf.colors ? p.acf.colors.map((c: any) => c.name) : [],
-            sizes: p.acf.sizes ? p.acf.sizes.map((s: any) => s.name) : [],
-            fabric: p.acf.fabric ? p.acf.fabric : "",
-            fit: p.acf.fit ? p.acf.fit : "",
-            care: p.acf.care ? p.acf.care : "",
-            delivery: p.acf.delivery ? p.acf.delivery : "",
-            size_guide: p.acf.size_guide ? p.acf.size_guide : "",
-        }
+        return mapProduct(await res.json())
     } catch (error) {
         return null
     }

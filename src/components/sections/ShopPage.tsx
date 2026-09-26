@@ -30,7 +30,7 @@ export const ShopPage = ({
     return (
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "44px 28px" }}>
             <div style={{ marginBottom: 32 }}>
-                <p className="section-label">Shop</p>
+                <p className="section-label">Fashion</p>
                 <h1 className="section-title" style={{ fontSize: "clamp(30px,5vw,50px)" }}>
                     All Pieces
                 </h1>

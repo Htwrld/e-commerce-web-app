@@ -3,7 +3,7 @@ import { getProducts } from "@/src/action/productController"
 import { ShopPage } from "@/src/components/sections/ShopPage"
 import { Suspense } from "react"
 
-export const metadata = { title: "Shop - HTW — Hope's Trendy World" }
+export const metadata = { title: "Fashion - HTW — Hope's Trendy World" }
 
 const HTWContactApp = async ({
     searchParams,

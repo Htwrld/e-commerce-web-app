@@ -3,6 +3,9 @@
 import Image from "next/image"
 import { T } from "@/src/lib/tokens"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+
+const HERO_ACCENTS = [T.gold, T.rust, T.sage]
 
 type HeroSectionProps = {
     hero_badge: string
@@ -27,10 +30,19 @@ const DEFAULT_LIFESTYLE_IMGS = [
 ]
 
 const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
-    if (!heroSection.length) return null
+    const [heroIdx, setHeroIdx] = useState(0)
+    const slideCount = heroSection.length
 
-    const activeSection = heroSection[0]
-    const accent = T.gold
+    useEffect(() => {
+        if (slideCount < 2) return
+        const t = setInterval(() => setHeroIdx((i) => (i + 1) % slideCount), 5000)
+        return () => clearInterval(t)
+    }, [slideCount])
+
+    if (!slideCount) return null
+
+    const activeSection = heroSection[heroIdx]
+    const accent = HERO_ACCENTS[heroIdx % HERO_ACCENTS.length]
 
     const lifestyleImages = heroSection
         .map((s) => s.hero_lifestyle_image)
@@ -134,6 +146,7 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
 
             {/* Content */}
             <div
+                key={heroIdx}
                 style={{
                     position: "relative",
                     zIndex: 2,
@@ -223,6 +236,37 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
                     orders welcome
                 </p>
             </div>
+
+            {/* Slide dots */}
+            {slideCount > 1 && (
+                <div
+                    style={{
+                        position: "relative",
+                        zIndex: 2,
+                        display: "flex",
+                        justifyContent: "center",
+                        gap: 8,
+                        marginTop: 32,
+                    }}
+                >
+                    {heroSection.map((_, i) => (
+                        <button
+                            key={i}
+                            aria-label={`Show slide ${i + 1}`}
+                            onClick={() => setHeroIdx(i)}
+                            style={{
+                                width: i === heroIdx ? 32 : 8,
+                                height: 8,
+                                borderRadius: 4,
+                                border: "none",
+                                cursor: "pointer",
+                                background: i === heroIdx ? accent : "#CCC",
+                                transition: "all .45s",
+                            }}
+                        />
+                    ))}
+                </div>
+            )}
         </section>
     )
 }

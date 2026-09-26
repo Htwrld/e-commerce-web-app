@@ -4,20 +4,16 @@ import { useState } from "react"
 import Image from "next/image"
 import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
-import { WABtn } from "@/src/components/cards/WABtn"
-import Link from "next/link"
 import { Location } from "@/src/action/productController"
-import { FaCheck, FaCopy, FaExclamationCircle } from "react-icons/fa"
-import { sendMail } from "@/src/action/mailController"
-import { orderNotificationTemplate, orderConfirmationTemplate } from "@/src/lib/email-templates"
+import { FaExclamationCircle } from "react-icons/fa"
+import { createOrder } from "@/src/action/orderController"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
 const CheckoutPage = ({ locations }: { locations: Location[] }) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
-    const [copied, setCopied] = useState(false)
     const [fees, setFees] = useState(locations[0]?.fees ?? 0)
-    const [locationName, setLocationName] = useState(locations[0]?.location ?? "")
+    const [locationId, setLocationId] = useState(locations[0]?.id ?? 0)
     const { cart, cartTotal, removeFromCart, setToast } = useCart()
     const [step, setStep] = useState(1)
     const [form, setForm] = useState({
@@ -54,61 +50,31 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
         },
     ] as const
 
-    const handleCopy = (text: string) => {
-        navigator.clipboard.writeText(text)
-        setCopied(true)
-        setToast("Copied to clipboard!")
-        setTimeout(() => setCopied(false), 2000)
-    }
-
-    const onConfirm = async () => {
+    const onPay = async () => {
         try {
             setLoading(true)
             setError("")
 
-            const orderData = {
-                customerName: form.name,
-                customerEmail: form.email,
-                customerPhone: form.phone,
-                customerAddress: form.address,
-                location: locationName,
+            const result = await createOrder({
+                customer: form,
+                locationId,
                 items: cart.map((c) => ({
-                    name: c.name,
-                    qty: c.qty,
-                    selectedColor: c.selectedColor,
-                    selectedSize: c.selectedSize,
-                    price: c.price,
-                })),
-                subtotal: cartTotal,
-                deliveryFee: fees,
-                total: cartTotal + fees,
-            }
-
-            await Promise.all([
-                sendMail({
-                    to: "host",
-                    subject: `New Order from ${form.name}`,
-                    html: orderNotificationTemplate(orderData),
-                }),
-                sendMail({
-                    to: form.email,
-                    subject: "Your HTW Order is Confirmed!",
-                    html: orderConfirmationTemplate(orderData),
-                }),
-            ])
-
-            cart.forEach((c) => {
-                removeFromCart({
                     id: c.id,
+                    qty: c.qty,
                     color: c.selectedColor,
                     size: c.selectedSize,
-                })
+                })),
             })
-            setFees(0)
-            setStep(3)
+            if (!result.ok) {
+                setError(result.error)
+                setLoading(false)
+                return
+            }
+
+            // Keep the spinner up while the browser leaves for Flutterwave.
+            window.location.href = result.paymentLink
         } catch (err) {
             setError("Something went wrong! Please try again later.")
-        } finally {
             setLoading(false)
         }
     }
@@ -263,7 +229,7 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                         onValueChange={(e) => {
                                             const l = locations.find((l) => l.id === Number(e))
                                             setFees(l?.fees ?? 0)
-                                            setLocationName(l?.location ?? "")
+                                            setLocationId(l?.id ?? 0)
                                         }}
                                     >
                                         <SelectTrigger className="w-full rounded-md border border-[#E4D8C4] p-4 text-[#1A1612]">
@@ -298,7 +264,17 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                             setError("Please add items to cart first!")
                                             return
                                         }
+                                        if (
+                                            !form.name.trim() ||
+                                            !form.address.trim() ||
+                                            !form.phone.trim() ||
+                                            !/^\S+@\S+\.\S+$/.test(form.email.trim())
+                                        ) {
+                                            setError("Please fill in all delivery details.")
+                                            return
+                                        }
 
+                                        setError("")
                                         setStep(2)
                                     }}
                                 >
@@ -325,41 +301,31 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                         marginBottom: 10,
                                     }}
                                 >
-                                    Payment Details
+                                    Review &amp; Pay
                                 </h3>
-                                <p className="rounded-md border border-teal-200 p-3 text-sm text-slate-500">
-                                    After making payment, kindly send your payment receipt or
-                                    screenshot along with your Order Reference to our official
-                                    WhatsApp account for verification and order confirmation.
-                                </p>
-                                <div className="my-2.5 flex flex-col items-center justify-center gap-3 rounded-md border border-neutral-200 bg-white pb-6 text-center">
-                                    <Image
-                                        className="h-32 w-32"
-                                        src={"/images/unnamed.webp"}
-                                        height={200}
-                                        width={200}
-                                        alt=""
-                                    />
-                                    <h2>Business Transfer Number</h2>
-                                    <span className="flex items-center gap-2 font-mono text-xl font-black text-teal-500">
-                                        <span>6564330275</span>
-                                        {copied ? (
-                                            <FaCheck className="text-teal-400" />
-                                        ) : (
-                                            <FaCopy
-                                                className="cursor-pointer hover:text-teal-400"
-                                                onClick={() => handleCopy("6564330275")}
-                                            />
-                                        )}
-                                    </span>
-                                    <p className="text-sm text-neutral-400 uppercase">
-                                        Amaeyak brown akanem
-                                    </p>
+                                {error && (
+                                    <div className="mb-5 flex items-center gap-2 rounded-md border border-amber-600 bg-red-300 p-3">
+                                        <FaExclamationCircle className="text-amber-900" />
+                                        <p className="text-sm text-amber-900">{error}</p>
+                                    </div>
+                                )}
+                                <div className="mb-5 space-y-1 rounded-md border border-neutral-200 p-4 text-sm text-slate-600">
+                                    <p className="font-semibold text-slate-800">{form.name}</p>
+                                    <p>{form.email}</p>
+                                    <p>{form.phone}</p>
+                                    <p>{form.address}</p>
+                                    <p>{locations.find((l) => l.id === locationId)?.location}</p>
                                 </div>
+                                <p className="mb-5 rounded-md border border-teal-200 p-3 text-sm text-slate-500">
+                                    You&rsquo;ll be taken to Flutterwave to pay securely by card,
+                                    bank transfer or USSD. Your order is confirmed as soon as the
+                                    payment goes through.
+                                </p>
                                 <div className="w-full items-center justify-between space-y-2.5 md:flex md:gap-2.5 md:space-y-0">
                                     <button
                                         className="btn-secondary w-full"
                                         style={{ flex: 1 }}
+                                        disabled={loading}
                                         onClick={() => setStep(1)}
                                     >
                                         ← Back
@@ -367,59 +333,13 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                     <button
                                         className="btn-primary w-full text-nowrap"
                                         style={{ flex: 2, justifyContent: "center" }}
-                                        onClick={onConfirm}
+                                        disabled={loading}
+                                        onClick={onPay}
                                     >
-                                        Confirm Payment →
+                                        {loading
+                                            ? "Redirecting to payment…"
+                                            : `Pay ₦${(cartTotal + fees).toLocaleString()} →`}
                                     </button>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Step 3: Confirmation */}
-                        {step === 3 && (
-                            <div
-                                className="flex flex-col items-center justify-center rounded-md border border-neutral-200 bg-white pb-6 text-center"
-                                style={{
-                                    textAlign: "center",
-                                    padding: "52px 28px",
-                                    background: `${T.sage}12`,
-                                    border: `2px solid ${T.sage}44`,
-                                    borderRadius: 16,
-                                }}
-                            >
-                                <div style={{ fontSize: 64, marginBottom: 16 }}>🎉</div>
-                                <h2
-                                    style={{
-                                        fontFamily: "'Cormorant Garamond',serif",
-                                        fontSize: 32,
-                                        fontWeight: 700,
-                                        color: T.ink,
-                                        marginBottom: 10,
-                                    }}
-                                >
-                                    Order Confirmed!
-                                </h2>
-                                <p
-                                    style={{
-                                        fontSize: 15,
-                                        color: T.muted,
-                                        lineHeight: 1.8,
-                                        marginBottom: 20,
-                                    }}
-                                >
-                                    Thank you for your order! We&rsquo;ll confirm via WhatsApp and
-                                    send tracking details within 24 hours.
-                                </p>
-                                <div className="w-fit">
-                                    <WABtn
-                                        text="Track Order on WhatsApp"
-                                        message="Hi HTW! I'd like to track my order"
-                                    />
-                                </div>
-                                <div className="mt-5 w-full">
-                                    <Link className="btn-outline-gold w-full" href="/">
-                                        Continue Shopping →
-                                    </Link>
                                 </div>
                             </div>
                         )}

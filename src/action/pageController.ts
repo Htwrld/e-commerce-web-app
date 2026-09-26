@@ -161,8 +161,8 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_2,
                 hero_button_1_text: data.acf.hero_cta_button_label_2,
                 hero_button_1_link: data.acf.hero_cta_button_url_2,
-                hero_button_2_text: data.acf.hero_cta_button_label_4,
-                hero_button_2_link: data.acf.hero_cta_button_url_4,
+                hero_button_2_text: data.acf.hero_cta_button_label_5,
+                hero_button_2_link: data.acf.hero_cta_button_url_5,
             },
             {
                 hero_badge: data.acf.hero_badge_3,
@@ -173,8 +173,8 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
                 hero_lifestyle_image: data.acf.hero_lifestyle_image_3,
                 hero_button_1_text: data.acf.hero_cta_button_label_3,
                 hero_button_1_link: data.acf.hero_cta_button_url_3,
-                hero_button_2_text: data.acf.hero_cta_button_label_4,
-                hero_button_2_link: data.acf.hero_cta_button_url_4,
+                hero_button_2_text: data.acf.hero_cta_button_label_6,
+                hero_button_2_link: data.acf.hero_cta_button_url_6,
             },
         ]
 

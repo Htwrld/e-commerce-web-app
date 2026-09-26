@@ -102,7 +102,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     const cartCount = cart.reduce((a, c) => a + c.qty, 0)
     const cartTotal = cart.reduce((a, c) => {
-        const n = parseInt(c.price.replace(/[^\d]/g, ""))
+        const n = parseFloat(c.price.replace(/[^\d.]/g, "")) || 0
         return a + n * c.qty
     }, 0)
 

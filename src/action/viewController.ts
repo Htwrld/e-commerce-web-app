@@ -5,7 +5,7 @@ export type ViewType = "article" | "video"
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
 
 // Maps our internal view type to the WordPress post type slug the custom
-// `site/v1/views` REST route (see wordpress/view-count-endpoint.php) expects.
+// `site/v1/views` REST route (see wordpress/htw-headless.php) expects.
 const WP_POST_TYPE: Record<ViewType, string> = {
     article: "post",
     video: "video",
