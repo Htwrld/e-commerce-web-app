@@ -10,31 +10,39 @@ export type CheckoutInput = {
     customer: { name: string; email: string; phone: string; address: string }
     locationId: number
     items: { id: number; qty: number; color: string; size: string }[]
+    // Paying in a separate window: /checkout/complete then tells the checkout
+    // tab the result and closes itself instead of showing the full page.
+    popup?: boolean
 }
+
+type PaymentStart = { paymentLink: string; orderId: number; orderKey: string }
 
 type ActionResult<T> = ({ ok: true } & T) | { ok: false; error: string }
 
-const paymentLinkFor = (order: WcOrder) =>
-    createPaymentLink({
+const startPayment = async (order: WcOrder, popup = false): Promise<PaymentStart> => ({
+    orderId: order.id,
+    orderKey: order.order_key,
+    paymentLink: await createPaymentLink({
         txRef: txRefForOrder(order.id),
         amount: order.total,
         currency: order.currency,
         orderId: order.id,
-        redirectUrl: `${site_url}/checkout/complete?order=${order.id}&key=${order.order_key}`,
+        redirectUrl: `${site_url}/checkout/complete?order=${order.id}&key=${order.order_key}${popup ? "&popup=1" : ""}`,
         customer: {
             email: order.billing.email,
             name: `${order.billing.first_name} ${order.billing.last_name}`.trim(),
             phone: order.billing.phone,
         },
-    })
+    }),
+})
 
 // Prices and the delivery fee are looked up on the server; only product ids,
 // quantities and options come from the browser.
 export const createOrder = async (
     input: CheckoutInput
-): Promise<ActionResult<{ paymentLink: string }>> => {
+): Promise<ActionResult<PaymentStart>> => {
     try {
-        const { customer, locationId, items } = input
+        const { customer, locationId, items, popup } = input
         const name = customer.name.trim()
         const email = customer.email.trim()
         const phone = customer.phone.trim()
@@ -102,7 +110,7 @@ export const createOrder = async (
             }),
         })
 
-        return { ok: true, paymentLink: await paymentLinkFor(order) }
+        return { ok: true, ...(await startPayment(order, popup)) }
     } catch (err) {
         console.error(err)
         return { ok: false, error: "Something went wrong! Please try again later." }
@@ -113,18 +121,34 @@ export const createOrder = async (
 // same order again instead of rebuilding the cart.
 export const resumePayment = async (
     orderId: number,
-    orderKey: string
-): Promise<ActionResult<{ paymentLink: string }>> => {
+    orderKey: string,
+    popup = false
+): Promise<ActionResult<PaymentStart>> => {
     try {
         const order = await wcFetch<WcOrder>(`orders/${orderId}`)
         if (order.order_key !== orderKey) return { ok: false, error: "Order not found." }
         if (!["pending", "failed"].includes(order.status)) {
             return { ok: false, error: "This order has already been paid." }
         }
-        return { ok: true, paymentLink: await paymentLinkFor(order) }
+        return { ok: true, ...(await startPayment(order, popup)) }
     } catch (err) {
         console.error(err)
         return { ok: false, error: "Something went wrong! Please try again later." }
+    }
+}
+
+// Polled by the checkout tab while the payment window is open, which also
+// catches payments the webhook confirmed before the window reported back.
+export const getPaymentStatus = async (
+    orderId: number,
+    orderKey: string
+): Promise<{ paid: boolean }> => {
+    try {
+        const order = await wcFetch<WcOrder>(`orders/${orderId}`)
+        if (order.order_key !== orderKey) return { paid: false }
+        return { paid: !["pending", "failed", "cancelled"].includes(order.status) }
+    } catch {
+        return { paid: false }
     }
 }
 

@@ -1,12 +1,19 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { T } from "@/src/lib/tokens"
 import { useCart } from "@/src/lib/cart-context"
 import { Location } from "@/src/action/productController"
 import { FaExclamationCircle } from "react-icons/fa"
-import { createOrder } from "@/src/action/orderController"
+import { createOrder, resumePayment } from "@/src/action/orderController"
+import {
+    PAYMENT_CHANNEL,
+    PaymentMessage,
+    openPaymentWindow,
+    waitForPayment,
+} from "@/src/lib/payment-window"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
 const CheckoutPage = ({ locations }: { locations: Location[] }) => {
@@ -16,6 +23,31 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
     const [locationId, setLocationId] = useState(locations[0]?.id ?? 0)
     const { cart, cartTotal, removeFromCart, setToast } = useCart()
     const [step, setStep] = useState(1)
+    const router = useRouter()
+    const [waiting, setWaiting] = useState(false)
+    const cancelPayment = useRef<() => void>(() => {})
+    // An order that was created but not paid, so trying again pays for it
+    // instead of creating a duplicate. Dropped if the cart changes.
+    const [unpaidOrder, setUnpaidOrder] = useState<{ id: number; key: string } | null>(null)
+    useEffect(() => setUnpaidOrder(null), [cart])
+
+    const onPaid = (order: { id: number; key: string }) => {
+        cart.forEach((c) =>
+            removeFromCart({ id: c.id, color: c.selectedColor, size: c.selectedSize })
+        )
+        router.push(`/checkout/complete?order=${order.id}&key=${order.key}`)
+    }
+
+    // A late "paid" after we stopped waiting, e.g. the browser reported the
+    // payment window closed while it was still open.
+    useEffect(() => {
+        if (!unpaidOrder || waiting) return
+        const channel = new BroadcastChannel(PAYMENT_CHANNEL)
+        channel.onmessage = (e: MessageEvent<PaymentMessage>) => {
+            if (e.data?.orderId === unpaidOrder.id && e.data.paid) onPaid(unpaidOrder)
+        }
+        return () => channel.close()
+    })
     const [form, setForm] = useState({
         name: "",
         address: "",
@@ -51,29 +83,58 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
     ] as const
 
     const onPay = async () => {
+        // Opened before any await so the popup blocker allows it.
+        const win = openPaymentWindow()
         try {
             setLoading(true)
             setError("")
 
-            const result = await createOrder({
-                customer: form,
-                locationId,
-                items: cart.map((c) => ({
-                    id: c.id,
-                    qty: c.qty,
-                    color: c.selectedColor,
-                    size: c.selectedSize,
-                })),
-            })
+            const result = unpaidOrder
+                ? await resumePayment(unpaidOrder.id, unpaidOrder.key, !!win)
+                : await createOrder({
+                      customer: form,
+                      locationId,
+                      popup: !!win,
+                      items: cart.map((c) => ({
+                          id: c.id,
+                          qty: c.qty,
+                          color: c.selectedColor,
+                          size: c.selectedSize,
+                      })),
+                  })
             if (!result.ok) {
+                win?.close()
                 setError(result.error)
                 setLoading(false)
                 return
             }
 
-            // Keep the spinner up while the browser leaves for Flutterwave.
-            window.location.href = result.paymentLink
+            // Popup blocked: fall back to paying in this tab.
+            if (!win) {
+                window.location.href = result.paymentLink
+                return
+            }
+
+            setUnpaidOrder({ id: result.orderId, key: result.orderKey })
+            win.location.href = result.paymentLink
+            win.focus()
+
+            setWaiting(true)
+            const payment = waitForPayment(win, result.orderId, result.orderKey)
+            cancelPayment.current = payment.cancel
+            const { paid } = await payment.result
+            setWaiting(false)
+
+            if (!paid) {
+                setError("Payment wasn't completed. Your order is saved — you can try again.")
+                setLoading(false)
+                return
+            }
+
+            onPaid({ id: result.orderId, key: result.orderKey })
         } catch (err) {
+            win?.close()
+            setWaiting(false)
             setError("Something went wrong! Please try again later.")
             setLoading(false)
         }
@@ -317,7 +378,7 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                     <p>{locations.find((l) => l.id === locationId)?.location}</p>
                                 </div>
                                 <p className="mb-5 rounded-md border border-teal-200 p-3 text-sm text-slate-500">
-                                    You&rsquo;ll be taken to Flutterwave to pay securely by card,
+                                    A secure Flutterwave window will open so you can pay by card,
                                     bank transfer or USSD. Your order is confirmed as soon as the
                                     payment goes through.
                                 </p>
@@ -336,11 +397,24 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                         disabled={loading}
                                         onClick={onPay}
                                     >
-                                        {loading
-                                            ? "Redirecting to payment…"
-                                            : `Pay ₦${(cartTotal + fees).toLocaleString()} →`}
+                                        {waiting
+                                            ? "Waiting for payment…"
+                                            : loading
+                                              ? "Opening payment…"
+                                              : `Pay ₦${(cartTotal + fees).toLocaleString()} →`}
                                     </button>
                                 </div>
+                                {waiting && (
+                                    <p className="mt-3 text-center text-sm text-slate-500">
+                                        Complete the payment in the Flutterwave window.{" "}
+                                        <button
+                                            className="cursor-pointer underline"
+                                            onClick={() => cancelPayment.current()}
+                                        >
+                                            Cancel
+                                        </button>
+                                    </p>
+                                )}
                             </div>
                         )}
                     </div>

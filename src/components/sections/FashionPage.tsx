@@ -6,6 +6,10 @@ import Link from "next/link"
 import { T } from "@/src/lib/tokens"
 import { sendMail } from "@/src/action/mailController"
 import type { FashionPageContent } from "@/src/action/pageController"
+import type { Article } from "@/src/action/articleController"
+import type { Video } from "@/src/action/videoController"
+import { ArticleCard } from "@/src/components/cards/ArticleCard"
+import { VideoCard } from "@/src/components/cards/VideoCard"
 import {
     FaBookOpen,
     FaHeart,
@@ -79,10 +83,63 @@ const WHY_CARDS_FALLBACK = [
 
 const WHY_ICONS = [<FaHeart key="heart" />, <FaTshirt key="tshirt" />, <FaUsers key="users" />]
 
+// Two rows of four on desktop.
+const PREVIEW_LIMIT = 8
+
+const PreviewSection = ({
+    label,
+    title,
+    href,
+    background,
+    children,
+}: {
+    label: string
+    title: string
+    href: string
+    background: string
+    children: React.ReactNode
+}) => (
+    <section style={{ padding: "72px 28px", background }}>
+        <div style={{ maxWidth: 1160, margin: "0 auto" }}>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-end",
+                    marginBottom: 32,
+                    flexWrap: "wrap",
+                    gap: 12,
+                }}
+            >
+                <div>
+                    <p className="section-label">{label}</p>
+                    <h2 className="section-title" style={{ fontSize: "clamp(26px,4vw,40px)" }}>
+                        {title}
+                    </h2>
+                    <div className="divider" />
+                </div>
+                <Link className="btn-outline-gold" href={href}>
+                    View More →
+                </Link>
+            </div>
+            <div
+                style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 22 }}
+                className="max-lg:grid-cols-2! max-sm:grid-cols-1!"
+            >
+                {children}
+            </div>
+        </div>
+    </section>
+)
+
 export const FashionPage = ({
     pageContent,
+    articles = [],
+    videos = [],
 }: {
     pageContent?: FashionPageContent
+    articles?: Article[]
+    videos?: Video[]
 }) => {
     const magazineCoverImage = pageContent?.magazine_cover_image || "/images/hoodie_lifestyle.png"
     const magazineTitle = pageContent?.magazine_title || "Style with Purpose. Live with Faith."
@@ -145,7 +202,7 @@ export const FashionPage = ({
                         gap: 56,
                         alignItems: "center",
                     }}
-                    className="max-md:!grid-cols-1"
+                    className="max-md:grid-cols-1!"
                 >
                     {/* Magazine cover mockup */}
                     <div
@@ -214,7 +271,7 @@ export const FashionPage = ({
                         gap: 48,
                         alignItems: "center",
                     }}
-                    className="max-md:!grid-cols-1"
+                    className="max-md:grid-cols-1!"
                 >
                     <div
                         style={{
@@ -306,6 +363,34 @@ export const FashionPage = ({
                     </div>
                 </div>
             </section>
+
+            {/* Latest articles */}
+            {articles.length > 0 && (
+                <PreviewSection
+                    label="FROM THE JOURNAL"
+                    title="Latest Articles"
+                    href="/articles"
+                    background={T.cream}
+                >
+                    {articles.slice(0, PREVIEW_LIMIT).map((a) => (
+                        <ArticleCard key={a.id} article={a} />
+                    ))}
+                </PreviewSection>
+            )}
+
+            {/* Latest videos */}
+            {videos.length > 0 && (
+                <PreviewSection
+                    label="WATCH"
+                    title="Latest Videos"
+                    href="/videos"
+                    background={T.white}
+                >
+                    {videos.slice(0, PREVIEW_LIMIT).map((v) => (
+                        <VideoCard key={v.id} video={v} />
+                    ))}
+                </PreviewSection>
+            )}
 
             {/* Fashion & styling / Interviews / Ambassadors */}
             {/* <section style={{ padding: "72px 28px", background: T.cream }}>
@@ -448,7 +533,7 @@ export const FashionPage = ({
                         gridTemplateColumns: "1.4fr 1fr",
                         gap: 48,
                     }}
-                    className="max-lg:!grid-cols-1"
+                    className="max-md:grid-cols-1!"
                 >
                     <div>
                         <p className="section-label">FORTHCOMING EDITIONS</p>

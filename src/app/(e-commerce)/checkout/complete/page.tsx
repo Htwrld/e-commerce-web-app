@@ -3,6 +3,7 @@ import { T } from "@/src/lib/tokens"
 import { completeOrderFromTransaction } from "@/src/lib/orders"
 import { WcOrder, wcFetch } from "@/src/lib/woocommerce"
 import { RetryPaymentButton } from "@/src/components/sections/RetryPaymentButton"
+import { PaymentWindowNotifier } from "@/src/components/sections/PaymentWindowNotifier"
 
 export const metadata = { title: "Order Status - HTW — Hope's Trendy World" }
 
@@ -11,6 +12,7 @@ type Params = {
     key?: string
     status?: string
     transaction_id?: string
+    popup?: string
 }
 
 // Flutterwave redirects here with ?status=&tx_ref=&transaction_id= appended to
@@ -38,6 +40,14 @@ const CheckoutCompleteRoute = async ({ searchParams }: { searchParams: Promise<P
     const params = await searchParams
     const order = await resolveOrder(params)
     const paid = order && !["pending", "failed", "cancelled"].includes(order.status)
+
+    if (params.popup === "1") {
+        return (
+            <main>
+                <PaymentWindowNotifier orderId={Number(params.order)} paid={Boolean(paid)} />
+            </main>
+        )
+    }
 
     return (
         <main>
