@@ -65,7 +65,7 @@ const POLICIES: Record<TabKey, { title: string; content: { h: string; b: string 
             },
             {
                 h: "Data Security",
-                b: "We implement industry-standard security measures to protect your personal information. Payment processing is handled by secure, PCI-compliant providers (Paystack/Flutterwave).",
+                b: "We implement industry-standard security measures to protect your personal information. Payment processing is handled by secure, PCI-compliant providers (Paystack).",
             },
             {
                 h: "Your Rights",

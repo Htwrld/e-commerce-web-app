@@ -1,0 +1,333 @@
+[
+  {
+    "key": "group_htw_homepage_hero_slides",
+    "title": "Homepage Hero Slides",
+    "fields": [
+      {
+        "key": "field_htw_hero_slide_1",
+        "label": "Hero slide 1",
+        "name": "hero_slide_1",
+        "type": "group",
+        "layout": "block",
+        "sub_fields": [
+          {
+            "key": "field_htw_hero_slide_1_badge",
+            "label": "Text",
+            "name": "badge",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_1_headline",
+            "label": "Headline",
+            "name": "headline",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_1_subheadline",
+            "label": "Subheadline",
+            "name": "subheadline",
+            "type": "textarea",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_1_tagline",
+            "label": "Tagline",
+            "name": "tagline",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_1_background_color",
+            "label": "Background color",
+            "name": "background_color",
+            "type": "color_picker",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_1_image_1",
+            "label": "Image 1",
+            "name": "image_1",
+            "type": "image",
+            "required": 0,
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+          },
+          {
+            "key": "field_htw_hero_slide_1_image_2",
+            "label": "Image 2",
+            "name": "image_2",
+            "type": "image",
+            "required": 0,
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+          },
+          {
+            "key": "field_htw_hero_slide_1_image_3",
+            "label": "Image 3",
+            "name": "image_3",
+            "type": "image",
+            "required": 0,
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+          },
+          {
+            "key": "field_htw_hero_slide_1_button_1_text",
+            "label": "Primary button text",
+            "name": "button_1_text",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_1_button_1_link",
+            "label": "Primary button link",
+            "name": "button_1_link",
+            "type": "text",
+            "required": 0,
+            "instructions": "Enter a site path such as /shop or a full https:// URL."
+          },
+          {
+            "key": "field_htw_hero_slide_1_button_2_text",
+            "label": "Secondary button text",
+            "name": "button_2_text",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_1_button_2_link",
+            "label": "Secondary button link",
+            "name": "button_2_link",
+            "type": "text",
+            "required": 0,
+            "instructions": "Enter a site path such as /shop or a full https:// URL."
+          }
+        ]
+      },
+      {
+        "key": "field_htw_hero_slide_2",
+        "label": "Hero slide 2",
+        "name": "hero_slide_2",
+        "type": "group",
+        "layout": "block",
+        "sub_fields": [
+          {
+            "key": "field_htw_hero_slide_2_badge",
+            "label": "Text",
+            "name": "badge",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_2_headline",
+            "label": "Headline",
+            "name": "headline",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_2_subheadline",
+            "label": "Subheadline",
+            "name": "subheadline",
+            "type": "textarea",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_2_tagline",
+            "label": "Tagline",
+            "name": "tagline",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_2_background_color",
+            "label": "Background color",
+            "name": "background_color",
+            "type": "color_picker",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_2_image_1",
+            "label": "Image 1",
+            "name": "image_1",
+            "type": "image",
+            "required": 0,
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+          },
+          {
+            "key": "field_htw_hero_slide_2_image_2",
+            "label": "Image 2",
+            "name": "image_2",
+            "type": "image",
+            "required": 0,
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+          },
+          {
+            "key": "field_htw_hero_slide_2_image_3",
+            "label": "Image 3",
+            "name": "image_3",
+            "type": "image",
+            "required": 0,
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+          },
+          {
+            "key": "field_htw_hero_slide_2_button_1_text",
+            "label": "Primary button text",
+            "name": "button_1_text",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_2_button_1_link",
+            "label": "Primary button link",
+            "name": "button_1_link",
+            "type": "text",
+            "required": 0,
+            "instructions": "Enter a site path such as /shop or a full https:// URL."
+          },
+          {
+            "key": "field_htw_hero_slide_2_button_2_text",
+            "label": "Secondary button text",
+            "name": "button_2_text",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_2_button_2_link",
+            "label": "Secondary button link",
+            "name": "button_2_link",
+            "type": "text",
+            "required": 0,
+            "instructions": "Enter a site path such as /shop or a full https:// URL."
+          }
+        ]
+      },
+      {
+        "key": "field_htw_hero_slide_3",
+        "label": "Hero slide 3",
+        "name": "hero_slide_3",
+        "type": "group",
+        "layout": "block",
+        "sub_fields": [
+          {
+            "key": "field_htw_hero_slide_3_badge",
+            "label": "Text",
+            "name": "badge",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_3_headline",
+            "label": "Headline",
+            "name": "headline",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_3_subheadline",
+            "label": "Subheadline",
+            "name": "subheadline",
+            "type": "textarea",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_3_tagline",
+            "label": "Tagline",
+            "name": "tagline",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_3_background_color",
+            "label": "Background color",
+            "name": "background_color",
+            "type": "color_picker",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_3_image_1",
+            "label": "Image 1",
+            "name": "image_1",
+            "type": "image",
+            "required": 0,
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+          },
+          {
+            "key": "field_htw_hero_slide_3_image_2",
+            "label": "Image 2",
+            "name": "image_2",
+            "type": "image",
+            "required": 0,
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+          },
+          {
+            "key": "field_htw_hero_slide_3_image_3",
+            "label": "Image 3",
+            "name": "image_3",
+            "type": "image",
+            "required": 0,
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all"
+          },
+          {
+            "key": "field_htw_hero_slide_3_button_1_text",
+            "label": "Primary button text",
+            "name": "button_1_text",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_3_button_1_link",
+            "label": "Primary button link",
+            "name": "button_1_link",
+            "type": "text",
+            "required": 0,
+            "instructions": "Enter a site path such as /shop or a full https:// URL."
+          },
+          {
+            "key": "field_htw_hero_slide_3_button_2_text",
+            "label": "Secondary button text",
+            "name": "button_2_text",
+            "type": "text",
+            "required": 0
+          },
+          {
+            "key": "field_htw_hero_slide_3_button_2_link",
+            "label": "Secondary button link",
+            "name": "button_2_link",
+            "type": "text",
+            "required": 0,
+            "instructions": "Enter a site path such as /shop or a full https:// URL."
+          }
+        ]
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "page",
+          "operator": "==",
+          "value": "24"
+        }
+      ]
+    ],
+    "active": true,
+    "show_in_rest": 1,
+    "position": "normal",
+    "style": "default"
+  }
+]

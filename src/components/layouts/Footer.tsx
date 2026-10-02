@@ -171,7 +171,7 @@ export function Footer({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                             >
                                 💳 Accepted Payments
                             </div>
-                            {["Paystack", "Flutterwave", "Bank Transfer", "Visa / Mastercard"].map(
+                            {["Paystack", "Visa / Mastercard"].map(
                                 (p) => (
                                     <div
                                         key={p}

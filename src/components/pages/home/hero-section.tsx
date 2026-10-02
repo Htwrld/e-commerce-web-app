@@ -7,54 +7,53 @@ import { useEffect, useState } from "react"
 
 const HERO_ACCENTS = [T.gold, T.rust, T.sage]
 
-type HeroSectionProps = {
-    hero_badge: string
-    hero_headline: string
-    hero_subheadline: string
-    hero_tagline: string
-    hero_background_color: string
-    hero_lifestyle_image: string
-    hero_button_1_text: string
-    hero_button_1_link: string
-    hero_button_2_text: string
-    hero_button_2_link: string
-}
+import type { HeroSection as HeroSlide } from "@/src/action/pageController"
 
-const HERO_BG =
-    "linear-gradient(135deg,#FDF0DC 0%,#F5D898 50%,#EFE4D0 100%)"
+const HERO_BG = "linear-gradient(135deg,#FDF0DC 0%,#F5D898 50%,#EFE4D0 100%)"
 
 const DEFAULT_LIFESTYLE_IMGS = [
     "/images/hoodie_lifestyle.png",
-    "/images/tee_she.png",
+    "/images/tee_she.jpg",
     "/images/polo_twopiece.jpg",
 ]
 
-const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
+const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
     const [heroIdx, setHeroIdx] = useState(0)
     const slideCount = heroSection.length
+    const [paused, setPaused] = useState(false)
+    const [interacting, setInteracting] = useState(false)
 
     useEffect(() => {
-        if (slideCount < 2) return
+        if (slideCount < 2 || paused || interacting) return
         const t = setInterval(() => setHeroIdx((i) => (i + 1) % slideCount), 5000)
         return () => clearInterval(t)
-    }, [slideCount])
+    }, [slideCount, paused, interacting])
 
     if (!slideCount) return null
 
-    const activeSection = heroSection[heroIdx]
+    const activeSection = heroSection[heroIdx % slideCount]
     const accent = HERO_ACCENTS[heroIdx % HERO_ACCENTS.length]
 
-    const lifestyleImages = heroSection
-        .map((s) => s.hero_lifestyle_image)
-        .filter(Boolean)
-        .slice(0, 3)
-    const images = lifestyleImages.length ? lifestyleImages : DEFAULT_LIFESTYLE_IMGS
+    const images = activeSection.hero_images.length
+        ? activeSection.hero_images
+        : DEFAULT_LIFESTYLE_IMGS.map((url) => ({ url, alt: "" }))
+    const background = /^#[a-f0-9]{6}$/i.test(activeSection.hero_background_color)
+        ? activeSection.hero_background_color
+        : HERO_BG
 
     return (
         <section
+            aria-label="Featured collections"
+            aria-roledescription="carousel"
+            onMouseEnter={() => setInteracting(true)}
+            onMouseLeave={() => setInteracting(false)}
+            onFocusCapture={() => setInteracting(true)}
+            onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) setInteracting(false)
+            }}
             style={{
                 minHeight: "92vh",
-                background: HERO_BG,
+                background,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -132,11 +131,13 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
                     overflow: "hidden",
                 }}
             >
-                {images.map((src, i) => (
+                {images.map((image, i) => (
                     <div key={i} style={{ flex: 1, overflow: "hidden", position: "relative" }}>
                         <Image
-                            src={src}
-                            alt=""
+                            src={image.url}
+                            alt={image.alt}
+                            sizes="30vw"
+                            loading={heroIdx === 0 ? "eager" : "lazy"}
                             fill
                             style={{ objectFit: "cover", objectPosition: "center top" }}
                         />
@@ -146,6 +147,9 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
 
             {/* Content */}
             <div
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${(heroIdx % slideCount) + 1} of ${slideCount}`}
                 key={heroIdx}
                 style={{
                     position: "relative",
@@ -249,18 +253,33 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSectionProps[] }) => {
                         marginTop: 32,
                     }}
                 >
+                    <button
+                        type="button"
+                        onClick={() => setPaused((value) => !value)}
+                        aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+                        style={{
+                            border: "none",
+                            background: "transparent",
+                            cursor: "pointer",
+                            color: T.ink,
+                            fontSize: 12,
+                        }}
+                    >
+                        {paused ? "Play" : "Pause"}
+                    </button>
                     {heroSection.map((_, i) => (
                         <button
                             key={i}
                             aria-label={`Show slide ${i + 1}`}
+                            aria-current={i === heroIdx % slideCount ? "true" : undefined}
                             onClick={() => setHeroIdx(i)}
                             style={{
-                                width: i === heroIdx ? 32 : 8,
+                                width: i === heroIdx % slideCount ? 32 : 8,
                                 height: 8,
                                 borderRadius: 4,
                                 border: "none",
                                 cursor: "pointer",
-                                background: i === heroIdx ? accent : "#CCC",
+                                background: i === heroIdx % slideCount ? accent : "#CCC",
                                 transition: "all .45s",
                             }}
                         />

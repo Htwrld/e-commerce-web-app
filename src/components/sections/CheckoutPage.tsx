@@ -378,7 +378,7 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                     <p>{locations.find((l) => l.id === locationId)?.location}</p>
                                 </div>
                                 <p className="mb-5 rounded-md border border-teal-200 p-3 text-sm text-slate-500">
-                                    A secure Flutterwave window will open so you can pay by card,
+                                    A secure Paystack window will open so you can pay by card,
                                     bank transfer or USSD. Your order is confirmed as soon as the
                                     payment goes through.
                                 </p>
@@ -406,7 +406,7 @@ const CheckoutPage = ({ locations }: { locations: Location[] }) => {
                                 </div>
                                 {waiting && (
                                     <p className="mt-3 text-center text-sm text-slate-500">
-                                        Complete the payment in the Flutterwave window.{" "}
+                                        Complete the payment in the Paystack window.{" "}
                                         <button
                                             className="cursor-pointer underline"
                                             onClick={() => cancelPayment.current()}

@@ -1,6 +1,6 @@
 import { getPaymentStatus } from "@/src/action/orderController"
 
-// /checkout/complete?popup=1 posts { orderId, paid } here when Flutterwave
+// /checkout/complete?popup=1 posts { orderId, paid } here when Paystack
 // redirects the payment window back to us. A BroadcastChannel is used instead
 // of window.opener because payment pages can cut the opener link.
 export const PAYMENT_CHANNEL = "htw-payment"
@@ -24,7 +24,7 @@ export const openPaymentWindow = (): Window | null => {
         win!.document.body.innerHTML =
             '<p style="font-family:Georgia,serif;text-align:center;margin-top:40vh;color:#6b6258">Loading secure payment…</p>'
     } catch {
-        // Blocked (null), or a leftover window still on Flutterwave's origin.
+        // Blocked (null), or a leftover window still on Paystack's origin.
     }
     return win
 }

@@ -1,6 +1,6 @@
 "use server"
 
-import { createPaymentLink, txRefForOrder } from "../lib/flutterwave"
+import { createPaymentLink, txRefForOrder } from "../lib/paystack"
 import { ORDER_STATUS_LABELS, WcOrder, WcProduct, wcFetch } from "../lib/woocommerce"
 
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
@@ -19,28 +19,38 @@ type PaymentStart = { paymentLink: string; orderId: number; orderKey: string }
 
 type ActionResult<T> = ({ ok: true } & T) | { ok: false; error: string }
 
-const startPayment = async (order: WcOrder, popup = false): Promise<PaymentStart> => ({
-    orderId: order.id,
-    orderKey: order.order_key,
-    paymentLink: await createPaymentLink({
-        txRef: txRefForOrder(order.id),
-        amount: order.total,
-        currency: order.currency,
+const startPayment = async (order: WcOrder, popup = false): Promise<PaymentStart> => {
+    const reference = txRefForOrder(order.id)
+    // A separate metadata key per attempt preserves earlier retry references.
+    await wcFetch(`orders/${order.id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+            payment_method: "paystack",
+            payment_method_title: "Paystack",
+            meta_data: [{ key: `_htw_paystack_${reference}`, value: reference }],
+        }),
+    })
+    return {
         orderId: order.id,
-        redirectUrl: `${site_url}/checkout/complete?order=${order.id}&key=${order.order_key}${popup ? "&popup=1" : ""}`,
-        customer: {
-            email: order.billing.email,
-            name: `${order.billing.first_name} ${order.billing.last_name}`.trim(),
-            phone: order.billing.phone,
-        },
-    }),
-})
+        orderKey: order.order_key,
+        paymentLink: await createPaymentLink({
+            txRef: reference,
+            amount: order.total,
+            currency: order.currency,
+            orderId: order.id,
+            redirectUrl: `${site_url}/checkout/complete?order=${order.id}&key=${order.order_key}${popup ? "&popup=1" : ""}`,
+            customer: {
+                email: order.billing.email,
+                name: `${order.billing.first_name} ${order.billing.last_name}`.trim(),
+                phone: order.billing.phone,
+            },
+        }),
+    }
+}
 
 // Prices and the delivery fee are looked up on the server; only product ids,
 // quantities and options come from the browser.
-export const createOrder = async (
-    input: CheckoutInput
-): Promise<ActionResult<PaymentStart>> => {
+export const createOrder = async (input: CheckoutInput): Promise<ActionResult<PaymentStart>> => {
     try {
         const { customer, locationId, items, popup } = input
         const name = customer.name.trim()
@@ -88,8 +98,8 @@ export const createOrder = async (
             body: JSON.stringify({
                 status: "pending",
                 set_paid: false,
-                payment_method: "flutterwave",
-                payment_method_title: "Flutterwave",
+                payment_method: "paystack",
+                payment_method_title: "Paystack",
                 billing: { ...contact, email, phone, city: loc.acf.location, country: "NG" },
                 shipping: { ...contact, phone, city: loc.acf.location, country: "NG" },
                 line_items: items.map((i) => ({
@@ -117,7 +127,7 @@ export const createOrder = async (
     }
 }
 
-// For a customer who cancelled or failed on the Flutterwave page: pay for the
+// For a customer who cancelled or failed on the Paystack page: pay for the
 // same order again instead of rebuilding the cart.
 export const resumePayment = async (
     orderId: number,
@@ -146,7 +156,7 @@ export const getPaymentStatus = async (
     try {
         const order = await wcFetch<WcOrder>(`orders/${orderId}`)
         if (order.order_key !== orderKey) return { paid: false }
-        return { paid: !["pending", "failed", "cancelled"].includes(order.status) }
+        return { paid: ["processing", "completed", "shipped"].includes(order.status) }
     } catch {
         return { paid: false }
     }

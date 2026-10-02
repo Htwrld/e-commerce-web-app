@@ -76,7 +76,7 @@ const RetryPaymentButton = ({ orderId, orderKey }: { orderId: number; orderKey: 
             </button>
             {waiting && (
                 <p className="mt-3 text-sm text-slate-500">
-                    Complete the payment in the Flutterwave window.{" "}
+                    Complete the payment in the Paystack window.{" "}
                     <button
                         className="cursor-pointer underline"
                         onClick={() => cancelPayment.current()}

@@ -14,6 +14,7 @@ export type HeroSection = {
     hero_tagline: string
     hero_background_color: string
     hero_lifestyle_image: string
+    hero_images: { url: string; alt: string }[]
     hero_button_1_text: string
     hero_button_1_link: string
     hero_button_2_text: string
@@ -138,45 +139,50 @@ export const getPageHomePage: () => Promise<PageHome> = async () => {
             next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.homepage] },
         })
         const data = await res.json()
-        
-        const heroSection = [
-            {
-                hero_badge: data.acf.hero_badge_1,
-                hero_headline: data.acf.hero_headline_1,
-                hero_subheadline: data.acf.hero_subheadline_1,
-                hero_tagline: data.acf.hero_tagline_1,
-                hero_background_color: data.acf.hero_background_color_1,
-                hero_lifestyle_image: data.acf.hero_lifestyle_image_1,
-                hero_button_1_text: data.acf.hero_cta_button_label_1,
-                hero_button_1_link: data.acf.hero_cta_button_url_1,
-                hero_button_2_text: data.acf.hero_cta_button_label_4,
-                hero_button_2_link: data.acf.hero_cta_button_url_4,
-            },
-            {
-                hero_badge: data.acf.hero_badge_2,
-                hero_headline: data.acf.hero_headline_2,
-                hero_subheadline: data.acf.hero_subheadline_2,
-                hero_tagline: data.acf.hero_tagline_2,
-                hero_background_color: data.acf.hero_background_color_2,
-                hero_lifestyle_image: data.acf.hero_lifestyle_image_2,
-                hero_button_1_text: data.acf.hero_cta_button_label_2,
-                hero_button_1_link: data.acf.hero_cta_button_url_2,
-                hero_button_2_text: data.acf.hero_cta_button_label_5,
-                hero_button_2_link: data.acf.hero_cta_button_url_5,
-            },
-            {
-                hero_badge: data.acf.hero_badge_3,
-                hero_headline: data.acf.hero_headline_3,
-                hero_subheadline: data.acf.hero_subheadline_3,
-                hero_tagline: data.acf.hero_tagline_3,
-                hero_background_color: data.acf.hero_background_color_3,
-                hero_lifestyle_image: data.acf.hero_lifestyle_image_3,
-                hero_button_1_text: data.acf.hero_cta_button_label_3,
-                hero_button_1_link: data.acf.hero_cta_button_url_3,
-                hero_button_2_text: data.acf.hero_cta_button_label_6,
-                hero_button_2_link: data.acf.hero_cta_button_url_6,
-            },
-        ]
+
+        const heroSection: HeroSection[] = [1, 2, 3]
+            .map((index) => {
+                const slide = data.acf[`hero_slide_${index}`] ?? {}
+                const text = (value: unknown): string => (typeof value === "string" ? value : "")
+                const image = (value: unknown): { url: string; alt: string } | null => {
+                    if (typeof value === "string" && /^(https?:\/\/|\/)/.test(value)) {
+                        return { url: value, alt: "" }
+                    }
+                    if (value && typeof value === "object" && "url" in value) {
+                        const item = value as { url: unknown; alt?: unknown }
+                        return text(item.url) ? { url: text(item.url), alt: text(item.alt) } : null
+                    }
+                    return null
+                }
+                const legacyImage = image(data.acf[`hero_lifestyle_image_${index}`])
+                const images = [slide.image_1, slide.image_2, slide.image_3]
+                    .map(image)
+                    .filter((item): item is { url: string; alt: string } => item !== null)
+                return {
+                    hero_badge: text(slide.badge) || text(data.acf[`hero_badge_${index}`]),
+                    hero_headline: text(slide.headline) || text(data.acf[`hero_headline_${index}`]),
+                    hero_subheadline:
+                        text(slide.subheadline) || text(data.acf[`hero_subheadline_${index}`]),
+                    hero_tagline: text(slide.tagline) || text(data.acf[`hero_tagline_${index}`]),
+                    hero_background_color:
+                        text(slide.background_color) ||
+                        text(data.acf[`hero_background_color_${index}`]),
+                    hero_lifestyle_image: legacyImage?.url ?? "",
+                    hero_images: images.length ? images : legacyImage ? [legacyImage] : [],
+                    hero_button_1_text:
+                        text(slide.button_1_text) ||
+                        text(data.acf[`hero_cta_button_label_${index}`]),
+                    hero_button_1_link:
+                        text(slide.button_1_link) || text(data.acf[`hero_cta_button_url_${index}`]),
+                    hero_button_2_text:
+                        text(slide.button_2_text) ||
+                        text(data.acf[`hero_cta_button_label_${index + 3}`]),
+                    hero_button_2_link:
+                        text(slide.button_2_link) ||
+                        text(data.acf[`hero_cta_button_url_${index + 3}`]),
+                }
+            })
+            .filter((slide) => slide.hero_headline || slide.hero_images.length)
 
         const ourMission = {
             mission_title: data.acf.mission_title,

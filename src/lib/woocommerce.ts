@@ -4,6 +4,8 @@ const website_url = process.env.WORDPRESS_URL_ENDPOINT
 
 export type WcOrder = {
     id: number
+    payment_method: string
+    meta_data: { key: string; value: unknown }[]
     order_key: string
     status: string
     currency: string

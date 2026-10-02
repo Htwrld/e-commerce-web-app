@@ -10,20 +10,19 @@ export const metadata = { title: "Order Status - HTW — Hope's Trendy World" }
 type Params = {
     order?: string
     key?: string
-    status?: string
-    transaction_id?: string
+    reference?: string
     popup?: string
 }
 
-// Flutterwave redirects here with ?status=&tx_ref=&transaction_id= appended to
+// Paystack redirects here with ?reference= appended to
 // our own ?order=&key=. The webhook may already have marked the order paid.
-const resolveOrder = async ({ order, key, status, transaction_id }: Params) => {
+const resolveOrder = async ({ order, key, reference }: Params) => {
     const orderId = Number(order)
     if (!orderId || !key) return null
 
     try {
-        if (status === "successful" && transaction_id) {
-            const result = await completeOrderFromTransaction(transaction_id)
+        if (reference) {
+            const result = await completeOrderFromTransaction(reference)
             if (result.ok && result.order.id === orderId && result.order.order_key === key) {
                 return result.order
             }
@@ -39,7 +38,7 @@ const resolveOrder = async ({ order, key, status, transaction_id }: Params) => {
 const CheckoutCompleteRoute = async ({ searchParams }: { searchParams: Promise<Params> }) => {
     const params = await searchParams
     const order = await resolveOrder(params)
-    const paid = order && !["pending", "failed", "cancelled"].includes(order.status)
+    const paid = order && ["processing", "completed", "shipped"].includes(order.status)
 
     if (params.popup === "1") {
         return (

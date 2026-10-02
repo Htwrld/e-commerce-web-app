@@ -269,7 +269,7 @@ export function CartDrawer() {
                                     lineHeight: 1.6,
                                 }}
                             >
-                                🔒 Secure checkout · Paystack · Flutterwave · Bank Transfer
+                                🔒 Secure checkout · Paystack
                             </p>
                         </div>
                     </>
