@@ -191,3 +191,22 @@ repairing the product prices; keep WooCommerce as the checkout price source.
 After migration, edit selling prices in WooCommerce's Product data > General.
 The renamed ACF price is preserved legacy data; editing it does not automatically
 update WooCommerce. The repair command does not modify existing orders.
+
+## WooCommerce pricing, exchange rate, and inventory
+
+The storefront uses only WooCommerce `shop_price` for NGN selling prices; ACF
+`price`, `legacy_ngn_price`, and `usd_price` are no longer storefront price sources.
+Set the product ACF Number field `exchange_rate` to **NGN per USD** (for example,
+1500 means ₦1,500 = $1). The dollar estimate is `shop_price / exchange_rate`;
+missing, zero, or invalid rates hide the dollar estimate. Checkout remains in NGN.
+
+Install the updated HTW Headless plugin ZIP to expose WooCommerce stock quantity,
+stock management, backorders, and availability in the public product API. Enable
+WooCommerce **Product data > Inventory > Manage stock**, enter the quantity, and
+set the backorder policy. Products without quantity tracking show availability
+rather than an invented count. Counts are product-level, not per ACF colour/size.
+The cart limits tracked quantities across colour/size entries, and checkout
+checks current WooCommerce stock again. Storefront stock can be cached for five
+minutes; payment and concurrent orders still rely on WooCommerce stock handling.
+Removing the old ACF fields does not repair previously corrupted WooCommerce
+prices: restore those in WooCommerce or use the documented repair command.

@@ -5,7 +5,7 @@
  * a public view-count endpoint for articles and videos, plus the WooCommerce
  * glue (price on /wp/v2/product, an "Out for delivery" order status, and a
  * one-time migration for the old ACF products).
- * Version: 1.2.0
+ * Version: 1.3.0
  *
  * Replaces the separate "Site View Counter" and "HTW WooCommerce Bridge"
  * plugins. Deactivate and delete both before activating this one, or
@@ -155,10 +155,24 @@ add_action('rest_api_init', function () {
         'schema' => ['type' => ['string', 'null']],
     ]);
 
+    foreach ([
+        'stock_quantity' => 'get_stock_quantity',
+        'manage_stock' => 'managing_stock',
+        'backorders_allowed' => 'backorders_allowed',
+        'stock_status' => 'get_stock_status',
+    ] as $field => $method) {
+        register_rest_field('product', $field, [
+            'get_callback' => function ($post) use ($method) {
+                $product = function_exists('wc_get_product') ? wc_get_product($post['id']) : null;
+                return $product ? $product->$method() : null;
+            },
+        ]);
+    }
+
     register_rest_field('product', 'in_stock', [
         'get_callback' => function ($post) {
             $product = function_exists('wc_get_product') ? wc_get_product($post['id']) : null;
-            return $product ? $product->is_in_stock() : true;
+            return $product ? $product->is_in_stock() : false;
         },
         'schema' => ['type' => 'boolean'],
     ]);

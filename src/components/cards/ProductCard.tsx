@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { ProductStock } from "@/src/components/cards/ProductStock"
 import { T } from "@/src/lib/tokens"
 import { Badge } from "@/src/components/cards/Badge"
 import { VerseChip } from "@/src/components/cards/VerseChip"
@@ -18,7 +19,13 @@ interface ProductCardProps {
     backHref?: string
 }
 
-export function ProductCard({ product: p, onAdd, onClick, mobileNumber, backHref }: ProductCardProps) {
+export function ProductCard({
+    product: p,
+    onAdd,
+    onClick,
+    mobileNumber,
+    backHref,
+}: ProductCardProps) {
     const [selectedColor, setSelectedColor] = useState<string>(p.colors[0])
     const [selectedSize, setSelectedSize] = useState<string>(p.sizes[0])
     const { cart, updateQty, removeFromCart } = useCart()
@@ -46,7 +53,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber, backHref
                         <Image
                             src={p.photo}
                             alt={p.name}
-                            className="h-full w-full object-cover object-center static!"
+                            className="static! h-full w-full object-cover object-center"
                             fill
                             onError={(e) =>
                                 ((e.currentTarget as HTMLImageElement).style.display = "none")
@@ -147,9 +154,10 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber, backHref
                             ₦{parseFloat(p.price).toFixed(2)}
                         </span>
                         <span style={{ fontSize: 12, color: "#BBB" }}>
-                            ${parseFloat(p.usd_price).toFixed(2)}
+                            {p.usd_price ? `$${p.usd_price}` : null}
                         </span>
                     </div>
+                    <ProductStock product={p} />
                     <div style={{ marginBottom: 12 }}>
                         <VerseChip verse={p.bible_verse} verseText={p.bible_verse_content} />
                     </div>
@@ -235,6 +243,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber, backHref
                     </div>
                 ) : (
                     <button
+                        disabled={!p.in_stock}
                         onClick={(e) => {
                             e.stopPropagation()
                             onAdd({
@@ -251,7 +260,7 @@ export function ProductCard({ product: p, onAdd, onClick, mobileNumber, backHref
                             fontSize: 12,
                         }}
                     >
-                        Add to Cart
+                        {p.in_stock ? "Add to Cart" : "Out of stock"}
                     </button>
                 )}
             </div>

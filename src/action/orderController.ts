@@ -77,6 +77,20 @@ export const createOrder = async (input: CheckoutInput): Promise<ActionResult<Pa
             if (!p || !p.purchasable || !(Number(p.price) > 0)) {
                 return { ok: false, error: "An item in your cart is no longer available." }
             }
+            const requestedQuantity = items
+                .filter((item) => item.id === id)
+                .reduce((total, item) => total + item.qty, 0)
+            if (
+                p.manage_stock &&
+                p.backorders === "no" &&
+                p.stock_quantity !== null &&
+                requestedQuantity > p.stock_quantity
+            ) {
+                return {
+                    ok: false,
+                    error: `${p.name}: only ${Math.max(0, p.stock_quantity)} available.`,
+                }
+            }
             if (p.stock_status === "outofstock") {
                 return { ok: false, error: `${p.name} is out of stock.` }
             }

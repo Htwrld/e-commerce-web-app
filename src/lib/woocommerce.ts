@@ -28,6 +28,9 @@ export type WcProduct = {
     price: string
     purchasable: boolean
     stock_status: string
+    manage_stock: boolean
+    stock_quantity: number | null
+    backorders: "no" | "notify" | "yes"
 }
 
 // WooCommerce REST (wc/v3) with the server-side consumer key. Never import

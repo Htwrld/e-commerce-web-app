@@ -1,5 +1,6 @@
 "use server"
 
+import { getWooCommerceProductValues } from "../lib/product-values"
 import { WP_TAGS } from "../lib/wpTags"
 
 const website_url = process.env.WORDPRESS_URL_ENDPOINT
@@ -14,6 +15,11 @@ export type Product = {
     description: string
     price: string
     usd_price: string
+    in_stock: boolean
+    stock_quantity: number | null
+    manage_stock: boolean
+    backorders_allowed: boolean
+    stock_status: string
     quotes: string
     bible_verse: string
     bible_verse_content: string
@@ -28,8 +34,7 @@ export type Product = {
 }
 
 // WooCommerce owns the price (the bridge plugin exposes it as `shop_price`);
-// everything else is still ACF. The ACF price is only a fallback for products
-// not yet migrated with `wp htw migrate-products`.
+// ACF supplies descriptive content and the NGN-per-USD exchange rate.
 const mapProduct = (p: any): Product => ({
     id: p.id,
     photo: p.acf.photo ? p.acf.photo : "",
@@ -38,8 +43,7 @@ const mapProduct = (p: any): Product => ({
     gender: p.acf.gender ? p.acf.gender : "",
     name: p.acf.name ? p.acf.name : "",
     description: p.acf.description ? p.acf.description : "",
-    price: p.shop_price || p.acf.legacy_ngn_price || p.acf.price || "0",
-    usd_price: p.acf.usd_price ? p.acf.usd_price : "0",
+    ...getWooCommerceProductValues(p),
     quotes: p.acf.quotes ? p.acf.quotes : "",
     bible_verse: p.acf.bible_verse ? p.acf.bible_verse : "",
     bible_verse_content: p.acf.bible_verse_content ? p.acf.bible_verse_content : "",
@@ -108,12 +112,10 @@ export const getProducts = async ({
             })
             const data = await res.json()
             const g = gender.toLowerCase()
-            const products: Product[] = data
-                .map(mapProduct)
-                .filter((p: Product) => {
-                    const pg = p.gender.toLowerCase()
-                    return pg === g || pg === "unisex"
-                })
+            const products: Product[] = data.map(mapProduct).filter((p: Product) => {
+                const pg = p.gender.toLowerCase()
+                return pg === g || pg === "unisex"
+            })
 
             const pages = Math.max(1, Math.ceil(products.length / per_page))
             const currentPage = page && page > 0 ? page : 1

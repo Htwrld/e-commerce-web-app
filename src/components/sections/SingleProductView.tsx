@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { ProductStock } from "@/src/components/cards/ProductStock"
 import Link from "next/link"
 import { useState } from "react"
 import { T } from "@/src/lib/tokens"
@@ -54,7 +55,7 @@ export const SingleProductView = ({
                                 src={p.photo}
                                 alt={p.name}
                                 fill
-                                className="h-full w-full object-cover object-center static!"
+                                className="static! h-full w-full object-cover object-center"
                             />
                         ) : (
                             <div
@@ -114,9 +115,10 @@ export const SingleProductView = ({
                             ₦{parseFloat(p.price).toFixed(2)}
                         </span>
                         <span style={{ fontSize: 15, color: T.muted }}>
-                            ${parseFloat(p.usd_price).toFixed(2)}
+                            {p.usd_price ? `$${p.usd_price}` : null}
                         </span>
                     </div>
+                    <ProductStock product={p} />
 
                     {p.quotes && (
                         <p
@@ -272,6 +274,7 @@ export const SingleProductView = ({
                             <button
                                 className="btn-primary"
                                 style={{ justifyContent: "center", padding: "12px 32px" }}
+                                disabled={!p.in_stock}
                                 onClick={() =>
                                     addToCart({
                                         product: p,
@@ -280,14 +283,12 @@ export const SingleProductView = ({
                                     })
                                 }
                             >
-                                Add to Cart
+                                {p.in_stock ? "Add to Cart" : "Out of stock"}
                             </button>
                         )}
                     </div>
 
-                    <div
-                        style={{ padding: 14, background: T.warm, borderRadius: 8 }}
-                    >
+                    <div style={{ padding: 14, background: T.warm, borderRadius: 8 }}>
                         <div
                             style={{
                                 fontSize: 12,
@@ -385,7 +386,7 @@ const SidebarProductCard = ({ product: p }: { product: Product }) => {
                         src={p.photo}
                         alt={p.name}
                         fill
-                        className="h-full w-full object-cover object-center static!"
+                        className="static! h-full w-full object-cover object-center"
                     />
                 ) : (
                     <div

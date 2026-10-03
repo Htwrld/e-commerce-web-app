@@ -22,7 +22,6 @@ interface CartContextValue {
     setToast: (toast: string | null) => void
 }
 
-
 const CartContext = createContext<CartContextValue | null>(null)
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -40,7 +39,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
             selectedColor: string
             selectedSize: string
         }) => {
+            if (!product.in_stock) {
+                setToast(`${product.name} is out of stock.`)
+                return
+            }
+            const cartQuantity = cart
+                .filter((item) => item.id === product.id)
+                .reduce((total, item) => total + item.qty, 0)
+            if (
+                product.manage_stock &&
+                !product.backorders_allowed &&
+                product.stock_quantity !== null &&
+                cartQuantity >= product.stock_quantity
+            ) {
+                setToast(`${product.name}: only ${product.stock_quantity} available.`)
+                return
+            }
             setCart((c) => {
+                const quantity = c
+                    .filter((item) => item.id === product.id)
+                    .reduce((total, item) => total + item.qty, 0)
+                if (
+                    product.manage_stock &&
+                    !product.backorders_allowed &&
+                    product.stock_quantity !== null &&
+                    quantity >= product.stock_quantity
+                )
+                    return c
                 const existing = c.find(
                     (x) =>
                         x.id === product.id &&
@@ -73,7 +98,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
             setTimeout(() => setToast(null), 2800)
         },
-        []
+        [cart]
     )
 
     const removeFromCart = useCallback(
@@ -92,7 +117,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
             setCart((c) =>
                 c.map((x) =>
                     x.id === id && x.selectedColor === color && x.selectedSize === size
-                        ? { ...x, qty: Math.max(1, qty) }
+                        ? {
+                              ...x,
+                              qty: Math.max(
+                                  1,
+                                  x.manage_stock &&
+                                      !x.backorders_allowed &&
+                                      x.stock_quantity !== null
+                                      ? Math.min(
+                                            qty,
+                                            x.stock_quantity -
+                                                c
+                                                    .filter(
+                                                        (other) => other.id === id && other !== x
+                                                    )
+                                                    .reduce((total, other) => total + other.qty, 0)
+                                        )
+                                      : qty
+                              ),
+                          }
                         : x
                 )
             )

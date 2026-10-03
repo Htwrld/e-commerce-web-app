@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { ProductStock } from "@/src/components/cards/ProductStock"
 import { T } from "@/src/lib/tokens"
 import { Badge } from "@/src/components/cards/Badge"
 import { VerseChip } from "@/src/components/cards/VerseChip"
@@ -181,9 +182,10 @@ export function ProductDetailModal({
                             {parseFloat(p.price).toFixed(2)}
                         </span>
                         <span style={{ fontSize: 14, color: T.muted }}>
-                            ${parseFloat(p.usd_price).toFixed(2)}
+                            {p.usd_price ? `$${p.usd_price}` : null}
                         </span>
                     </div>
+                    <ProductStock product={p} />
 
                     <p
                         style={{
@@ -331,6 +333,7 @@ export function ProductDetailModal({
                             </div>
                         ) : (
                             <button
+                                disabled={!p.in_stock}
                                 className="btn-primary"
                                 style={{ flex: 1, justifyContent: "center" }}
                                 onClick={() => {
@@ -342,7 +345,7 @@ export function ProductDetailModal({
                                     goBack()
                                 }}
                             >
-                                Add to Cart
+                                {p.in_stock ? "Add to Cart" : "Out of stock"}
                             </button>
                         )}
                     </div>
