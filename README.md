@@ -49,7 +49,7 @@ add_action('save_post', function ($post_id, $post, $update) {
         $params['page_id'] = $post_id;
     } else {
         $params['post_type'] = $post->post_type;
-    }
+    } 
 
     wp_remote_post(add_query_arg($params, "{$next_site_url}/api/revalidate"), [
         'timeout' => 5,
