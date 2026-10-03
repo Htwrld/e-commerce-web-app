@@ -31,12 +31,16 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
 
     if (!slideCount) return null
 
-    const activeSection = heroSection[heroIdx % slideCount]
+    const activeSlideIndex = heroIdx % slideCount
+    const activeSection = heroSection[activeSlideIndex]
     const accent = HERO_ACCENTS[heroIdx % HERO_ACCENTS.length]
 
     const images = activeSection.hero_images.length
         ? activeSection.hero_images
-        : DEFAULT_LIFESTYLE_IMGS.map((url) => ({ url, alt: "" }))
+        : DEFAULT_LIFESTYLE_IMGS.map((_, index) => ({
+              url: DEFAULT_LIFESTYLE_IMGS[(index + activeSlideIndex) % DEFAULT_LIFESTYLE_IMGS.length],
+              alt: "",
+          }))
     const background = /^#[a-f0-9]{6}$/i.test(activeSection.hero_background_color)
         ? activeSection.hero_background_color
         : HERO_BG
@@ -118,6 +122,7 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
 
             {/* Lifestyle image strip */}
             <div
+                key={`slide-images-${activeSlideIndex}`}
                 style={{
                     position: "absolute",
                     right: 0,
@@ -132,12 +137,15 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
                 }}
             >
                 {images.map((image, i) => (
-                    <div key={i} style={{ flex: 1, overflow: "hidden", position: "relative" }}>
+                    <div
+                        key={`${image.url}-${i}`}
+                        style={{ flex: 1, overflow: "hidden", position: "relative" }}
+                    >
                         <Image
                             src={image.url}
                             alt={image.alt}
                             sizes="30vw"
-                            loading={heroIdx === 0 ? "eager" : "lazy"}
+                            loading="eager"
                             fill
                             style={{ objectFit: "cover", objectPosition: "center top" }}
                         />
