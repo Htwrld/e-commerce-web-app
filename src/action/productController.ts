@@ -38,7 +38,7 @@ const mapProduct = (p: any): Product => ({
     gender: p.acf.gender ? p.acf.gender : "",
     name: p.acf.name ? p.acf.name : "",
     description: p.acf.description ? p.acf.description : "",
-    price: p.shop_price ? p.shop_price : p.acf.price ? p.acf.price : "0",
+    price: p.shop_price || p.acf.legacy_ngn_price || p.acf.price || "0",
     usd_price: p.acf.usd_price ? p.acf.usd_price : "0",
     quotes: p.acf.quotes ? p.acf.quotes : "",
     bible_verse: p.acf.bible_verse ? p.acf.bible_verse : "",

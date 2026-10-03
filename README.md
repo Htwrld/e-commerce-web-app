@@ -158,3 +158,36 @@ five minutes, or immediately with the cache revalidation setup above.
 
 ACF references: [Group fields](https://www.advancedcustomfields.com/resources/group/)
 and [REST API exposure](https://www.advancedcustomfields.com/resources/wp-rest-api-integration/).
+
+## Repair legacy product prices
+
+ACF stores the reference for a field named `price` in `_price`, which conflicts
+with WooCommerce's current-price metadata. Rename that legacy field before
+repairing the product prices; keep WooCommerce as the checkout price source.
+
+1. Back up the WordPress database and install the updated
+   `wordpress/htw-headless.php.zip` plugin, replacing the existing HTW Headless
+   plugin (do not activate a second copy).
+2. In ACF's product field group, change the **Field Name** `price` to
+   `legacy_ngn_price`, keeping the field key unchanged. Leave `usd_price` alone.
+   The plugin loads the preserved raw `price` value when the renamed field has
+   not yet been saved, so existing amounts remain visible.
+3. From the WordPress installation directory, preview every proposed repair:
+   `wp htw migrate-products --dry-run`. The command stops if a conflicting ACF
+   `price` field is still attached to a product. It rejects nonnumeric values,
+   including field references, and skips non-simple products.
+4. After checking the amounts, run `wp htw migrate-products`. This restores
+   regular/current WooCommerce prices from raw `legacy_ngn_price` (or preserved
+   `price`) metadata, clears sale prices and sale schedules, and preserves stock.
+   Each product gets a pre-repair pricing snapshot in `_htw_price_before_repair`.
+5. Deploy the app update for the renamed ACF fallback. Invalidate `wp-products`
+   via the configured `/api/revalidate` endpoint or allow the five-minute data
+   cache to revalidate. Remove affected products from existing carts and add
+   them again, since cart entries may contain the old price.
+6. Confirm the public product API's `shop_price` matches the intended amount,
+   save one product in WordPress, and confirm it remains correct. Run a test
+   checkout to verify WooCommerce/Paystack use the same amount.
+
+After migration, edit selling prices in WooCommerce's Product data > General.
+The renamed ACF price is preserved legacy data; editing it does not automatically
+update WooCommerce. The repair command does not modify existing orders.

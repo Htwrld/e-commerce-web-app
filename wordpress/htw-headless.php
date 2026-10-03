@@ -5,7 +5,7 @@
  * a public view-count endpoint for articles and videos, plus the WooCommerce
  * glue (price on /wp/v2/product, an "Out for delivery" order status, and a
  * one-time migration for the old ACF products).
- * Version: 1.1.0
+ * Version: 1.2.0
  *
  * Replaces the separate "Site View Counter" and "HTW WooCommerce Bridge"
  * plugins. Deactivate and delete both before activating this one, or
@@ -16,8 +16,9 @@
  *     Keep its taxonomies and ACF field group. Removing the registration does
  *     not delete the posts.
  *  2. Install + activate WooCommerce, set currency to NGN.
- *  3. Activate this plugin, then run:  wp htw migrate-products
- *     (copies each product's ACF "price" into WooCommerce's price field).
+ *  3. Rename the product ACF field "price" to "legacy_ngn_price".
+ *     Activate this plugin, preview: wp htw migrate-products --dry-run
+ *     Then apply: wp htw migrate-products (see README repair instructions).
  *  4. WooCommerce > Settings > Advanced > REST API: create a Read/Write key
  *     for the Next.js server (WC_CONSUMER_KEY / WC_CONSUMER_SECRET).
  */
@@ -102,6 +103,36 @@ function site_increment_view_count(WP_REST_Request $req)
     return new WP_REST_Response(['count' => (int) get_post_meta($post_id, 'view_count', true)], 200);
 }
 
+/**
+ * Notify Next.js to revalidate its cache when content is saved in WordPress.
+ */
+add_action('save_post', function ($post_id, $post, $update) {
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+    if ($post->post_status !== 'publish') {
+        return;
+    }
+
+    $next_site_url = 'https://your-nextjs-domain.com'; // no trailing slash
+    $revalidate_secret = 'your-revalidate-secret'; // must match REVALIDATE_SECRET in .env.local
+
+    $params = ['secret' => $revalidate_secret];
+
+    // ACF page-builder pages (home, ambassadors, our story, contact, navbar/footer)
+    // are identified by page ID; everything else by its post type.
+    if ($post->post_type === 'page') {
+        $params['page_id'] = $post_id;
+    } else {
+        $params['post_type'] = $post->post_type;
+    } 
+
+    wp_remote_post(add_query_arg($params, "{$next_site_url}/api/revalidate"), [
+        'timeout' => 5,
+        'blocking' => false, // fire-and-forget, don't slow down the WP save
+    ]);
+}, 10, 3);
+
 /* -------------------------------------------------------------------------
  * WooCommerce
  * ---------------------------------------------------------------------- */
@@ -165,40 +196,111 @@ function htw_add_shipped_bulk_action($actions)
     return $actions;
 }
 
+// After renaming the old ACF "price" field to "legacy_ngn_price", keep its
+// existing values visible until each product is next saved. Never use _price
+// for an ACF reference: WooCommerce owns that metadata key.
+add_filter('acf/load_value/name=legacy_ngn_price', function ($value, $post_id) {
+    if (get_post_type($post_id) === 'product' && !metadata_exists('post', $post_id, 'legacy_ngn_price')) {
+        return get_post_meta($post_id, 'price', true);
+    }
+    return $value;
+}, 10, 2);
+
+// Accept plain decimal amounts only. In particular, do not strip letters from
+// an ACF field key and accidentally turn its digits into a payable amount.
+function htw_parse_legacy_price($raw)
+{
+    if (!is_string($raw) && !is_int($raw) && !is_float($raw)) {
+        return null;
+    }
+    $price = trim((string) $raw);
+    if (!preg_match('/^\d+(?:\.\d{1,2})?$/D', $price) || (float) $price <= 0) {
+        return null;
+    }
+    return $price;
+}
+
 if (defined('WP_CLI') && WP_CLI) {
-    WP_CLI::add_command('htw migrate-products', function () {
+    /**
+     * Restore simple-product WooCommerce prices from preserved ACF values.
+     *
+     * ## OPTIONS
+     *
+     * [--dry-run]
+     * : Show proposed prices without changing products.
+     */
+    WP_CLI::add_command('htw migrate-products', function ($args, $assoc_args) {
+        if (!function_exists('wc_get_product')) {
+            WP_CLI::error('WooCommerce must be active.');
+        }
+        $dry_run = isset($assoc_args['dry-run']);
+        // Fail before any writes if the old conflicting ACF field is still
+        // attached to a product. Renaming must happen before the repair.
+        if (function_exists('acf_get_field_groups')) {
+            $has_price_field = function ($fields) use (&$has_price_field) {
+                foreach ($fields ?: [] as $field) {
+                    if (($field['name'] ?? '') === 'price') {
+                        return true;
+                    }
+                    if ($has_price_field($field['sub_fields'] ?? [])) {
+                        return true;
+                    }
+                    foreach ($field['layouts'] ?? [] as $layout) {
+                        if ($has_price_field($layout['sub_fields'] ?? [])) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+        }
         $ids = get_posts([
             'post_type' => 'product',
             'post_status' => 'any',
             'numberposts' => -1,
             'fields' => 'ids',
         ]);
-
-        foreach ($ids as $id) {
-            $raw = function_exists('get_field') ? get_field('price', $id) : get_post_meta($id, 'price', true);
-            $price = preg_replace('/[^\d.]/', '', (string) $raw);
-
-            if (!has_term('', 'product_type', $id)) {
-                wp_set_object_terms($id, 'simple', 'product_type');
+        if (isset($has_price_field)) {
+            foreach ($ids as $id) {
+                foreach (acf_get_field_groups(['post_id' => $id]) as $group) {
+                    if ($has_price_field(acf_get_fields($group))) {
+                        WP_CLI::error('Rename the product ACF field "price" to "legacy_ngn_price" first. Keep its field key unchanged.');
+                    }
+                }
             }
-
-            $product = wc_get_product($id);
-            if (!$product) {
-                WP_CLI::warning("#$id: could not load as a WooCommerce product");
-                continue;
-            }
-
-            if ($price === '') {
-                WP_CLI::warning("#$id \"{$product->get_name()}\": no ACF price, skipped");
-                continue;
-            }
-
-            $product->set_regular_price($price);
-            $product->set_stock_status('instock');
-            $product->save();
-            WP_CLI::log("#$id \"{$product->get_name()}\": ₦$price");
         }
-
-        WP_CLI::success(count($ids) . ' products processed.');
+        $updated = 0;
+        $skipped = 0;
+        foreach ($ids as $id) {
+            $source = metadata_exists('post', $id, 'legacy_ngn_price') ? 'legacy_ngn_price' : 'price';
+            $price = htw_parse_legacy_price(get_post_meta($id, $source, true));
+            $product = wc_get_product($id);
+            if (!$product || !$product->is_type('simple') || $price === null) {
+                WP_CLI::warning("#$id: not a simple product or missing/invalid legacy price; skipped.");
+                $skipped++;
+                continue;
+            }
+            WP_CLI::log(sprintf('#%d %s: %s -> %s NGN%s', $id, $product->get_name(), $product->get_price(), $price, $dry_run ? ' (dry run)' : ''));
+            if (!$dry_run) {
+                // Keep a snapshot of the pre-repair pricing for investigation.
+                add_post_meta($id, '_htw_price_before_repair', [
+                    'price' => $product->get_price(),
+                    'regular_price' => $product->get_regular_price(),
+                    'sale_price' => $product->get_sale_price(),
+                    'sale_from' => $product->get_date_on_sale_from() ? $product->get_date_on_sale_from()->getTimestamp() : null,
+                    'sale_to' => $product->get_date_on_sale_to() ? $product->get_date_on_sale_to()->getTimestamp() : null,
+                ], true);
+                $product->set_regular_price($price);
+                // The legacy ACF amount is the intended current selling price.
+                $product->set_sale_price('');
+                $product->set_date_on_sale_from(null);
+                $product->set_date_on_sale_to(null);
+                $product->set_price($price);
+                $product->save();
+                wc_delete_product_transients($id);
+            }
+            $updated++;
+        }
+        WP_CLI::success(sprintf('%d products %s; %d skipped.', $updated, $dry_run ? 'previewed' : 'repaired', $skipped));
     });
 }
