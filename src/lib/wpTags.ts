@@ -5,6 +5,7 @@ export const WP_TAGS = {
     contactPage: "wp-contact-page",
     fashionPage: "wp-fashion-page",
     navbarFooter: "wp-navbar-footer",
+    navbarMenu: "wp-navbar-menu",
     products: "wp-products",
     locations: "wp-locations",
     ambassadors: "wp-ambassadors",

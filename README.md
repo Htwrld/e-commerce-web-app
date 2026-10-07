@@ -196,9 +196,11 @@ update WooCommerce. The repair command does not modify existing orders.
 
 The storefront uses only WooCommerce `shop_price` for NGN selling prices; ACF
 `price`, `legacy_ngn_price`, and `usd_price` are no longer storefront price sources.
-Set the product ACF Number field `exchange_rate` to **NGN per USD** (for example,
-1500 means ₦1,500 = $1). The dollar estimate is `shop_price / exchange_rate`;
-missing, zero, or invalid rates hide the dollar estimate. Checkout remains in NGN.
+Set `EXCHANGE_RATE_NGN_PER_USD` in `.env.local` (and the deployed server
+environment) to **NGN per USD** (for example, 1500 means ₦1,500 = $1). It applies
+to every product. The dollar estimate is `shop_price / EXCHANGE_RATE_NGN_PER_USD`;
+a missing, zero, or invalid rate hides the dollar estimate. The per-product ACF
+`exchange_rate` field is no longer read and can be removed. Checkout remains in NGN.
 
 Install the updated HTW Headless plugin ZIP to expose WooCommerce stock quantity,
 stock management, backorders, and availability in the public product API. Enable

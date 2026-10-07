@@ -34,7 +34,8 @@ export type Product = {
 }
 
 // WooCommerce owns the price (the bridge plugin exposes it as `shop_price`);
-// ACF supplies descriptive content and the NGN-per-USD exchange rate.
+// ACF supplies descriptive content. The USD estimate uses the site-wide
+// EXCHANGE_RATE_NGN_PER_USD env var.
 const mapProduct = (p: any): Product => ({
     id: p.id,
     photo: p.acf.photo ? p.acf.photo : "",

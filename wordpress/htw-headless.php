@@ -2,7 +2,7 @@
 /**
  * Plugin Name: HTW Headless
  * Description: Everything the headless Next.js storefront needs from WordPress:
- * a public view-count endpoint for articles and videos, plus the WooCommerce
+ * a public view-count endpoint for articles and videos, the navbar menu, plus the WooCommerce
  * glue (price on /wp/v2/product, an "Out for delivery" order status, and a
  * one-time migration for the old ACF products).
  * Version: 1.3.0
@@ -103,6 +103,80 @@ function site_increment_view_count(WP_REST_Request $req)
     return new WP_REST_Response(['count' => (int) get_post_meta($post_id, 'view_count', true)], 200);
 }
 
+/* -------------------------------------------------------------------------
+ * Next.js revalidation
+ *
+ * The Next.js URL and secret live in Settings > General ("Next.js
+ * revalidation" section). An ACF options-page field with the same name
+ * (next_site_url / revalidate_secret) takes precedence if one exists.
+ * ---------------------------------------------------------------------- */
+
+add_action('admin_init', function () {
+    add_settings_section('htw_revalidate', 'Next.js revalidation', function () {
+        echo '<p>Used to tell the Next.js storefront to refresh its cache when content is published.</p>';
+    }, 'general');
+
+    register_setting('general', 'next_site_url', [
+        'type' => 'string',
+        'sanitize_callback' => function ($value) {
+            return untrailingslashit(esc_url_raw(trim($value)));
+        },
+    ]);
+    register_setting('general', 'revalidate_secret', [
+        'type' => 'string',
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+
+    add_settings_field('next_site_url', 'Next.js site URL', function () {
+        printf(
+            '<input type="url" name="next_site_url" value="%s" class="regular-text" placeholder="https://your-nextjs-domain.com">',
+            esc_attr(get_option('next_site_url', ''))
+        );
+    }, 'general', 'htw_revalidate');
+
+    add_settings_field('revalidate_secret', 'Revalidate secret', function () {
+        printf(
+            '<input type="password" name="revalidate_secret" value="%s" class="regular-text" autocomplete="off">'
+                . '<p class="description">Must match REVALIDATE_SECRET in the Next.js environment.</p>',
+            esc_attr(get_option('revalidate_secret', ''))
+        );
+    }, 'general', 'htw_revalidate');
+});
+
+function htw_revalidate_setting($name)
+{
+    if (function_exists('get_field')) {
+        $value = get_field($name, 'option');
+        if (!empty($value)) {
+            return trim($value);
+        }
+    }
+
+    return trim((string) get_option($name, ''));
+}
+
+/**
+ * POST to the Next.js /api/revalidate route. Does nothing until the URL and
+ * secret are set in Settings > General.
+ */
+function htw_send_revalidate(array $params)
+{
+    $next_site_url = untrailingslashit(htw_revalidate_setting('next_site_url'));
+    $revalidate_secret = htw_revalidate_setting('revalidate_secret');
+
+    // Not configured yet: skip rather than POST to a bogus URL.
+    if ($next_site_url === '' || $revalidate_secret === '') {
+        return;
+    }
+
+    $params['secret'] = $revalidate_secret;
+
+    wp_remote_post(add_query_arg($params, "{$next_site_url}/api/revalidate"), [
+        'timeout' => 5,
+        'blocking' => false, // fire-and-forget, don't slow down the WP save
+    ]);
+}
+
 /**
  * Notify Next.js to revalidate its cache when content is saved in WordPress.
  */
@@ -113,25 +187,73 @@ add_action('save_post', function ($post_id, $post, $update) {
     if ($post->post_status !== 'publish') {
         return;
     }
-
-    $next_site_url = 'https://your-nextjs-domain.com'; // no trailing slash
-    $revalidate_secret = 'your-revalidate-secret'; // must match REVALIDATE_SECRET in .env.local
-
-    $params = ['secret' => $revalidate_secret];
+    // Menu items are saved one by one; wp_update_nav_menu below sends a
+    // single request for the whole menu instead.
+    if ($post->post_type === 'nav_menu_item') {
+        return;
+    }
 
     // ACF page-builder pages (home, ambassadors, our story, contact, navbar/footer)
     // are identified by page ID; everything else by its post type.
     if ($post->post_type === 'page') {
-        $params['page_id'] = $post_id;
+        htw_send_revalidate(['page_id' => $post_id]);
     } else {
-        $params['post_type'] = $post->post_type;
-    } 
-
-    wp_remote_post(add_query_arg($params, "{$next_site_url}/api/revalidate"), [
-        'timeout' => 5,
-        'blocking' => false, // fire-and-forget, don't slow down the WP save
-    ]);
+        htw_send_revalidate(['post_type' => $post->post_type]);
+    }
 }, 10, 3);
+
+/* -------------------------------------------------------------------------
+ * Navigation menu
+ *
+ * Registers a "Storefront navbar" menu location (Appearance > Menus) and
+ * exposes it publicly at /wp-json/site/v1/menu/primary. The core
+ * /wp/v2/menu-items endpoint needs an authenticated user, so the Next.js
+ * storefront can't use it.
+ * ---------------------------------------------------------------------- */
+
+add_action('after_setup_theme', function () {
+    register_nav_menus(['primary' => 'Storefront navbar']);
+});
+
+add_action('rest_api_init', function () {
+    register_rest_route('site/v1', '/menu/(?P<location>[a-z0-9_-]+)', [
+        'methods' => 'GET',
+        'callback' => 'site_get_menu',
+        'permission_callback' => '__return_true',
+    ]);
+});
+
+function site_get_menu(WP_REST_Request $req)
+{
+    $locations = get_nav_menu_locations();
+    $menu_id = $locations[$req->get_param('location')] ?? 0;
+    $items = $menu_id ? wp_get_nav_menu_items($menu_id) : [];
+
+    $home = untrailingslashit(home_url());
+    $menu = [];
+    foreach ($items ?: [] as $item) {
+        // Links to this WordPress site become relative paths so they route
+        // inside the Next.js app; external links stay absolute.
+        $url = $item->url;
+        if (strpos($url, $home) === 0) {
+            $url = substr($url, strlen($home)) ?: '/';
+        }
+
+        $menu[] = [
+            'id' => (int) $item->ID,
+            'label' => html_entity_decode($item->title, ENT_QUOTES),
+            'url' => $url,
+            'parent' => (int) $item->menu_item_parent,
+            'target' => $item->target,
+        ];
+    }
+
+    return new WP_REST_Response($menu, 200);
+}
+
+add_action('wp_update_nav_menu', function () {
+    htw_send_revalidate(['tag' => 'wp-navbar-menu']);
+});
 
 /* -------------------------------------------------------------------------
  * WooCommerce

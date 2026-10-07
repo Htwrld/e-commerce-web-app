@@ -4,10 +4,10 @@ import { CartDrawer } from "@/src/components/layouts/CartDrawer"
 import { Navbar } from "@/src/components/layouts/Navbar"
 import { Ticker } from "@/src/components/layouts/Ticker"
 import { Footer } from "@/src/components/layouts/Footer"
-import { getNavbarandFooter } from "@/src/action/pageController"
+import { getNavbarandFooter, getNavbarMenu } from "@/src/action/pageController"
 
 const EcommerceNotFound = async () => {
-    const footerandnavbar = await getNavbarandFooter()
+    const [footerandnavbar, navItems] = await Promise.all([getNavbarandFooter(), getNavbarMenu()])
     return (
         <div
             style={{
@@ -29,7 +29,7 @@ const EcommerceNotFound = async () => {
                     💬
                 </a>
                 <CartDrawer />
-                <Navbar footerandnavbar={footerandnavbar} />
+                <Navbar footerandnavbar={footerandnavbar} navItems={navItems} />
                 <Ticker footerandnavbar={footerandnavbar} />
                 <div className="flex min-h-screen flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-md">

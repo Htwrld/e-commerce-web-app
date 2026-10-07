@@ -2,14 +2,19 @@
 
 import { useEffect, useRef, useState } from "react"
 import { T } from "@/src/lib/tokens"
-import { NAV_ITEMS } from "@/src/lib/data"
 import { useCart } from "@/src/lib/cart-context"
 import { WABtn } from "@/src/components/cards/WABtn"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { NavbarandFooter } from "@/src/action/pageController"
+import { NavbarandFooter, NavItem } from "@/src/action/pageController"
 
-export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }) {
+export function Navbar({
+    footerandnavbar,
+    navItems,
+}: {
+    footerandnavbar: NavbarandFooter
+    navItems: NavItem[]
+}) {
     const [menuOpen, setMenuOpen] = useState(false)
     const { cartCount } = useCart()
     const pathname = usePathname()
@@ -93,11 +98,13 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                         overflow: "hidden",
                     }}
                 >
-                    {NAV_ITEMS.map((n) => (
+                    {navItems.map((n) => (
                         <Link
                             key={n.id}
                             className={`nav-link${pathname === n.id ? "active" : ""}`}
                             href={n.id}
+                            target={n.target || undefined}
+                            rel={n.target === "_blank" ? "noreferrer" : undefined}
                             style={{
                                 fontSize: 12,
                                 letterSpacing: "0.04em",
@@ -195,10 +202,12 @@ export function Navbar({ footerandnavbar }: { footerandnavbar: NavbarandFooter }
                         boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
                     }}
                 >
-                    {NAV_ITEMS.map((n) => (
+                    {navItems.map((n) => (
                         <Link
                             key={n.id}
                             href={n.id}
+                            target={n.target || undefined}
+                            rel={n.target === "_blank" ? "noreferrer" : undefined}
                             onClick={() => setMenuOpen(false)}
                             style={{
                                 padding: "14px 24px",

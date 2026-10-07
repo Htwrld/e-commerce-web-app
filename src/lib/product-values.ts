@@ -1,7 +1,7 @@
-// exchange_rate is NGN per USD; WooCommerce remains the payable price source.
+// EXCHANGE_RATE_NGN_PER_USD is a site-wide NGN-per-USD rate (e.g. 1500 means
+// ₦1,500 = $1). WooCommerce remains the payable price source.
 export function getWooCommerceProductValues(product: {
     shop_price?: unknown
-    acf?: { exchange_rate?: unknown }
     stock_quantity?: unknown
     in_stock?: unknown
     manage_stock?: unknown
@@ -9,7 +9,7 @@ export function getWooCommerceProductValues(product: {
     stock_status?: unknown
 }) {
     const price = Number(product.shop_price)
-    const rate = Number(product.acf?.exchange_rate)
+    const rate = Number(process.env.EXCHANGE_RATE_NGN_PER_USD)
     const validPrice =
         product.shop_price !== null &&
         product.shop_price !== undefined &&

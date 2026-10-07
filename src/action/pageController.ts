@@ -2,6 +2,7 @@
 
 import { T } from "../lib/tokens"
 import { WP_TAGS } from "../lib/wpTags"
+import { NAV_ITEMS } from "../lib/data"
 
 const REVALIDATE_SECONDS = 300
 
@@ -541,5 +542,29 @@ export const getNavbarandFooter = async () => {
         }
     } catch (e) {
         return {} as NavbarandFooter
+    }
+}
+
+export type NavItem = { id: string; label: string; target: string }
+
+// Top-level items of the WordPress "Storefront navbar" menu (served by the
+// HTW Headless plugin). Falls back to the built-in links if the menu is
+// unassigned, empty, or WordPress is unreachable.
+export const getNavbarMenu = async (): Promise<NavItem[]> => {
+    const fallback = NAV_ITEMS.map((n) => ({ ...n, target: "" }))
+    try {
+        const res = await fetch(`${website_url}/wp-json/site/v1/menu/primary`, {
+            next: { revalidate: REVALIDATE_SECONDS, tags: [WP_TAGS.navbarMenu] },
+        })
+        if (!res.ok) return fallback
+        const data: { label: string; url: string; parent: number; target: string }[] =
+            await res.json()
+
+        const items = data
+            .filter((item) => item.parent === 0 && item.url)
+            .map((item) => ({ id: item.url, label: item.label, target: item.target }))
+        return items.length ? items : fallback
+    } catch (e) {
+        return fallback
     }
 }
