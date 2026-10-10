@@ -261,20 +261,6 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
                         marginTop: 32,
                     }}
                 >
-                    <button
-                        type="button"
-                        onClick={() => setPaused((value) => !value)}
-                        aria-label={paused ? "Play slideshow" : "Pause slideshow"}
-                        style={{
-                            border: "none",
-                            background: "transparent",
-                            cursor: "pointer",
-                            color: T.ink,
-                            fontSize: 12,
-                        }}
-                    >
-                        {paused ? "Play" : "Pause"}
-                    </button>
                     {heroSection.map((_, i) => (
                         <button
                             key={i}
