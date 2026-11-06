@@ -621,4 +621,93 @@
             display: flex !important;
         }
     }
+
+    .hero-section {
+        min-height: 92vh;
+        padding: 80px 24px 100px;
+    }
+
+    .hero-images {
+        display: flex;
+        width: 30%;
+    }
+
+    .hero-badge {
+        margin-bottom: 22px;
+    }
+
+    .hero-headline {
+        margin: 0 0 16px;
+        font-size: clamp(52px, 12vw, 100px);
+        line-height: 0.92;
+    }
+
+    .hero-subheadline {
+        margin: 0 auto 10px;
+        line-height: 1.6;
+    }
+
+    .hero-tagline {
+        margin-bottom: 36px;
+    }
+
+    .hero-note {
+        margin-top: 16px;
+    }
+
+    .hero-dots {
+        margin-top: 32px;
+    }
+
+    @media (max-width: 1024px) {
+        .hero-section {
+            min-height: 620px;
+            padding: 64px 24px 72px;
+        }
+
+        .hero-headline {
+            font-size: clamp(64px, 9vw, 84px);
+        }
+    }
+
+    @media (max-width: 720px) {
+        /* Tall enough to absorb differences between slides, so the page
+           below doesn't jump each time the carousel rotates. */
+        .hero-section {
+            min-height: 440px;
+            padding: 36px 20px 28px;
+        }
+
+        /* The strip is too narrow here and sits behind the headline. */
+        .hero-images {
+            display: none;
+        }
+
+        .hero-badge {
+            margin-bottom: 14px;
+        }
+
+        .hero-headline {
+            margin-bottom: 10px;
+            font-size: clamp(40px, 12vw, 64px);
+            line-height: 1;
+        }
+
+        .hero-subheadline {
+            margin-bottom: 6px;
+            line-height: 1.45;
+        }
+
+        .hero-tagline {
+            margin-bottom: 18px;
+        }
+
+        .hero-note {
+            margin-top: 12px;
+        }
+
+        .hero-dots {
+            margin-top: 18px;
+        }
+    }
 }

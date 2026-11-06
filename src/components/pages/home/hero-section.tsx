@@ -49,6 +49,7 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
         <section
             aria-label="Featured collections"
             aria-roledescription="carousel"
+            className="hero-section"
             onMouseEnter={() => setInteracting(true)}
             onMouseLeave={() => setInteracting(false)}
             onFocusCapture={() => setInteracting(true)}
@@ -56,14 +57,12 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
                 if (!event.currentTarget.contains(event.relatedTarget)) setInteracting(false)
             }}
             style={{
-                minHeight: "92vh",
                 background,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
                 textAlign: "center",
-                padding: "80px 24px 100px",
                 position: "relative",
                 overflow: "hidden",
             }}
@@ -123,13 +122,12 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
             {/* Lifestyle image strip */}
             <div
                 key={`slide-images-${activeSlideIndex}`}
+                className="hero-images"
                 style={{
                     position: "absolute",
                     right: 0,
                     top: 0,
                     bottom: 0,
-                    width: "30%",
-                    display: "flex",
                     flexDirection: "column",
                     opacity: 0.18,
                     pointerEvents: "none",
@@ -167,6 +165,7 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
                 }}
             >
                 <div
+                    className="hero-badge"
                     style={{
                         display: "inline-block",
                         background: accent,
@@ -177,18 +176,15 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
                         letterSpacing: "0.2em",
                         fontFamily: "monospace",
                         fontWeight: 700,
-                        marginBottom: 22,
                     }}
                 >
                     {activeSection.hero_badge}
                 </div>
                 <h1
+                    className="hero-headline"
                     style={{
                         fontFamily: "'Cormorant Garamond',serif",
-                        fontSize: "clamp(52px,12vw,100px)",
                         fontWeight: 700,
-                        margin: "0 0 16px",
-                        lineHeight: 0.92,
                         color: T.ink,
                         letterSpacing: "-0.025em",
                     }}
@@ -196,25 +192,22 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
                     {activeSection.hero_headline}
                 </h1>
                 <p
+                    className="hero-subheadline"
                     style={{
                         fontFamily: "'EB Garamond',serif",
                         fontSize: "clamp(16px,2.5vw,21px)",
                         color: T.charcoal,
-                        margin: "0 0 10px",
                         fontStyle: "italic",
-                        lineHeight: 1.6,
                         maxWidth: 560,
-                        marginLeft: "auto",
-                        marginRight: "auto",
                     }}
                 >
                     {activeSection.hero_subheadline}
                 </p>
                 <p
+                    className="hero-tagline"
                     style={{
                         fontSize: 13,
                         color: T.muted,
-                        marginBottom: 36,
                         letterSpacing: "0.04em",
                     }}
                 >
@@ -243,7 +236,7 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
                         </Link>
                     )}
                 </div>
-                <p style={{ fontSize: 12, color: T.muted, marginTop: 16 }}>
+                <p className="hero-note" style={{ fontSize: 12, color: T.muted }}>
                     Free delivery in Lagos &nbsp;·&nbsp; Ships nationwide &nbsp;·&nbsp; WhatsApp
                     orders welcome
                 </p>
@@ -252,13 +245,13 @@ const HeroSection = ({ heroSection }: { heroSection: HeroSlide[] }) => {
             {/* Slide dots */}
             {slideCount > 1 && (
                 <div
+                    className="hero-dots"
                     style={{
                         position: "relative",
                         zIndex: 2,
                         display: "flex",
                         justifyContent: "center",
                         gap: 8,
-                        marginTop: 32,
                     }}
                 >
                     {heroSection.map((_, i) => (
