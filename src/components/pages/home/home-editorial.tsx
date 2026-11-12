@@ -15,12 +15,12 @@ import "@/src/components/editorial/editorial.css"
 
 const categories = [
     { name: "Hoodies", slug: "hoodies", image: "/images/hoodie_lifestyle.png" },
-    { name: "Tees & Polos", slug: "polos-tees", image: "/images/tee_she.jpg" },
-    { name: "Joggers", slug: "joggers", image: "/images/polo_twopiece.jpg" },
+    { name: "Tees & Polos", slug: "polos-tees", image: "/images/polos-tees.jpg" },
+    { name: "Joggers", slug: "joggers", image: "/images/joggers.jpg" },
     { name: "2-Piece Sets", slug: "2-piece-sets", image: "/images/polo_twopiece.jpg" },
-    { name: "Ankara", slug: "ankara", image: "/images/unnamed.webp" },
-    { name: "Kids", slug: "kids", image: "/images/tee_she.jpg" },
-    { name: "Family", slug: "family-collections", image: "/images/hoodie_lifestyle.png" },
+    { name: "Ankara", slug: "ankara", image: "/images/ankara.webp" },
+    { name: "Kids", slug: "kids", image: "/images/kids.jpg" },
+    { name: "Family", slug: "family-collections", image: "/images/family.png" },
 ]
 const values = [
     { icon: Heart, title: "Faith-Centered Designs", text: "Style that reflects your values." },
